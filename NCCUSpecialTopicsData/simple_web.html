@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>趨勢預測</title>
+
+<script type="text/javascript">
+function turnoff ( n ) {
+　　var s = document.getElementById( n ).style;
+　　s.display = ( s.display == 'none' ) ? '' : 'none' ;
+}
+</script>
+<style type="text/css">
+    body{
+        margin:0 auto;
+        align-items: center;
+    }
+    .buttonOverlay {
+        width: 40px;
+        height: 15px;
+        padding: 10px 25px;
+        position: relative;
+        color: #fff;
+        text-align: center;
+    }
+
+    .buttonOverlay::before {
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 5px;
+        right: 5px;
+        background-color: #3C3C3C;
+        z-index: -1;
+        transition: transform .2s ease-in-out;
+    }
+
+    .buttonOverlay::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border: 1px solid #474E51;
+    }
+
+    .buttonOverlay:hover::before {
+        transform: translate(6px, -4px);
+    }
+    .center{
+        text-align: center;
+    }
+    .search-box {
+        margin: 0 auto;
+        text-align: center;
+        border: solid 5px black;
+        display: inline-block;
+        position: relative;
+        border-radius: 50px;
+    }
+    .search-box input[type="text"] {
+        font-family: Raleway, sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        width: 50px;
+        height: 50px;
+        padding: 5px 40px 5px 10px;
+        border: none;
+        box-sizing: border-box;
+        border-radius: 50px;
+        transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 0.5) 600ms;
+    }
+    .search-box input[type="text"]:focus {
+        outline: none;
+    }
+    .search-box input[type="text"]:focus, .search-box input[type="text"]:not(:placeholder-shown) {
+        width: 300px;
+        transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 1.5);
+    }
+    .search-box input[type="text"]:focus + span, .search-box input[type="text"]:not(:placeholder-shown) + span {
+        bottom: 13px;
+        right: 10px;
+        transition: bottom 300ms ease-out 800ms, right 300ms ease-out 800ms;
+    }
+    .search-box input[type="text"]:focus + span:after, .search-box input[type="text"]:not(:placeholder-shown) + span:after {
+        top: 0;
+        right: 10px;
+        opacity: 1;
+        transition: top 300ms ease-out 1100ms, right 300ms ease-out 1100ms, opacity 300ms ease 1100ms;
+    }
+    .search-box span {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: -13px;
+        right: -15px;
+        transition: bottom 300ms ease-out 300ms, right 300ms ease-out 300ms;
+    }
+    .search-box span:before, .search-box span:after {
+        content: '';
+        height: 25px;
+        border-left: solid 5px black;
+        position: absolute;
+        transform: rotate(-45deg);
+    }
+    .search-box span:after {
+        transform: rotate(45deg);
+        opacity: 0;
+        top: -20px;
+        right: -10px;
+        transition: top 300ms ease-out, right 300ms ease-out, opacity 300ms ease-out;
+    }
+</style>
+<style type="text/css">
+
+    .channel{
+    margin: 0 auto;
+    width: 100px;
+    height: 20px;
+    max-width: 100%;
+    display: block;
+    text-align: center;
+    <!--
+    background-color: #eb9700; 
+    -->
+    font-size: 10;
+    }
+    .list{
+        margin: 0 auto;
+        width: 80%;
+        display: block;
+        background-color: rgba(0,0,5,0.1);
+    }
+    .line{
+        margin: 0 auto;
+        width: 100%;
+        height: 10px;
+        max-width: 100%;
+        display: block;
+        text-align: center;
+    }
+    .vid{
+        margin: 0 auto;
+        width: 350px;
+        height: 200px;
+        max-width: 100%;
+        display: block;
+        text-align: center;
+        <!--
+        background-color: #eb9700; 
+        -->
+        font-size: 10;
+    }
+    .mh6{
+        margin:0 auto;
+        width: 85%;
+        height: 20px;
+        text-align: center;
+        transition: all 0.5s;
+        border: 1px solid rgba(0,0,0,0.5);
+        position: relative;  
+    }
+
+    .mh6 span{
+        z-index: 2; 
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;   
+    }
+    .mh6:before{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0;
+        background-color: rgba(0,0,0,0.5);
+        transition: all 0.4s;
+        transform: scale(1, 0.5);
+    }
+    .mh6:hover::before{
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+    .buttonLeft {
+        margin:0 auto;
+        height: 40px;
+        width: 80%;
+        padding: 0 14px;
+        overflow: hidden;
+        background: #474E51;
+        position: relative;
+        line-height: 40px;
+        color: #fff;
+        text-align: center;
+    }
+
+    .buttonLeft::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(-100%);
+        background: #5778F3;
+        transition: transform .2s ease-in-out;
+    }
+
+    .buttonLeft:hover::before {
+        transform: translateX(0);
+    }
+
+    .buttonLeft span {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
+</head>
+<body>
+
+    <div class=line></div>
+
+    <div class=center>
+        <div class=search-box>
+            <input type=text placeholder=" ">
+            <span></span>
+        </div>
+    </div>
+
+
+    <div class=line></div>
+    <div class=line></div>
+    <div class=line></div>
+
+    <div title="反正我很閒">
+        <div class=buttonLeft data-text="反正我很閒" onmouseout="turnoff('divturnoff');" onMouseOver="turnoff('divturnoff');">
+            <span>反正我很閒</span>
+        </div>
+    </div>
+
+
+<div id="divturnoff" onmouseout="turnoff('divturnoff');" onMouseOver="turnoff('divturnoff');" style="display: none;">
+    <div class=list>
+        <div class=line></div>
+        <iframe class=vid width="727" height="409" src="https://www.youtube.com/embed/WVwlR_vni6k" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class=line></div>
+        <iframe class=vid width="727" height="409" src="https://www.youtube.com/embed/vdNI1HvbyEE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class=line></div>
+    </div>
+</div>
+
+<div class=line></div>
+<div class=line></div>
+
+<div title="STR Network">
+    <div class=buttonLeft data-text="STR Network" onmouseout="turnoff('divturnoff2');" onMouseOver="turnoff('divturnoff2');">
+        <span>STR Network</span>
+    </div>
+</div>
+
+
+<div id="divturnoff2" onmouseout="turnoff('divturnoff2');" onMouseOver="turnoff('divturnoff2');" style="display: none;">
+<div class=list>
+    <div class=line></div>
+    <iframe class=vid width="727" height="409" src="https://www.youtube.com/embed/AN0rQR0RlOM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class=line></div>
+    <iframe class=vid width="727" height="409" src="https://www.youtube.com/embed/Sx9hqn8lCyI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class=line></div>
+</div>
+</div>
+
+<div class=line></div>
+
+<input type=submit value=找吧 name=B1 onMouseOut=rgb(235,207,22) onMouseOver=red class=button>
+
+<input class=buttomOverlay type=button name=Submit1 value=測試 size=10 class=s02
+style=background-color:rgb(235,207,22)>
+<div class=buttonOverlay>
+    <span>假想</span>
+</div>
+<div class=vid> </div>
+
+</body>
+</html>
