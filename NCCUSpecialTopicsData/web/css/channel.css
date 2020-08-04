@@ -68,11 +68,23 @@
     font-size: 10;
 }
 
-.vidDetail{
-    width:100px;
-    height:100px;
-    background-color:#78FF78;
-    position:absolute;
-    top:0px;
-    left:-40px;
+.vidBg{
+    text-align: left;
+    font-size: smaller;
+    margin: 0 auto;
+    width:70%;
+    /*background-color:#78FF78;*/
+    position: relative;
+}
+
+.vidBottomRow{
+    border-radius: 20px/50px;
+    text-align: left;
+    display: flex;
+    font-size: smaller;
+    margin: 0 auto;
+    width:100%;
+    /*height: 50px;*/
+    background-color:black;
+    position: relative;
 }
