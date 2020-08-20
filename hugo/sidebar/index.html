@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Hugo網頁實作 - sidebar - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Hugo網頁實作 - sidebar" />
+<meta property="og:description" content="玩Hugo時想實作的功能紀錄 - 關於sidebar" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/hugo/sidebar/" />
+<meta property="article:published_time" content="2020-08-20T00:10:15+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:10:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Hugo網頁實作 - sidebar"/>
+<meta name="twitter:description" content="玩Hugo時想實作的功能紀錄 - 關於sidebar"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/hugo/sidebar/">Hugo網頁實作 - sidebar</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>sidebar 就是右側那些連結、分類等所呈現的地方</p>
+<p><img class="img-zoomable" src="/hugo/sidebar_1.PNG" alt="" />
+</p>
+<h1 id="go-template">Go Template</h1>
+<p>要改網頁呈現架構，自然而然的會去修改html檔<br>
+但是Hugo的html檔允許使用go template，需要先了解才改的動別人寫好的模板</p>
+<p>EX:<br>
+<img class="img-zoomable" src="/hugo/sidebar_2.PNG" alt="" />
+<br>
+至少必須先了解{{ .URL }} 、{{.Name}} 才有辦法加入新的內容</p>
+<h2 id="語法">語法</h2>
+<p>參照<a href="https://gohugo.io/templates/introduction/" target="_blank"> <strong>官網</strong> </a>介紹<br>
+Hugo 使用了Go語言的html/template 與 text/template函式庫<br>
+語法方面，Go template會使用 <em>{{  }}</em> 包住<em>變數</em> 與<em>函式</em></p>
+<h3 id="變數">變數</h3>
+<p>變數可分為兩種類型，已存在變數(a variable already existing in the current scope)以及自定義變數(custom variables)<br>
+其中已存在變數會使用 .Variable 自定義變數會使用.Variable的方式取用<br>
+例如:</p>
+<pre><code>{{ .Title }}
+{{ $address }}
+</code></pre><p>而在Hugo， 會有一個名為<a href="https://gohugo.io/variables/page/" target="_blank"><em>Page</em></a>的類全域變數存在，裡面紀錄很多關於當前頁面的資訊，而上例的Title就是其中一個member</p>
+<h3 id="函式">函式</h3>
+<p>格式為 函式名稱，後面以空格分開各個變數<br>
+{{function arg1 arg2 &hellip;}}<br>
+比如<br>
+{{add 1 2}} 會得到 3</p>
+<h4 id="常用函式1--if">常用函式1  if</h4>
+<p>例如下面是一個檢查是否為首頁的小區塊</p>
+<pre><code>{{ $var := &quot;Page&quot; }}  
+{{ if .IsHome }}        # 如果是首頁，就把var設定成Home
+    {{ $var = &quot;Home&quot; }}
+{{ end }}
+Var is {{ $var }}
+</code></pre><h4 id="常用函式2-range">常用函式2 range</h4>
+<p>類似於python for 迭代器的概念<br>
+比如出現在範例圖中的<br>
+<code>{{ range .Site.Menus.nav }} ... {{end}}</code>
+就是能迭代取出Site.Menus.nav中的所有Menu紀錄的資料</p>
+<h4 id="常用函式3-partial">常用函式3 partial</h4>
+<p>類似include的概念，可以引入寫好的檔案<br>
+比如<br>
+<code>{{ partial &quot;sidebar.html&quot; . }}</code><br>
+是trace Hugo code時很好用的觀念</p>
+<h1 id="著手修改">著手修改</h1>
+<p>有了上述的基本概念後，回來觀察sidebar.html
+<img class="img-zoomable" src="/hugo/sidebar_2.PNG" alt="" />
+<br>
+就不難理解其架構為<br>
+迭代的取出.Site.Menus.nav ， 也就是設定好的Menus參數，然後印出Menus中的URL 與 Name</p>
+<ul>
+<li>小觀念提醒: URL因為與Menus.nav在迭代取用的時候，就已經定義好了，因此可以用 . 來取用</li>
+</ul>
+<p>而Menus的可於config.toml設定<br>
+EX:<br>
+<img class="img-zoomable" src="/hugo/sidebar_3.PNG" alt="" />
+<br>
+注意</p>
+<ul>
+<li>只需遵照toml的格式，以後就可以append更多連結了</li>
+<li>menus底下的nav , category都是可以自訂的，也因此可依&quot;連結區&quot;依樣畫葫蘆產生&quot;分類區&rdquo;</li>
+</ul>
+<h1 id="參考資料">參考資料</h1>
+<p>Introduction to Hugo Templating:<br>
+<a href="https://gohugo.io/templates/introduction/">https://gohugo.io/templates/introduction/</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/hugo/main">hugo相關</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

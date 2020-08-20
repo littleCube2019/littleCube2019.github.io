@@ -15,20 +15,20 @@
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
 
 
-<title>如何使用Hugo寫網頁 - Little Cube`s box</title>
+<title>簡介如何使用Hugo寫網頁 - Little Cube`s box</title>
 
 
 
 
-<meta property="og:title" content="如何使用Hugo寫網頁" />
+<meta property="og:title" content="簡介如何使用Hugo寫網頁" />
 <meta property="og:description" content="紀錄如何快速產生這個網頁" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://littlecube2019.github.io/posts/test2/" />
+<meta property="og:url" content="https://littlecube2019.github.io/hugo/how_to_hugo/" />
 <meta property="article:published_time" content="2020-08-18T18:02:20+08:00" />
 <meta property="article:modified_time" content="2020-08-18T18:02:20+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="如何使用Hugo寫網頁"/>
+<meta name="twitter:title" content="簡介如何使用Hugo寫網頁"/>
 <meta name="twitter:description" content="紀錄如何快速產生這個網頁"/>
 
 
@@ -87,20 +87,20 @@
 <article>
     
     <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/posts/test2/">如何使用Hugo寫網頁</a>
+        <a href="https://littlecube2019.github.io/hugo/how_to_hugo/">簡介如何使用Hugo寫網頁</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;No tag</span>
+        
 
     </div>
     
     
     <div class="post-content markdown-body">
-        <h1 id="關於hugo">關於Hugo</h1>
+        <h2 id="關於hugo">關於Hugo</h2>
 <p>是一個以<strong>GO</strong>語言寫成的<strong>靜態網頁</strong>生成器
 可以分離很多設計上的工作，讓使用者專注於以Markdown撰寫內容</p>
 <p>Go語言會體現在Go templates廣泛應用於hugo的html中</p>
-<h1 id="簡單的網頁生成步驟">簡單的網頁生成步驟</h1>
+<h2 id="簡單的網頁生成步驟">簡單的網頁生成步驟</h2>
 <p>(以下用&lt;&gt;包裹的代表變數，可自由迭代)</p>
 <h3 id="step-0-安裝">step 0 安裝</h3>
 <p>Linux<br>
@@ -122,7 +122,7 @@ go install
 <p>先在hugo資料夾下輸入<br>
 <code>hugo new site &lt;網站名稱&gt; </code></p>
 <p>就會產生名為　&lt;網站名稱&gt;　的資料夾，並預設以下內容<br>
-<img class="img-zoomable" src="/how_to_hugo/1.png" alt="404" />
+<img class="img-zoomable" src="/hugo/how_1.png" alt="404" />
 
 目前常用的有</p>
 <ul>
@@ -135,7 +135,8 @@ go install
 <h3 id="step-2-添加文章">step 2 添加文章</h3>
 <ol>
 <li>cd 至hugo/&lt;網站名稱&gt;</li>
-<li><code>hugo new posts/&lt;文章&gt;.md </code></li>
+<li><code>hugo new &lt;文章分類用資料夾&gt;/&lt;文章&gt;.md </code>
+*&lt;文章用分類資料夾&gt; 可依情況放1~多個</li>
 </ol>
 <p>最後編輯該md文件即可<br>
 (參考: <a href="https://markdown.tw/#link" target="_blank">markdown常用語法</a>)</p>
@@ -151,7 +152,7 @@ go install
 以下以github page為例</p>
 <ol>
 <li>首先在github建立 &lt;username&gt;.github.io的repository</li>
-<li>然後將public<em>的內容</em>推上&lt;username&gt;.github.io就可以了</li>
+<li>然後將public的<em>內容</em>推上&lt;username&gt;.github.io就可以了</li>
 </ol>
 <pre><code>cd public
 git init
@@ -162,12 +163,12 @@ git push -u origin master
 </code></pre><ol start="3">
 <li>最後修改config.toml 的baseURL為<!-- raw HTML omitted -->.github.io</li>
 </ol>
-<h1 id="遇到的問題與其解決方法">遇到的問題與其解決方法</h1>
+<h2 id="遇到的問題與其解決方法">遇到的問題與其解決方法</h2>
 <h3 id="1如何插入圖片">1.如何插入圖片?</h3>
 <p>使用markdown語法，在想插入圖片的位置寫下<br>
 由一個驚嘆號，後面接[替代文字], (圖片所在路徑)<br>
 比如:<br>
-<img class="img-zoomable" src="/how_to_hugo/2.png" alt="404" />
+<img class="img-zoomable" src="/hugo/how_2.png" alt="404" />
 </p>
 <p>注意: 圖片路徑是以 &lt;網站名稱&gt; 內的static資料夾為root</p>
 <h3 id="2如何微調別的大神寫好的主題">2.如何微調別的大神寫好的主題?</h3>
@@ -219,25 +220,30 @@ enabled = true
             <aside class="col-12 col-md-3 float-left sidebar">
     
     <div class="sidebar-item sidebar-pages">
-        <h3>Pages</h3>
+        <h3>連結</h3>
         <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
             
         </ul>
     </div>
     
-    <div class="sidebar-item sidebar-tags">
-        <h3>Tags</h3>
-        <div>
-            
-        </div>
-    </div>
-    
-    <div class="sidebar-item sidebar-links">
-        <h3>Links</h3>
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
         <ul>
+            
+            <li>
+                <a href="/hugo/main">hugo相關</a>
+            </li>
             
         </ul>
     </div>
+
+
+    
+    
     
     
     
@@ -245,9 +251,7 @@ enabled = true
 </aside>
         </div>
         <div class="btn">
-    <div class="btn-toggle-mode">
-        <i class="iconfont icon-contrast-sharp"></i>
-    </div>
+
     <div class="btn-scroll-top">
         <i class="iconfont icon-chevron-up-circle-sharp"></i>
     </div>
