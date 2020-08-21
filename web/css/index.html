@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>關於CSS - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="關於CSS" />
+<meta property="og:description" content="CSS是串接樣式表(Cascade style sheet)，顧名思義就是用串接表的方式美化(style)網頁
+使用方法 引入CSS有三種方式 (1). inline style (style屬性)
+任何HTML tag都可以使用style屬性來進行inline style 例如
+&lt;p sytle=&quot;color:red; front-size:20px;&quot;&gt; this paragraph is red \&lt;/p&gt;
+(2).style tag
+HTML有style element供一次選擇某些種的元素
+Style tag 需放置於&lt;head&gt;部分中
+注意與上述方法格式上的差異
+如
+&lt;head&gt; &lt;style&gt;	p { color:red; front-size:20px; } &lt;/style&gt; &lt;/head&gt; 這個設定會使所有&lt;p&gt;內的文字為紅色，並字形大小為20個pixel
+(3). link the .css file (分檔)
+正式的大網頁會分開HTML與CSS檔 (管理、易讀)
+並且使用放置於&lt;head&gt;部分的link element 取用
+link介紹
+(a)&lt;link&gt; 沒有closing tag
+(b)&lt;link&gt;有三個重要屬性
+href 放入連結位置 */myStyle.css，也可以用相對路徑 ./myStyle.css
+type 輸入檔案類型，CSS為 text/css
+rel 檔案間的關係， CSS為 stylesheet
+如
+&lt;link href=&quot;./myStyle.css type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/web/css/" />
+<meta property="article:published_time" content="2020-08-21T17:45:33+08:00" />
+<meta property="article:modified_time" content="2020-08-21T17:45:33+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="關於CSS"/>
+<meta name="twitter:description" content="CSS是串接樣式表(Cascade style sheet)，顧名思義就是用串接表的方式美化(style)網頁
+使用方法 引入CSS有三種方式 (1). inline style (style屬性)
+任何HTML tag都可以使用style屬性來進行inline style 例如
+&lt;p sytle=&quot;color:red; front-size:20px;&quot;&gt; this paragraph is red \&lt;/p&gt;
+(2).style tag
+HTML有style element供一次選擇某些種的元素
+Style tag 需放置於&lt;head&gt;部分中
+注意與上述方法格式上的差異
+如
+&lt;head&gt; &lt;style&gt;	p { color:red; front-size:20px; } &lt;/style&gt; &lt;/head&gt; 這個設定會使所有&lt;p&gt;內的文字為紅色，並字形大小為20個pixel
+(3). link the .css file (分檔)
+正式的大網頁會分開HTML與CSS檔 (管理、易讀)
+並且使用放置於&lt;head&gt;部分的link element 取用
+link介紹
+(a)&lt;link&gt; 沒有closing tag
+(b)&lt;link&gt;有三個重要屬性
+href 放入連結位置 */myStyle.css，也可以用相對路徑 ./myStyle.css
+type 輸入檔案類型，CSS為 text/css
+rel 檔案間的關係， CSS為 stylesheet
+如
+&lt;link href=&quot;./myStyle.css type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/web/css/">關於CSS</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>CSS是串接樣式表(Cascade style sheet)，顧名思義就是用串接表的方式美化(style)網頁</p>
+<h1 id="使用方法">使用方法</h1>
+<h3 id="引入css有三種方式">引入CSS有三種方式</h3>
+<p>(1). inline style (style屬性)<br>
+任何HTML tag都可以使用<em>style屬性</em>來進行inline style
+例如<br>
+<code>&lt;p sytle=&quot;color:red; front-size:20px;&quot;&gt; this paragraph is red \&lt;/p&gt;</code></p>
+<p>(2).style tag<br>
+HTML有style element供一次選擇某些種的元素<br>
+Style tag 需放置於&lt;head&gt;部分中<br>
+注意與上述方法格式上的差異<br>
+如</p>
+<pre><code>&lt;head&gt;  
+	&lt;style&gt;	  
+		p {
+			color:red;
+			front-size:20px;
+		}
+	&lt;/style&gt;
+&lt;/head&gt;
+</code></pre><p>這個設定會使所有&lt;p&gt;內的文字為紅色，並字形大小為20個pixel</p>
+<p>(3). link the .css file  (分檔)<br>
+正式的大網頁會分開HTML與CSS檔 (管理、易讀)<br>
+並且使用放置於&lt;head&gt;部分的link element 取用<br>
+link介紹<br>
+(a)&lt;link&gt; 沒有closing tag<br>
+(b)&lt;link&gt;有三個重要屬性<br>
+href 放入連結位置   */myStyle.css，也可以用相對路徑  ./myStyle.css<br>
+type 輸入檔案類型，CSS為 text/css<br>
+rel  檔案間的關係， CSS為 stylesheet<br>
+如<br>
+<code>&lt;link href=&quot;./myStyle.css type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;</code></p>
+<h3 id="css語法">CSS語法</h3>
+<p>(1).CSS code synax<br>
+CSS code 的語法寫於CSS選擇器中<br>
+格式為<br>
+property:value;</p>
+<ul>
+<li>注意中間是用 :</li>
+<li>注意打完一行要加 ;</li>
+<li>這也是CSS是一種sheet的原因(表格語言)</li>
+</ul>
+<p>property可以是size、color等想要設計的style<br>
+value則為18px、blue等設定值</p>
+<p>(2). CSS 選擇器<br>
+是除了直接在html tag裡設定以外的方法都需要用到的
+格式為<br>
+selector{</p>
+<p>}   	
+則所有此element都會被選擇，然後套用{ }內的CSS style
+selector則可以針對元素、id、class &hellip; 選取<br>
+上面程式碼例子就是一個針對&lt;p&gt;的選擇器</p>
+<p>(2-1)選擇器類型</p>
+<ol>
+<li>
+<p>選擇tag<br>
+elementName{
+}   		則所有此element都會被選擇，然後套用{ }內的CSS style<br>
+例如<br>
+p{}  就是選擇所有&lt;p&gt;</p>
+</li>
+<li>
+<p>選擇class
+Class 名前要加 <strong>.</strong> (dot)<br>
+eg<br>
+.randomClass{
+}<br>
+選擇了所有有class=&quot;randomClass&quot;的標籤<br>
+(可彌補element一次選擇所有的缺點)<br>
+(class 屬性可給多個值，中間用空白隔開即可)</p>
+</li>
+<li>
+<p>選擇id
+id名前要加#<br>
+eg<br>
+#idName{}
+id是唯一的</p>
+</li>
+</ol>
+<ul>
+<li>Note:class vs id<br>
+class通常會用來reuse (比如顏色)，因class可多值能達到互相搭配的作用(就像調色)<br>
+id是處理特例時使用，所以對元素是唯一的，可以覆蓋其他選擇的style效果<br>
+(CSS權重大小: property加上!important &gt;id &gt;組合選擇 &gt;class &gt;element)</li>
+<li>Note2:在property rule中可加入!important阻止被覆蓋<br>
+例如:</li>
+</ul>
+<pre><code>	p{   
+		color:red !important;  
+	}   
+</code></pre><ol start="4">
+<li>
+<p>子孫selector<br>
+選擇器中間用空白隔開，就成為選前者的子孫element<br>
+*例如:<br>
+h1 .article   (選h1中class為article的)<br>
+(當然也可以h1#id，但id是唯一的所以直接#id就可)<br>
+*也可以<br>
+.article h1 (選class為article 中child是h1的)</p>
+</li>
+<li>
+<p>子選擇器
+選擇器中間用&gt;隔開，就成為選前者的直屬child的element</p>
+</li>
+<li>
+<p>多重selector<br>
+可以一次選多個元素，用逗號，隔開 (省重複code)<br>
+eg:    p,.myClassA,#id{color:blue;}</p>
+</li>
+<li>
+<p>*選擇<br>
+選擇所有元素，通常用於快速將margin、padding歸零<br>
+*{
+margin:0;
+paddig:0;
+}</p>
+</li>
+<li>
+<p>屬性選擇器<br>
+elem[attri]<br>
+如a[href]</p>
+</li>
+</ol>
+<h3 id="關於排版與配色">關於排版與配色</h3>
+<p>由於細枝末節較多，參考原始版筆記:<br>
+<a href="/web/CSS_lerning.pdf">點此開啟pdf</a></p>
+<h1 id="參考資料">參考資料</h1>
+<p><a href="https://www.codecademy.com/learn/learn-css">https://www.codecademy.com/learn/learn-css</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/hugo">hugo相關</a>
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

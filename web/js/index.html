@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Javascript簡介 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Javascript簡介" />
+<meta property="og:description" content="簡介 Js 1995年被創造用於寫網頁、隔年被改良為 scripting language
+ECMA-262 規範了JS的語法規則
+ES6是整個規範最大的改動 ，例如加入OOP的概念 本質上很&quot;安全&rdquo;(不會碰記憶體等核心)
+同時JS能與HTML、CSS整合、相對簡單，並且被大多數瀏覽器支持
+JS遵從ECMAScript標準
+JS 是直譯、動態(runtime才檢查)、弱型別(隱轉)語言
+  Note:Scripting language是為了縮短傳統的「編寫、編譯、連結、執行」（edit-compile-link-run）過程而建立的
+參考: https://zh.wikipedia.org/wiki/%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80
+  Note: browser通常都內建JS的虛擬引擎
+如: chorme是V8 Firefox是SpiderMonkey
+  Note: 引擎大概的工作是 解析script &gt; 編譯成機器碼 &gt; 執行機器碼
+  在browser中JS 與使用者、伺服端互動溝通
+比如:
+ 改動HTML tag、CSS style 回應使用者 如:滑鼠點擊 要求伺服端下載資料 取得、設定 cookie，依使用者決定呈現的data local (client) storage  同時JS也必須因為安全考量限制其功能
+比如:
+ 不得操作OS等核心 除非使用者同意，不得使用硬體設備 Same origin policy (同源政策) 限制不同web間正常來說要獨立 (資安保護) 只能從一個server接收資料 (否則須權限)  基礎語法 1.Console,a keyword,refer to a object" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/web/js/" />
+<meta property="article:published_time" content="2020-08-21T20:03:49+08:00" />
+<meta property="article:modified_time" content="2020-08-21T20:03:49+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Javascript簡介"/>
+<meta name="twitter:description" content="簡介 Js 1995年被創造用於寫網頁、隔年被改良為 scripting language
+ECMA-262 規範了JS的語法規則
+ES6是整個規範最大的改動 ，例如加入OOP的概念 本質上很&quot;安全&rdquo;(不會碰記憶體等核心)
+同時JS能與HTML、CSS整合、相對簡單，並且被大多數瀏覽器支持
+JS遵從ECMAScript標準
+JS 是直譯、動態(runtime才檢查)、弱型別(隱轉)語言
+  Note:Scripting language是為了縮短傳統的「編寫、編譯、連結、執行」（edit-compile-link-run）過程而建立的
+參考: https://zh.wikipedia.org/wiki/%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80
+  Note: browser通常都內建JS的虛擬引擎
+如: chorme是V8 Firefox是SpiderMonkey
+  Note: 引擎大概的工作是 解析script &gt; 編譯成機器碼 &gt; 執行機器碼
+  在browser中JS 與使用者、伺服端互動溝通
+比如:
+ 改動HTML tag、CSS style 回應使用者 如:滑鼠點擊 要求伺服端下載資料 取得、設定 cookie，依使用者決定呈現的data local (client) storage  同時JS也必須因為安全考量限制其功能
+比如:
+ 不得操作OS等核心 除非使用者同意，不得使用硬體設備 Same origin policy (同源政策) 限制不同web間正常來說要獨立 (資安保護) 只能從一個server接收資料 (否則須權限)  基礎語法 1.Console,a keyword,refer to a object"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/web/js/">Javascript簡介</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h3 id="簡介">簡介</h3>
+<p>Js 1995年被創造用於寫網頁、隔年被改良為 scripting language<br>
+ECMA-262  規範了JS的語法規則<br>
+ES6是整個規範最大的改動 ，例如加入OOP的概念 <br>
+本質上很&quot;安全&rdquo;(不會碰記憶體等核心)<br>
+同時JS能與HTML、CSS整合、相對簡單，並且被大多數瀏覽器支持</p>
+<p>JS遵從ECMAScript標準</p>
+<p>JS 是<strong>直譯、動態(runtime才檢查)、弱型別(隱轉)語言</strong></p>
+<ul>
+<li>
+<p>Note:Scripting language是為了縮短傳統的「編寫、編譯、連結、執行」（edit-compile-link-run）過程而建立的<br>
+參考: <a href="https://zh.wikipedia.org/wiki/%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80">https://zh.wikipedia.org/wiki/%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80</a></p>
+</li>
+<li>
+<p>Note: browser通常都內建JS的虛擬引擎<br>
+如: chorme是V8  Firefox是SpiderMonkey</p>
+</li>
+<li>
+<p>Note: 引擎大概的工作是 解析script &gt; 編譯成機器碼 &gt; 執行機器碼</p>
+</li>
+</ul>
+<h3 id="在browser中js">在browser中JS</h3>
+<p>與使用者、伺服端互動溝通<br>
+比如:</p>
+<ul>
+<li>改動HTML tag、CSS style</li>
+<li>回應使用者 如:滑鼠點擊</li>
+<li>要求伺服端下載資料</li>
+<li>取得、設定 cookie，依使用者決定呈現的data</li>
+<li>local (client) storage</li>
+</ul>
+<p>同時JS也必須因為<strong>安全</strong>考量限制其功能<br>
+比如:</p>
+<ul>
+<li>不得操作OS等核心</li>
+<li>除非使用者同意，不得使用硬體設備</li>
+<li>Same origin policy (同源政策) 限制不同web間正常來說要獨立 (資安保護)</li>
+<li>只能從一個server接收資料   (否則須權限)</li>
+</ul>
+<h1 id="基礎語法">基礎語法</h1>
+<p>1.Console,a keyword,refer to a object<br>
+keyword:能被程式辨認且有特殊意義的字<br>
+object:資料與行為的集合<br>
+*console.log 不會顯示給user<br>
+*alert() 、comfirm(&hellip;)、prompt()則會跳出視窗顯示訊息</p>
+<p>console.log(5); 印出5    ;做斷句<br>
+console.log(‘this is a book’);  印出string</p>
+<p>2.註解方式:just like C++<br>
+(//、/<em>&hellip;</em>/)</p>
+<p>3.Data Type:<br>
+primitive data</p>
+<ol>
+<li>數字 (include 整數、小數、Infinity、NaN)</li>
+<li>字串(‘’ or “”)</li>
+<li>布林值</li>
+<li>NULL :  null，代表無值</li>
+<li>undefined :類似null</li>
+<li>Symbol (variable)<br>
+complex  data</li>
+<li>object (data &amp; action)</li>
+</ol>
+<p>*Note:  Data type convertion<br>
+由於JS是動態弱型語言，有很多隱轉，比如<br>
+字串串接  (A+B = AB)<br>
+數學加法  (&ldquo;6&rdquo;/&ldquo;3&rdquo; =2) <br>
+&hellip;.<br>
+*如果數字轉型失敗會出現NaN</p>
+<p>4.基本運算元
+與其他語言差不多，有加減乘除，取餘數</p>
+<p>5.字串串接:
+‘A’ + ‘B’= ‘AB’</p>
+<p>6.<strong>性質</strong>:<br>
+所有data都是data type的實例(instance)，因此都擁有Data type的property
+例如所有字串都有length的性質
+&lsquo;hello&rsquo;.length 就是5</p>
+<p>7.method:<br>
+類似性質，data type可使用的函式<br>
+console.log()的log()就是如此<br>
+<img class="img-zoomable" src="/web/JS_1.PNG" alt="" />
+</p>
+<p>8.內建object<br>
+善用此網站查詢所要涵式<br>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects</a><br>
+比如使用Math物件中的random()<br>
+<img class="img-zoomable" src="/web/JS_2.PNG" alt="" />
+<br>
+應用:隨機取0-50<br>
+<img class="img-zoomable" src="/web/JS_3.PNG" alt="" />
+<br>
+注意: 使用方式<br>
+<img class="img-zoomable" src="/web/JS_4.PNG" alt="" />
+</p>
+<blockquote>
+<p>coding skill in JS<br>
+(1)建議加 ;<br>
+(2)最好採用先主code 後 help function 的方式  (讓人不一定需要讀function code)<br>
+(3)好的funciton、variable 名字可以代替註解<br>
+(4)善用continue、return 避免過多層的nest<br>
+(5)comment只用在重要解法、high level view 、function 用法</p>
+</blockquote>
+<p>B.JS變數:<br>
+(a)概述  (程式語言的複習)<br>
+變數是儲存資料於記憶體中 <br>
+變數三操作:創造、儲值、取值 <br>
+變數=/=數值 :變數只是代表一個值 (box and things)<br>
+變數優點:易讀、少錯</p>
+<p>(b)Create variables:<br>
+recall:JS 是<strong>直譯、動態(runtime才檢查)、弱型別(隱轉)語言</strong><br>
+var、let、const來創造變數<br>
+1.var例子:(ES6以前的版本)<br>
+<img class="img-zoomable" src="/web/JS_5.PNG" alt="" />
+<br>
+//變數採 camel casing 命名法(thisIsAnApple)<br>
+2.let 例子:<br>
+用法跟var一樣</p>
+<ul>
+<li><strong>注意:若只宣告變數而不初始化，JS會視為undefine型態</strong></li>
+</ul>
+<p>3.const例子:
+同C++中的常數，不可以改值，<strong>初始化未賦值視為錯誤!</strong></p>
+<p>(c)變數運算<br>
+1.和C++類似有+=.. ++&hellip;等等操作<br>
+2.變數也能字串串接<br>
+3.字串插值(重要)<br>
+template literals: 用``(反斜線刮住的字串)<br>
+可以使用${變數}來代值 (類似於bash 或 python的.format)<br>
+eg:<br>
+<img class="img-zoomable" src="/web/JS_6.PNG" alt="" />
+</p>
+<p>優點:易讀<br>
+4. typeof variable  :回傳variable 型態<br>
+eg:</p>
+<pre><code>let my = 65  
+typeof my      //retrun number
+</code></pre><p>C.條件判斷<br>
+(a)跟C++類似 (if-else if -else)<br>
+<img class="img-zoomable" src="/web/JS_7.PNG" alt="" />
+<br>
+(b)比較運算子<br>
+<img class="img-zoomable" src="/web/JS_8.PNG" alt="" />
+</p>
+<ul>
+<li>note: 字串採用字典比較</li>
+<li>note: null、undefined(NaN)在大小於比較一定會return false，故應特例處理</li>
+</ul>
+<p>(c)邏輯運算子<br>
+<img class="img-zoomable" src="/web/JS_9.PNG" alt="" />
+<br>
+(d)資料型態真假值<br>
+以下恆假<br>
+<img class="img-zoomable" src="/web/JS_10.PNG" alt="" />
+<br>
+除此之外都為真</p>
+<p>*補充:優雅程式寫法:  (類似於bash)<br>
+<img class="img-zoomable" src="/web/JS_11.PNG" alt="" />
+</p>
+<p>D.函式<br>
+函式本質是一段可重複利用的程式碼<br>
+(a)宣告<br>
+<img class="img-zoomable" src="/web/JS_12.PNG" alt="" />
+</p>
+<ul>
+<li>
+<p>注意function 關鍵字</p>
+</li>
+<li>
+<p>如沒有return值，會return undefine</p>
+</li>
+<li>
+<p>Hoisting (提升) JS可以允許先使用再定義函式!
+<img class="img-zoomable" src="/web/JS_13.PNG" alt="" />
+</p>
+</li>
+</ul>
+<p>使用上幾乎與C++概念相同，唯一需要注意的是在JS，<strong>function也可以作為參數</strong></p>
+<p>(b) anonymous function 與 arrow function<br>
+本質上是一種<strong>語法糖</strong>，可以簡化寫法<br>
+anonymous funciton<br>
+<img class="img-zoomable" src="/web/JS_16.PNG" alt="" />
+<br>
+以上例子中可以看到兩個無名的funciton被作為函式傳入<br>
+並且分別代表no()與yes()</p>
+<p>arrow function<br>
+<img class="img-zoomable" src="/web/JS_17.PNG" alt="" />
+<br>
+甚至function關鍵字也可以省略</p>
+<p>E Scope:<br>
+基本同C++<br>
+global:不在任何一個block內，整個檔案都能使用此區域的變數<br>
+block:在某一對 {} 中，裡面宣告的變數只有此block能使用，使用未宣告的變數會有ReferenceError (而非undefine!)<br>
+Scope pollution:過多變數在全域，可能會引發未定義行為(unexpected behavior)</p>
+<ul>
+<li>Scope規則的好處:安全、易讀、好維護、省記憶體</li>
+</ul>
+<p>F.array &amp; loop:</p>
+<h5 id="array">array</h5>
+<p>(a).Create<br>
+array可以用<br>
+let myArray=[‘string’,100,true]去創造，同時因為JS是weak type，array可存任意物件! 當然array也可以存在array中  (just like python)</p>
+<ul>
+<li>
+<p>note: 可想像array就是一堆變數</p>
+</li>
+<li>
+<p>note: array名代表整個array!(不是位址)<br>
+(b).access element<br>
+myarray[n],第n+1個element (從0開始)</p>
+</li>
+<li>
+<p>note: 字串一樣可以用此方式取字元</p>
+</li>
+<li>
+<p>note: 取用超出arrray bound 是 undefine，而不是error<br>
+當然也能update元素</p>
+</li>
+<li>
+<p>注意:用const宣告的array還是能修改array element，但不行重新assign該array
+eg:<br>
+const myArray=[1,2,3]<br>
+myArray[0]=2 //OK<br>
+myArray=2 //invalid!<br>
+(但是myArray是用let就沒問題，記住JS是weak type)</p>
+</li>
+</ul>
+<p>(c)array 操作<br>
+length 可以看有多少元素 (remember ‘string’.length)<br>
+*小技巧: A[A.length-1] 就能取到最後一個元素<br>
+push() 可以在array最後面放入元素<br>
+pop()可以取出最後面的元素 (刪除兼回傳)<br>
+更多可參考<br>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array</a><br>
+比如: <br>
+shift() 刪除第一個元素<br>
+unshift() 在array前面放入元素<br>
+slice() 類似於python的[:]，可以取段落出來</p>
+<h5 id="loop">Loop</h5>
+<p>(a)for 與C++同
+提醒可以使用 \for(let i=0;i&lt;\myArray.length;i++) 去traversal所有元素in myArray
+(b)while 與C++ 同，也有do&hellip;while</p>
+<p>G.High Order function &amp; iterator<br>
+由於較為繁瑣，請參考原筆記
+<a href="/web/JS_learning.pdf">點此</a></p>
+<p>H.Object (JSON 相關) <br>
+Object會收集相關Data與function，就像字典一樣，也因為其方便與可讀性，成為一種廣泛使用的交換資料格式<br>
+(a)建立javascript object<br>
+let variable =｛｝<br>
+object是用key-value pair的形式製造<br>
+<img class="img-zoomable" src="/web/JS_18.PNG" alt="" />
+</p>
+<ul>
+<li>注意，key一定是字串，但JS允許omit(省略) 引號‘ ‘</li>
+<li>注意，鍵值中間是用 : 隔開(同python 字典)</li>
+<li>注意，分隔是使用逗號，而且結束不用加分號</li>
+<li>注意，鍵就像變數名，而值一樣可以是任意型態(even 陣列、函式)<br>
+(b)取用<br>
+<img class="img-zoomable" src="/web/JS_19.PNG" alt="" />
+</li>
+</ul>
+<p>(c)修改object property<br>
+類似於python<br>
+可以用obj[key] = value進行修改<br>
+*注意:如果property原本不存在object中，則會創造新的property<br>
+*注意:可以使用delete 去刪除property<br>
+例如 delete spaceship.color;<br>
+其他進階主題也可以參考原筆記<br>
+<a href="/web/JS_learning.pdf">點此</a></p>
+<h1 id="參考資料">參考資料</h1>
+<p><a href="https://www.codecademy.com/learn/introduction-to-javascript">https://www.codecademy.com/learn/introduction-to-javascript</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/hugo">hugo相關</a>
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

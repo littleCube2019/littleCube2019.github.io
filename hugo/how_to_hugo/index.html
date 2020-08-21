@@ -75,6 +75,8 @@
         <div class="col-12 header">
             <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
             
+            <span class="title-sub">筆記儲物櫃</span>
+            
         </div>
     </div>
 </header>
@@ -135,11 +137,17 @@ go install
 <h3 id="step-2-添加文章">step 2 添加文章</h3>
 <ol>
 <li>cd 至hugo/&lt;網站名稱&gt;</li>
-<li><code>hugo new &lt;文章分類用資料夾&gt;/&lt;文章&gt;.md </code>
-*&lt;文章用分類資料夾&gt; 可依情況放1~多個</li>
+<li><code>hugo new &lt;分類資料夾&gt;/&lt;文章&gt;.md </code></li>
 </ol>
-<p>最後編輯該md文件即可<br>
-(參考: <a href="https://markdown.tw/#link" target="_blank">markdown常用語法</a>)</p>
+<ul>
+<li>通常theme設計，會使用params.mainsections，決定哪些資料夾要呈現在首頁中<br>
+比如在config.toml中加入這一段設定</li>
+</ul>
+<pre><code>[params]
+  mainSections = [&quot;index&quot;, &quot;docs&quot;]
+</code></pre><p>則名為index、docs資料夾裡的文章才會顯示在首頁<br>
+3. 編輯該md文件即可<br>
+(參考: <a href="/markdown/markdown">markdown常用語法</a>)</p>
 <h3 id="step-3-更換主題">step 3 更換主題</h3>
 <ol>
 <li>至<a href="https://themes.gohugo.io/" target="_blank">官網</a>找喜歡的主題</li>
@@ -152,6 +160,7 @@ go install
 以下以github page為例</p>
 <ol>
 <li>首先在github建立 &lt;username&gt;.github.io的repository</li>
+<li>cd至&lt;網站名稱&gt;資料夾，輸入<code>hugo -D</code>以生成public檔</li>
 <li>然後將public的<em>內容</em>推上&lt;username&gt;.github.io就可以了</li>
 </ol>
 <pre><code>cd public
@@ -160,7 +169,7 @@ git add .
 git commit -m &quot;init&quot;
 git remote add origin &lt;username&gt;.github.io的git
 git push -u origin master
-</code></pre><ol start="3">
+</code></pre><ol start="4">
 <li>最後修改config.toml 的baseURL為<!-- raw HTML omitted -->.github.io</li>
 </ol>
 <h2 id="遇到的問題與其解決方法">遇到的問題與其解決方法</h2>
@@ -201,7 +210,14 @@ server = &quot;192.168.1.1&quot;
 ports = [ 8001, 8001, 8002 ]
 connection_max = 5000
 enabled = true
-</code></pre><h1 id="參考資料">參考資料</h1>
+</code></pre><h3 id="4如何連結網頁內其他文章">4.如何連結網頁內其他文章</h3>
+<p>只要[文章](/xxx/&hellip;/&lt;文章&gt;)即可<br>
+其中要注意</p>
+<ul>
+<li>文章<em>不用加附檔名md</em></li>
+<li>是以contents為root</li>
+</ul>
+<h1 id="參考資料">參考資料</h1>
 <p>關於Hugo<br>
 <a href="https://gohugo.io/">https://gohugo.io/</a><br>
 <a href="https://www.minwt.com/webdesign-dev/html/21148.html">https://www.minwt.com/webdesign-dev/html/21148.html</a><br>
@@ -235,7 +251,11 @@ enabled = true
         <ul>
             
             <li>
-                <a href="/hugo/main">hugo相關</a>
+                <a href="/index/hugo">hugo相關</a>
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關</a>
             </li>
             
         </ul>

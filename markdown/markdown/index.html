@@ -15,20 +15,21 @@
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
 
 
-<title>Little Cube`s box - 筆記儲物櫃</title>
+<title>markdown簡介 - Little Cube`s box</title>
 
 
 
 
-<meta property="og:title" content="Little Cube`s box" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://littlecube2019.github.io/" />
-<meta property="og:updated_time" content="2020-08-21T23:32:18+08:00" />
+<meta property="og:title" content="markdown簡介" />
+<meta property="og:description" content="關於markdown的語法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/markdown/markdown/" />
+<meta property="article:published_time" content="2020-08-20T10:16:06+08:00" />
+<meta property="article:modified_time" content="2020-08-20T10:16:06+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Little Cube`s box"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="markdown簡介"/>
+<meta name="twitter:description" content="關於markdown的語法"/>
 
 
 
@@ -85,53 +86,109 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-
-
-
-<div class="post">
+<article>
+    
     <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/index/web/">網頁與爬蟲相關筆記</a>
+        <a href="https://littlecube2019.github.io/markdown/markdown/">markdown簡介</a>
     </h2>
     <div class="post-item post-meta">
         
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        關於網頁與爬蟲
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="簡介">簡介</h1>
+<p>Markdown是為了 <strong>易讀易寫</strong> 而生，是一種輕量級的標記示語言，創始人為John Gruber
+Markdown可以完全兼容HTML，並可以用簡化很多的方式生成跟html檔一樣的效果</p>
+<h1 id="常用功能">常用功能</h1>
+<ul>
+<li>
+<p>換行:<br>
+只需要在行尾<em>空兩格</em>，然後換行<br>
+<strong>對應到html的&lt;br&gt;</strong></p>
+</li>
+<li>
+<p>標題:<br>
+格式為# &lt;標題&gt; (注意中間要空一格)<br>
+加越多#，標題越小<br>
+<strong>對應到html的&lt;h&gt;系列</strong></p>
+</li>
+<li>
+<p>強調文字:<br>
+以* , _ 包住的字會有強調的效果<br>
+<strong>對應到html的&lt;strong&gt;</strong></p>
+</li>
+<li>
+<p>清單:<br>
+* li &lt;= 無序 (注意中間要空格)<br>
+&lt;數字&gt;. li &lt;= 有序  (注意數字後有. 然後要空格)<br>
+<strong>對應到html的&lt;ul&gt; &lt;ol&gt; &lt;li&gt;</strong></p>
+</li>
+<li>
+<p>跳脫字元:<br>
+加斜線即可<br>
+\&lt;欲跳脫字元&gt;</p>
+</li>
+<li>
+<p>連結:<br>
+格式為 [連結文字](URL)<br>
+<strong>對應到html的 &lt;a&gt;</strong></p>
+</li>
+<li>
+<p>內部連結
+首先在想要內部連結的標題旁加上{#xxx}<br>
+然後一樣使用連結的格式[連結文字](#xxx)<br>
+至於為甚麼可以這樣，可以參考<a href="/web/http/#2-4">這裡</a></p>
+</li>
+<li>
+<p>圖片:<br>
+格式為 ![替代文字](圖片所在路徑)<br>
+<strong>對應到html的&lt;img&gt;</strong></p>
+</li>
+</ul>
+<h1 id="進階">進階</h1>
+<h3 id="1-表格">1 表格</h3>
+<p>依下列格式為樣板，並且注意 第二列 可以調整表格內文字置中、靠左、靠右</p>
+<pre><code>| xxxxxx   | xxxxxx     | xxxxxx    |
+| :---     | :----:     |  ----:    |
+| left     | center     | right     |
+| xx       | xx         | xxx       |
+</code></pre><p>以下為呈現效果</p>
+<table>
+<thead>
+<tr>
+<th align="left">xxxxxx</th>
+<th align="center">xxxxxx</th>
+<th align="right">xxxxxx</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">left</td>
+<td align="center">center</td>
+<td align="right">right</td>
+</tr>
+<tr>
+<td align="left">xx</td>
+<td align="center">xx</td>
+<td align="right">xxx</td>
+</tr>
+</tbody>
+</table>
+<p><strong>對應到html的table系列</strong></p>
+<h1 id="參考資料">參考資料</h1>
+<ul>
+<li>markdown 簡介<br>
+<a href="https://markdown.tw/">https://markdown.tw/</a></li>
+<li>markdown wiki<br>
+<a href="https://zh.wikipedia.org/wiki/Markdown">https://zh.wikipedia.org/wiki/Markdown</a></li>
+<li>更詳細資料<br>
+<a href="http://xianbai.me/learn-md/article/about/readme.html">http://xianbai.me/learn-md/article/about/readme.html</a></li>
+</ul>
+
     </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/index/hugo/">Hugo相關的筆記</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        以Hugo實作此網站時的過程與紀錄
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/index/misc/">雜項筆記</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        隨手記、小知識
-    </div>
-</div>
-
-
-
-
-
-
+</article>
 
 
 

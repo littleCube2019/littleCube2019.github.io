@@ -75,6 +75,8 @@
         <div class="col-12 header">
             <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
             
+            <span class="title-sub">筆記儲物櫃</span>
+            
         </div>
     </div>
 </header>
@@ -100,6 +102,7 @@
 <p>寫好的文章有時候並不想呈現在首頁上，或是需要置頂、讓部分文章留在首頁&hellip;
 這時一樣需要修改html檔</p>
 <p>可以先參考<a href="/hugo/sidebar">上一篇</a>了解go template 基礎</p>
+<p>並且參考<a href="/hugo/how_to_hugo">基礎介紹</a>中的params.mainsections，決定哪些文章顯示在首頁上</p>
 <h1 id="著手修改">著手修改</h1>
 <p>首先找到首頁呈現的html檔<br>
 EX:<br>
@@ -107,7 +110,7 @@ EX:<br>
 </p>
 <p>然後可以修改函數以達到目的</p>
 <h3 id="目的1-隱藏文章">目的1: 隱藏文章</h3>
-<p>&ldquo;Params.hidden&rdquo; &ldquo;ne&rdquo; &ldquo;true&rdquo; 部分</p>
+<p>&ldquo;Params.hidden&rdquo; &ldquo;ne&rdquo; &ldquo;true&rdquo; 部分  (where函數參考https://gohugo.io/functions/where/)</p>
 <ol>
 <li>增加Params.hidden變數，可以在各文章header中設定</li>
 <li>ne 代表 !=
@@ -122,7 +125,9 @@ EX:<br>
 可以在各文章設定weight，<em>越小</em>會呈現在越上面</p>
 <h1 id="參考資料">參考資料</h1>
 <p>Hugo go template - List of content in Hugo:<br>
-<a href="https://gohugo.io/templates/lists/">https://gohugo.io/templates/lists/</a></p>
+<a href="https://gohugo.io/templates/lists/">https://gohugo.io/templates/lists/</a><br>
+Contents section - where<br>
+<a href="https://gohugo.io/functions/where/">https://gohugo.io/functions/where/</a></p>
 
     </div>
 </article>
@@ -149,7 +154,11 @@ EX:<br>
         <ul>
             
             <li>
-                <a href="/hugo/main">hugo相關</a>
+                <a href="/index/hugo">hugo相關</a>
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關</a>
             </li>
             
         </ul>

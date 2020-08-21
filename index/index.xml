@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Indexes on Little Cube`s box</title>
+    <link>https://littlecube2019.github.io/index/</link>
+    <description>Recent content in Indexes on Little Cube`s box</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Fri, 21 Aug 2020 13:45:35 +0800</lastBuildDate>
+    
+	<atom:link href="https://littlecube2019.github.io/index/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>網頁與爬蟲相關筆記</title>
+      <link>https://littlecube2019.github.io/index/web/</link>
+      <pubDate>Fri, 21 Aug 2020 13:45:35 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/web/</guid>
+      <description>關於網頁與爬蟲</description>
+    </item>
+    
+    <item>
+      <title>Hugo相關的筆記</title>
+      <link>https://littlecube2019.github.io/index/hugo/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/hugo/</guid>
+      <description>以Hugo實作此網站時的過程與紀錄</description>
+    </item>
+    
+    <item>
+      <title>雜項筆記</title>
+      <link>https://littlecube2019.github.io/index/misc/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/misc/</guid>
+      <description>隨手記、小知識</description>
+    </item>
+    
+  </channel>
+</rss>

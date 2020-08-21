@@ -12,15 +12,6 @@
     
     
     <item>
-      <title>Test221</title>
-      <link>https://littlecube2019.github.io/hugo/test3/</link>
-      <pubDate>Tue, 18 Aug 2020 18:02:20 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/hugo/test3/</guid>
-      <description>this is a test</description>
-    </item>
-    
-    <item>
       <title>Hugo網頁實作 - sidebar</title>
       <link>https://littlecube2019.github.io/hugo/sidebar/</link>
       <pubDate>Thu, 20 Aug 2020 00:10:15 +0800</pubDate>
@@ -36,15 +27,6 @@
       
       <guid>https://littlecube2019.github.io/hugo/show_article/</guid>
       <description>玩Hugo時想實作的功能紀錄 - 關於文章呈現</description>
-    </item>
-    
-    <item>
-      <title>與Hugo相關的筆記</title>
-      <link>https://littlecube2019.github.io/hugo/main/</link>
-      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/hugo/main/</guid>
-      <description> 簡介如何使用Hugo寫網頁 Hugo網頁實作 - sidebar Hugo網頁實作 - 文章呈現  </description>
     </item>
     
     <item>
