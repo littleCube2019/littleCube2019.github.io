@@ -48,6 +48,15 @@
     </item>
     
     <item>
+      <title>課程電子筆記備份區</title>
+      <link>https://littlecube2019.github.io/index/course/</link>
+      <pubDate>Fri, 21 Aug 2020 13:45:35 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/course/</guid>
+      <description>關於修課有電子版的紀錄備份</description>
+    </item>
+    
+    <item>
       <title>Http簡介</title>
       <link>https://littlecube2019.github.io/web/http/</link>
       <pubDate>Fri, 21 Aug 2020 23:32:18 +0800</pubDate>
@@ -99,6 +108,66 @@ JS 是直譯、動態(runtime才檢查)、弱型別(隱轉)語言
  改動HTML tag、CSS style 回應使用者 如:滑鼠點擊 要求伺服端下載資料 取得、設定 cookie，依使用者決定呈現的data local (client) storage  同時JS也必須因為安全考量限制其功能
 比如:
  不得操作OS等核心 除非使用者同意，不得使用硬體設備 Same origin policy (同源政策) 限制不同web間正常來說要獨立 (資安保護) 只能從一個server接收資料 (否則須權限)  基礎語法 1.Console,a keyword,refer to a object</description>
+    </item>
+    
+    <item>
+      <title>pyquery 簡介</title>
+      <link>https://littlecube2019.github.io/web/pyquery/</link>
+      <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/web/pyquery/</guid>
+      <description>pyquery 是與jquery類似的選擇器語法，可以方便的剖析網頁
+基本用法為
+import requests from pyquery import PyQuery as pq res = requests.get(url) doc = pq(res.text) 得到pyquery物件，pyquery物件可以直接選擇元素，比如
+title = doc(&amp;lsquo;h1&amp;rsquo;)
+並且由於回傳仍為pyquery物件(chaining特性)，因此可以連續選取 比如 doc(&amp;lsquo;h1&amp;rsquo;)(&#39;#ID&amp;rsquo;)
+或套用其他method
+選擇器語法   選取元素、class、id:
+(&amp;lsquo;element&amp;rsquo;)
+如doc(&amp;lsquo;h1&amp;rsquo;)
+(&#39;.class&amp;rsquo;)
+如doc(&#39;.div&amp;rsquo;)
+(&#39;#id&amp;rsquo;) 如doc(&#39;#main&amp;rsquo;)
+  選取屬性
+.attr(&amp;lsquo;attribute&amp;rsquo;)
+常用: doc(&amp;lsquo;a&amp;rsquo;).attr(&amp;lsquo;href&amp;rsquo;)
+  子孫與child doc(&amp;lsquo;A B&amp;rsquo;) 表示在A裡的B doc(&amp;lsquo;A&amp;gt;B&amp;rsquo;) 表示在A下一層的B
+  取得文字 .text()
+比如 doc(&amp;lsquo;a&amp;rsquo;).text()
+  html格式
+.html()
+   Note: pyquery物件與htmlElemnt物件 前者是pq(‘’)選擇完後會回傳
+可以再選擇、attr(‘…’)、.size()、.html()、.text()
+等等  後者包含於前者中，如果將pq物件取出一個如:doc[0]，就會得到htmlElement物件
+有.text、.attrib[‘href’] …等等</description>
+    </item>
+    
+    <item>
+      <title>Requests 簡介</title>
+      <link>https://littlecube2019.github.io/web/requests/</link>
+      <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/web/requests/</guid>
+      <description>requests是一個python模擬網路請求的套件
+基本用法為
+import requests r=requests.get(url) r就會得到response物件  可以使用dir(r) 轉成字典型態看出裡面的property 也可以使用help(r) 打開使用手冊  response 物件 response物件能夠告訴我們很多連線資訊 如
+連線相關 response.status_code(HTTPcode 200系列正常、300系列重導、400系列錯誤 &amp;hellip;.)
+*response物件若介於200-400之間，會被boolean轉型為true
+*最好還是使用status_code檢查，才能精準了解連線情況，比如204(無內容)與304(無修改) 原則上與200(成功連線) 有一些不同
+response.ok (是否連線成功 ， aka 200系列)
+內容相關 回傳的訊息內容，也就是負載(payload)，可以用response的方法與property去查看
+note:payload通常指實際傳輸的信息
+response.content 可以用二進位內容查看payload
+response.text 則可以用UTF-8 的格式查看文字內容
+response.encoding 則可以決定解碼方式，比如response.encoding=&#39;UTF-8&amp;rsquo;
+response.json() 則能將reponse的內容轉成字典(json-like)物件
+標頭相關 標頭(header)可以提供很多網頁的基本資訊，比如content-type ,date &amp;hellip;..
+response.headers 會回傳類字典物件，舉例如下
+HTTP get method 常用參數 最基本的要求資料方式
+get 除了可以給url之外，也能給其他參數使request應用更靈活 (和post最常被使用)
+ params 可以加入QueryString headers 可以輸入headers資料
+比如有時被403拒絕就是缺少user-agent
+可加入my_headers = {&amp;lsquo;User-Agent&amp;rsquo;: &amp;lsquo;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.</description>
     </item>
     
     <item>

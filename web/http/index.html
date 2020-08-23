@@ -216,6 +216,8 @@ Query String存在保留字元，以byte為單位，並且% 加上 <strong>兩�
 : 為 %3A<br>
 空白為%20  =&gt; 也可以使用 +<br>
 中文佔3byte，比如漢字[勝] 表示為 [%E5%8B%9D] =&gt; <strong>也就是為甚麼URL可以有中文</strong></p>
+<p>補充:由於會將明文寫在URL上，不能放上敏感資料<br>
+同時也有可能被SQL insert 攻擊 ，有資安上的疑慮</p>
 <h3 id="2-4">fragement</h3>
 <p>是由client端(常為瀏覽器)處理的部分，不會傳遞給server<br>
 通常使用在AJAX或 單頁應用程式SPA，控制fragment做出效果<br>
@@ -397,6 +399,10 @@ payload不考慮資料型態，只考慮位元組本身
             
             <li>
                 <a href="/index/web">網頁與爬蟲相關</a>
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
             </li>
             
         </ul>

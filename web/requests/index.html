@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Requests 簡介 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Requests 簡介" />
+<meta property="og:description" content="requests是一個python模擬網路請求的套件
+基本用法為
+import requests r=requests.get(url) r就會得到response物件  可以使用dir(r) 轉成字典型態看出裡面的property 也可以使用help(r) 打開使用手冊  response 物件 response物件能夠告訴我們很多連線資訊 如
+連線相關 response.status_code(HTTPcode 200系列正常、300系列重導、400系列錯誤 &hellip;.)
+*response物件若介於200-400之間，會被boolean轉型為true
+*最好還是使用status_code檢查，才能精準了解連線情況，比如204(無內容)與304(無修改) 原則上與200(成功連線) 有一些不同
+response.ok (是否連線成功 ， aka 200系列)
+內容相關 回傳的訊息內容，也就是負載(payload)，可以用response的方法與property去查看
+note:payload通常指實際傳輸的信息
+response.content 可以用二進位內容查看payload
+response.text 則可以用UTF-8 的格式查看文字內容
+response.encoding 則可以決定解碼方式，比如response.encoding=&#39;UTF-8&rsquo;
+response.json() 則能將reponse的內容轉成字典(json-like)物件
+標頭相關 標頭(header)可以提供很多網頁的基本資訊，比如content-type ,date &hellip;..
+response.headers 會回傳類字典物件，舉例如下
+HTTP get method 常用參數 最基本的要求資料方式
+get 除了可以給url之外，也能給其他參數使request應用更靈活 (和post最常被使用)
+ params 可以加入QueryString headers 可以輸入headers資料
+比如有時被403拒絕就是缺少user-agent
+可加入my_headers = {&lsquo;User-Agent&rsquo;: &lsquo;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/web/requests/" />
+<meta property="article:published_time" content="2020-08-21T20:03:49+08:00" />
+<meta property="article:modified_time" content="2020-08-21T20:03:49+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Requests 簡介"/>
+<meta name="twitter:description" content="requests是一個python模擬網路請求的套件
+基本用法為
+import requests r=requests.get(url) r就會得到response物件  可以使用dir(r) 轉成字典型態看出裡面的property 也可以使用help(r) 打開使用手冊  response 物件 response物件能夠告訴我們很多連線資訊 如
+連線相關 response.status_code(HTTPcode 200系列正常、300系列重導、400系列錯誤 &hellip;.)
+*response物件若介於200-400之間，會被boolean轉型為true
+*最好還是使用status_code檢查，才能精準了解連線情況，比如204(無內容)與304(無修改) 原則上與200(成功連線) 有一些不同
+response.ok (是否連線成功 ， aka 200系列)
+內容相關 回傳的訊息內容，也就是負載(payload)，可以用response的方法與property去查看
+note:payload通常指實際傳輸的信息
+response.content 可以用二進位內容查看payload
+response.text 則可以用UTF-8 的格式查看文字內容
+response.encoding 則可以決定解碼方式，比如response.encoding=&#39;UTF-8&rsquo;
+response.json() 則能將reponse的內容轉成字典(json-like)物件
+標頭相關 標頭(header)可以提供很多網頁的基本資訊，比如content-type ,date &hellip;..
+response.headers 會回傳類字典物件，舉例如下
+HTTP get method 常用參數 最基本的要求資料方式
+get 除了可以給url之外，也能給其他參數使request應用更靈活 (和post最常被使用)
+ params 可以加入QueryString headers 可以輸入headers資料
+比如有時被403拒絕就是缺少user-agent
+可加入my_headers = {&lsquo;User-Agent&rsquo;: &lsquo;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537."/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/web/requests/">Requests 簡介</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>requests是一個python模擬網路請求的套件<br>
+基本用法為</p>
+<pre><code>import requests  
+r=requests.get(url)
+r就會得到response物件  
+</code></pre><ul>
+<li>可以使用dir(r) 轉成字典型態看出裡面的property</li>
+<li>也可以使用help(r) 打開使用手冊</li>
+</ul>
+<h1 id="response-物件">response 物件</h1>
+<p>response物件能夠告訴我們很多連線資訊 <br>
+如</p>
+<h3 id="連線相關">連線相關</h3>
+<p>response.status_code(HTTPcode 200系列正常、300系列重導、400系列錯誤 &hellip;.)<br>
+<img class="img-zoomable" src="/web/res_1.PNG" alt="" />
+<br>
+*response物件若介於200-400之間，會被boolean轉型為true<br>
+*最好還是使用status_code檢查，才能精準了解連線情況，比如204(無內容)與304(無修改)   原則上與200(成功連線) 有一些不同<br>
+response.ok (是否連線成功 ， aka 200系列)</p>
+<h3 id="內容相關">內容相關</h3>
+<p>回傳的訊息內容，也就是負載(payload)，可以用response的方法與property去查看</p>
+<p>note:payload通常指實際傳輸的信息</p>
+<p>response.content    可以用二進位內容查看payload<br>
+response.text    則可以用UTF-8 的格式查看文字內容<br>
+response.encoding 則可以決定解碼方式，比如response.encoding='UTF-8&rsquo;<br>
+response.json() 則能將reponse的內容轉成字典(json-like)物件</p>
+<h3 id="標頭相關">標頭相關</h3>
+<p>標頭(header)可以提供很多網頁的基本資訊，比如content-type ,date &hellip;..<br>
+response.headers 會回傳類字典物件，舉例如下<br>
+<img class="img-zoomable" src="/web/res_2.PNG" alt="" />
+</p>
+<h1 id="http-get-method">HTTP get method</h1>
+<h3 id="常用參數">常用參數</h3>
+<p>最基本的要求資料方式<br>
+get 除了可以給url之外，也能給其他參數使request應用更靈活  (和post最常被使用)</p>
+<ol>
+<li>params  可以加入QueryString</li>
+<li>headers  可以輸入headers資料<br>
+<img class="img-zoomable" src="/web/res_3.PNG" alt="" />
+<br>
+比如有時被403拒絕就是缺少user-agent<br>
+可加入my_headers = {&lsquo;User-Agent&rsquo;: &lsquo;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)   AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36&rsquo;}</li>
+<li>認證 Authentication <br>
+有些網站會要求認證，否則給予401拒絕 <br>
+用法<br>
+<img class="img-zoomable" src="/web/res_5.PNG" alt="" />
+</li>
+<li>TimeOut
+於每個HTTPmethod中都可以添加此參數，防止花過多時間等待連線
+<img class="img-zoomable" src="/web/res_6.PNG" alt="" />
+<br>
+如果超過timeout則會反為Timeout error<br>
+(預設會等待連線無限久)         (單位:秒)<br>
+也可以傳tuple  如 timout=(2,5)	前者為連線時限，後者則為讀取時限</li>
+</ol>
+<h3 id="其他method">其他method</h3>
+<p><img class="img-zoomable" src="/web/web_4.PNG" alt="" />
+</p>
+<ul>
+<li>常用的post方法是用來透過message body傳送資料，因此後面會附上data參數
+如果需要json格式也可以使用json參數傳資料</li>
+</ul>
+<h1 id="session">session</h1>
+<p>session可以維持參數的傳遞，比如收到的cookie、連線的message body<br>
+<img class="img-zoomable" src="/web/res_7.PNG" alt="" />
+</p>
+<ul>
+<li>補充:Cookie<br>
+目的:因為HTTP是無狀態的，所以為了識別用戶，cookie應運而生 (eg 購物網站)<br>
+型態:通常為一加密的小型文字檔案，某些網站為了識別用戶而存在用戶端的資料<br>
+特性:1.Cookie會被附加在每個HTTP請求中<br>
+2.包含用戶名、電腦名、瀏覽器&hellip;等資訊<br>
+3.不同瀏覽器即使在同一台電腦也會有不同cookie(瀏覽器&ndash;網站)</li>
+</ul>
+<h1 id="應用範例">應用範例</h1>
+<h3 id="爬取ptt八卦版需要年齡驗證">爬取ptt八卦版需要年齡驗證</h3>
+<p>解法: 使用post + data的參數 + F12去找Post的data+使用session物件實例來傳遞(共享)資料<img class="img-zoomable" src="/web/res_8.PNG" alt="" />
+</p>
+<h3 id="被403-forbidden">被403 forbidden</h3>
+<p>解法: 模擬user-agent</p>
+<pre><code>head = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+Response= requests.get(url,headers=head)
+</code></pre><ul>
+<li>Note: 如果被鎖ip 可能要使用proxy來解決</li>
+</ul>
+<h3 id="其他棘手情況">其他棘手情況</h3>
+<p>可能要採用selenium模擬網路瀏覽器的方式破解</p>
+<h1 id="參考資料">參考資料</h1>
+<p>requests 官方文件<br>
+<a href="https://realpython.com/python-requests/#getting-started-with-requests">https://realpython.com/python-requests/#getting-started-with-requests</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/hugo">hugo相關</a>
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關</a>
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

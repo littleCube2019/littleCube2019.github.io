@@ -23,6 +23,11 @@
   </url>
   
   <url>
+    <loc>https://littlecube2019.github.io/index/course/</loc>
+    <lastmod>2020-08-21T13:45:35+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://littlecube2019.github.io/web/http/</loc>
     <lastmod>2020-08-21T23:32:18+08:00</lastmod>
   </url>
@@ -39,6 +44,16 @@
   
   <url>
     <loc>https://littlecube2019.github.io/web/js/</loc>
+    <lastmod>2020-08-21T20:03:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/web/pyquery/</loc>
+    <lastmod>2020-08-21T20:03:49+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/web/requests/</loc>
     <lastmod>2020-08-21T20:03:49+08:00</lastmod>
   </url>
   
