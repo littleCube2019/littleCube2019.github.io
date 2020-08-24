@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Special_topics on Little Cube`s box</title>
+    <link>https://littlecube2019.github.io/special_topic/</link>
+    <description>Recent content in Special_topics on Little Cube`s box</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Mon, 24 Aug 2020 16:48:24 +0800</lastBuildDate>
+    
+	<atom:link href="https://littlecube2019.github.io/special_topic/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Main</title>
+      <link>https://littlecube2019.github.io/special_topic/main/</link>
+      <pubDate>Mon, 24 Aug 2020 16:48:24 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/special_topic/main/</guid>
+      <description>專題的過程與成果紀錄區</description>
+    </item>
+    
+  </channel>
+</rss>

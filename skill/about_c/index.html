@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>C/C&#43;&#43;技巧與觀念 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="C/C&#43;&#43;技巧與觀念" />
+<meta property="og:description" content="在解題、寫作業、上課時所習得的一些技巧與觀念" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/skill/about_c/" />
+<meta property="article:published_time" content="2020-08-23T16:51:51+08:00" />
+<meta property="article:modified_time" content="2020-08-23T16:51:51+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C/C&#43;&#43;技巧與觀念"/>
+<meta name="twitter:description" content="在解題、寫作業、上課時所習得的一些技巧與觀念"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/skill/about_c/">C/C&#43;&#43;技巧與觀念</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <ul>
+<li>關於2D array
+2Darray 中，系統預設是指向一維陣列的陣列指標，因此傳遞時必須給其大小(只能空一維)  <br>
+maze[2][4]，表示 maze[0][0] 與 maze[1][0] 相對位移量為 4  <br>
+2Darray是一塊連續的記憶體空間，故<br>
+Maze[0][0]+5並不會爆掉(Maze[1][1])<br>
+一個動態配置的例子</li>
+</ul>
+<pre><code>int **ia = (int **)malloc(sizey * sizeof(void *)); for(y = 0; y != sizey; ++y) 
+	ia[y] = (int *)malloc(sizex * sizeof(int));
+</code></pre><ul>
+<li>
+<p>應優先檢查邊界
+If(A[i]符合條件  &amp;&amp;  i沒超過邊界   )   (X，A[i]可能爆掉)
+If(i沒超過邊界 &amp;&amp; A[i]符合條件)    (O, 超過邊界會early stop)</p>
+</li>
+<li>
+<p>小提醒</p>
+</li>
+</ul>
+<ol>
+<li>while()要記得i之類的變數有沒有++</li>
+<li>裡面計數變數初始化要放loop外面</li>
+</ol>
+<ul>
+<li>local pointer
+Local pointer在函式中宣告，可以回傳，離開函式會被收回，接到的會變垃圾<br>
+<strong>應傳入pointer的位置，在函式內直接去修改</strong><br>
+例子:</li>
+</ul>
+<pre><code>char *fun(char*s){
+  char ans[100];
+  ...
+//return ans;  is wrong
+	strcpy(s,ans);
+	return s;
+}
+</code></pre><ul>
+<li>關於getchar() 與  buffer
+Getchar()甚麼都吃，包括空白 換行，使用時要注意<br>
+相當於一定從buffer中取出第一個<br>
+因此假設<br>
+1 2            buffer中會有1 2\n3 4<br>
+3 4		而前面scanf(“%d”….)也只會取走		數字部分，\n還是在buffer中</li>
+</ul>
+<p>不要以為scanf會捨棄之前還在buffer內的data(往後指)<br>
+Eg 剛剛就算把數字都scan完，buffer還是存有兩個\n</p>
+<p>解法fflush(stdin) 去清空buffer<br>
+fflush(stdin)  in stdio.h</p>
+<ul>
+<li>
+<p>Overflow<br>
+檢查Overflow可以先用INT_MAX(or INT_MIN)<br>
+反運算看有沒有超過當前值<br>
+例如 x+5&gt;INTMAX     (X)<br>
+x&gt;INTMAX-5     (o)</p>
+</li>
+<li>
+<p>Merge sort 用linked list 實作<br>
+1.可以用一個跑兩倍快的指標，與一個基本指標來決定middle<br>
+2.不要隨意動指標架構(insert)<br>
+，可以改動節點資料就好</p>
+</li>
+<li>
+<p>甚麼時候要傳指標(位址)
+當有改動到”資料本身”的時後
+傳 ListNode * ptr 可以改指向ptr的結構的資料
+但是ptr指向是無法更改的</p>
+</li>
+</ul>
+<p>(ptr=A    不改指標內的東西)
+(ptr-&gt;next=A  ptr指向的東西被改變了!)
+關鍵在有沒有反參考(取裡面的東西)</p>
+<p>例子: 為甚麼我會需要新的變數p?<br>
+<img class="img-zoomable" src="/skill/c_1.PNG" alt="" />
+<br>
+ANS:因為pop是把整個空間收回來 <br>
+甚至沒有改動任何東西</p>
+<ul>
+<li>
+<p>小提醒:<br>
+記住任何”檢查條件”都有可能造成 Seg   fault  (應謹慎檢查指標) <br>
+指標初始化請務必 賦NULL</p>
+</li>
+<li>
+<p>運算中序-&gt;前序演算法<br>
+如果要使用堆疊法將運算式中序式轉為前序式，則使用迴圈由後往前取出中序式的字元，遇運算元直接輸出；<br>
+Rule 1<br>
+堆疊運算子與右括號； 堆疊中運算子優先順序若大於讀入的運算子優先順序的話，直接輸出堆疊中的運算子，再將讀入的運算子置入堆疊；<br>
+Rule 2<br>
+遇左括號輸出堆疊中的運算子至右括號。前面整個演算過程中被輸出的字元再反序列出，就是前序表示式。</p>
+</li>
+</ul>
+<p>Rule 3<br>
+無input就清空stack 至output</p>
+<p>why?</p>
+<ol>
+<li>前序式代表最後算的在最前面，所以遇到優先順序比自己小(後面的)的(或一樣的)
+自己當然就先輸出</li>
+<li>括號裡面東西最優先，尤其是越中間的括號優先度越大，所以碰到就把括號內包住的都輸出(  可視括號比*/優先度還大，所以碰到*/為input不輸出括號，直到又有一個新括號)    (  括號內也要遵守1)</li>
+</ol>
+<p>*Ambiguous problem<br>
+如果自己定義變數無重複，那可能是與系統include檔重複了<br>
+總之=&gt;改名</p>
+<p><em>指標變數與指標內容<br>
+Cur=</em>head的話<br>
+Cur=NULL 只是改動輔助指標，對list沒有實質影響<br>
+Cur-&gt;next=NULL 取用輔助指標指向的資料，並賦值，才算改動list!</p>
+<p>應用: 刪除一個linked list的中間節點<br>
+<img class="img-zoomable" src="/skill/c_2.PNG" alt="" />
+<br>
+Node=Node-&gt;next   (X,只有指標改了)<br>
+<em>Node=</em>Node-&gt;next  (O,改動指標指向的Node)</p>
+<p>*STL小技巧
+\vector&lt;bool&gt;temp(NUM,0);
+\vector&lt;\vector&lt;bool&gt; &gt; map(NUM,temp);
+可做多維vector插入</p>
+<p>要修改vector裡面的值要用reference</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/mics">雜記區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

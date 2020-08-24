@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>趨勢預測</title>
+
+<link rel="stylesheet" href="css/searchbox.css" type="text/css">
+<link rel="stylesheet" href="css/header.css" type="text/css">
+<link rel="stylesheet" href="css/channel.css" type="text/css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+<script type="text/javascript">
+    function turnoff ( n ) {
+    　　var s = document.getElementById( n ).style;
+    　　s.display = ( s.display == 'none' ) ? '' : 'none' ;
+    }
+
+    function lockbar( b ){
+        
+        document.body.style.overflow = (b == 'visible') ? 'visible' : 'hidden';
+    }
+
+    function show_modal(i){
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        //var img = document.getElementById(i);
+        i.onclick = function(){
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        }
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("md_close")[0];
+                            
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+        
+    }
+</script>
+
+<style type="text/css">
+
+    p{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        font-family: fantasy;
+        font-size:xx-large;
+    }
+
+</style>
+<style type="text/css">
+  /*------------------ Popup.css ------------------*/
+  h1 {
+    text-align: center;
+    font-family: Tahoma, Arial, sans-serif;
+    color: #06D85F;
+    margin: 80px 0;
+  }
+
+  .box {
+    width: 70%;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.863);
+    padding: 20px;
+    border: 2px solid slategrey;
+    border-radius: 20px/50px;
+    background-clip: padding-box;
+    text-align: center;
+  }
+
+  .button {
+    font-size: 1em;
+    padding: 10px;
+    background: black;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 20px/50px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+  }
+  .button:hover {
+    background: red;
+  }
+
+  .overlay {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    overflow-y: scroll;
+  }
+  .overlay:target {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 50%;
+    position: relative;
+    transition: all 5s ease-in-out;
+  }
+
+  .popup h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+  }
+  .popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+  }
+  .popup .close:hover {
+    color: red;
+  }
+  .popup .content {
+    max-height: 30%;
+    overflow: auto;
+  }
+
+  @media screen and (max-width: 700px){
+    .box{
+      width: 70%;
+    }
+    .popup{
+      width: 70%;
+    }
+  }
+
+  .reason {
+    width: 90%;
+    background: rgb(230, 228, 228);
+    padding: 20px;
+    border-radius: 10px/10px;
+    background-clip: padding-box;
+    text-align: center;
+  }
+
+  .reason .user {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    float: left;
+    
+  }
+
+
+  /*------------------------- CustomScrollBar.css ---------------------------*/
+  ::-webkit-scrollbar {
+        width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        margin:80px 0 5px 0;
+    }
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 4px;
+        border-radius: 4px;
+        background: rgb(219,219,219);
+    }
+
+</style>
+
+<style type="text/css">
+  /*------------------ Modal.css ------------------*/
+  /* Style the Image Used to Trigger the Modal */
+  #myImg {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  #myImg:hover {opacity: 0.7;}
+
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 3; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+  }
+
+  /* Modal Content (Image) */
+  .modal-content {
+    margin: auto;
+    display: block;
+    /*width: 80%;*/
+    max-width: 80%;
+    max-height: 70%;
+  }
+
+  /* Caption of Modal Image (Image Text) - Same Width as the Image */
+  #caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+  }
+
+  /* Add Animation - Zoom in the Modal */
+  .modal-content, #caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+  }
+
+  @keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+  }
+
+  /* The Close Button */
+  .md_close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .md_close:hover,
+  .md_close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  /* 100% Image Width on Smaller Screens */
+  @media only screen and (max-width: 700px){
+    .modal-content {
+      width: 100%;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+    <header class=header>
+        <div style="position: relative;left: 5px;top: 10px;">
+            <div class=search-box>
+                <input type=text placeholder=" " v-model="search_text" @keyup.enter="search_sunbmit()">
+                <span></span>
+            </div>
+        </div>
+        <p>Concept Web</p>
+        <nav>
+            <div class=navitem>
+                <div style="width: 74px; height: 74px; float:left; border-radius: 50%; border: 3px solid #eee; overflow: hidden;">
+                    <img src="header.jpg" width="80" height="80" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class=line style="height: 100px;"></div>
+
+
+    <!-- Youtube List -->
+    <div id="youtube-items">
+      <div class=line></div>
+      
+      <ul v-for="(item , index) in items">
+        <div class=line></div>
+        <div class=line></div>
+        
+        <div :title="item.channel">
+          <div class=buttonLeft :data-text="item.channel" @click="divturnoff('divturnoff_'+index)">
+            <span>{{item.channel}}</span>
+          </div>
+          
+          <div :id="'divturnoff_'+index" style="display: none;">
+              <div class=list>
+                  <div class=line></div>
+                  <div class=line></div>
+  
+                  <div class="box">
+                      <a class="button" :href="'#popup'+index" onclick="lockbar('hidden');">Tell Me Why 🔥</a>
+                  </div>
+  
+                  <div :id="'popup'+index" class="overlay">
+                      <div class="popup">
+                          <h2>That's Why 🔥</h2>
+                          <a class="close" href="#" onclick="lockbar('visible');">&times;</a>
+                          <div class="content">
+                              If you don't know why we recommend this channel, through this page you will see the reason.
+                              <hr>
+  
+                              <h4>Word Occurence</h4>
+                              <div class="reason">
+                                  <!-- Trigger the Modal -->
+                                  <img id="myImg" src="wordcloud1.jpg" alt="Word Cloud" style="width:100%;max-width:300px;" onclick="show_modal(this);">
+                                  <!-- The Modal -->
+                                  <div id="myModal" class="modal">
+  
+                                  <!-- The Close Button -->
+                                  <span class="md_close">&times;</span>
+  
+                                  <!-- Modal Content (The Image) -->
+                                  <img class="modal-content" id="img01">
+  
+                                  <!-- Modal Caption (Image Text) -->
+                                  <div id="caption"></div>
+                                  </div>
+                              </div>
+                              <hr>
+                              <h4>Positive Comments</h4>
+                              <div class="reason">
+                                  <img id="myImg" src="pie1.jpg" alt="Positive Pie Chart" style="width:100%;max-width:300px;" onclick="show_modal(this);">
+                              </div>
+                              <hr>
+                              <h4>Recent Sub Changes</h4>
+                              <div class="reason">
+                                  <img id="myImg" src="line1.jpg" alt="Sub Changes Line Graph" style="width:100%;max-width:300px;" onclick="show_modal(this);">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class=line></div>
+                <div v-for="(video , vid_index) in item.videos" >
+                  <div class=vidBg>
+                    <div class=line></div>
+                    <iframe class=vid width="727" height="409" :src="'https://www.youtube.com/embed/'+video.vid" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class=line></div>
+                    <div class=vidBottomRow>
+                      <a class="button" :href="'#popupc'+index+'_'+vid_index" onclick="lockbar('hidden');" style="align-self: flex-end; margin:5px 5px 5px 10px;">💬</a>                                         
+                      <a class="button" href="#popup" onclick="lockbar('hidden');" style="align-self: flex-end; margin:5px 5px 5px 5px;">❤</a>
+                    </div>
+                  </div>
+                  <div :id="'popupc'+index+'_'+vid_index" class="overlay">
+                    <div class="popup">
+                        <h2>What People Said 💬</h2>
+                        <a class="close" href="#" onclick="lockbar('visible');">&times;</a>
+                        <div class="content">
+                            <div class="reason" style='text-align: left;'>
+                                <ul v-for="(com, com_index) in video.comments" style='font-size: small; font-family: 微軟正黑體;'>
+                                  <h4>{{com.Author}}:{{com.Content}}</h4>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class=line></div>
+              </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+
+
+<div class=buttonOverlay>
+    <span>火紅</span>
+</div>
+<div class=vid> </div>
+
+<script type="text/javascript" src="js/vue-app.js"></script>
+</body>
+</html>

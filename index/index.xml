@@ -6,10 +6,19 @@
     <description>Recent content in Indexes on Little Cube`s box</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
-    <lastBuildDate>Fri, 21 Aug 2020 13:45:35 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 23 Aug 2020 19:51:15 +0800</lastBuildDate>
     
 	<atom:link href="https://littlecube2019.github.io/index/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Unix/Vim/bash區</title>
+      <link>https://littlecube2019.github.io/index/unix/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/unix/</guid>
+      <description>關於unix/linux , vim , bash相關</description>
+    </item>
     
     <item>
       <title>網頁與爬蟲相關筆記</title>

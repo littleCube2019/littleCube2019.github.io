@@ -1,0 +1,38 @@
+header{
+    width: 100%;
+    height: 90px;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    background-color: seashell;
+    line-height: 20px;
+    border: solid 2px slategrey;
+}
+
+.logo{
+    align-self: flex-end;
+}
+
+nav{
+    display: flex;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    right:0px;
+}
+
+.navitem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 3px;
+    right: 10px;
+}
+
+img.square {
+	width: 100px;
+	border-radius: 50%;
+	border: 1px solid rgba(255,0,0,1.00);
+}

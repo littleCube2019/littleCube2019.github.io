@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>python隨手記 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="python隨手記" />
+<meta property="og:description" content="用python解leetcode時順便練習的技巧" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/skill/about_python/" />
+<meta property="article:published_time" content="2020-08-23T17:15:54+08:00" />
+<meta property="article:modified_time" content="2020-08-23T17:15:54+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="python隨手記"/>
+<meta name="twitter:description" content="用python解leetcode時順便練習的技巧"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/skill/about_python/">python隨手記</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h5 id="leetcode-520">leetcode 520</h5>
+<p>題目: 判斷第一個字大寫，或是全部大寫，或是全部小寫
+<img class="img-zoomable" src="/skill/p_1.PNG" alt="" />
+</p>
+<h5 id="leetcode-1184">leetcode 1184</h5>
+<p>題目: 一個環狀巴士要求最短距離
+可以使用high order function sum<br>
+<img class="img-zoomable" src="/skill/p_2.PNG" alt="" />
+</p>
+<h5 id="leetcode-264">leetcode 264</h5>
+<p>題目: 判斷數字是否符合條件<br>
+小題醒:</p>
+<ol>
+<li>range() 與 list slice 一樣 前閉後開<br>
+如range(1,n+1)  才是 [1,n+1]</li>
+<li>注意class 中呼叫自己函式要self.method<br>
+創造自己函式時 傳入參數要有self     def f(self , &hellip;):</li>
+<li>注意 range(2,2)是不會有東西的!!!<br>
+質數檢查要 range(2,int(num**0.5)+1)</li>
+<li>注意python常常會轉成float<br>
+相除就要記的int(p/n)</li>
+</ol>
+<h5 id="leetcode--997">leetcode  997</h5>
+<p>題目: 就是演算法經典的名人問題
+可使用list comprehension製造2D 常數list<br>
+temp = [ <strong>0</strong> for i in range(N)]<br>
+relation = [<strong>temp</strong> for i in range(N)]<br>
+注意可以用 <strong>常數</strong>來創建list</p>
+<h5 id="leetcode--888">leetcode  888</h5>
+<p>題目: 代數題
+思路:<br>
+法1 O(n^2) 暴力解<br>
+法2 O(nlogn) 二分法暴力解<br>
+法3 O(n) 轉換成只找一個數，那就可以使用map 找!!!<br>
+(A-B = 2(a-b)  == &gt; (A+2b-B)/2=a</p>
+<p>注意A.sort()回傳的是reference，可直接使用A</p>
+<h5 id="set搜尋會比list快很多">set搜尋會比list快很多</h5>
+<p><img class="img-zoomable" src="/skill/p_3.PNG" alt="" />
+</p>
+<h5 id="leetcode-171168">leetcode 171、168</h5>
+<p>python中轉換ASCII的方法是<br>
+ord(Word)   的ord函數<br>
+chr(65) = “A”  //not str(65) !!</p>
+<p>review<br>
+python有 ord 、chr、 len 、max、min、sum等好用函數</p>
+<h5 id="leetcode-575">leetcode 575</h5>
+<p>C語言除法是取下高斯<br>
+python則有//運算子達到一樣目的</p>
+<p>即 7/2 =3.5<br>
+int(7/2) == 7//2</p>
+<h5 id="leetcode-543">leetcode 543</h5>
+<p>注意python回傳值除各式物件，還可以是複數個<br>
+若只用單一去接，會回傳tuple<br>
+可以用逗號寫法去接<br>
+*除單一變數去接會回傳tuple之外，若數量對不上會噴error<br>
+如 A,B = haha(a,b,c)</p>
+<p><img class="img-zoomable" src="/skill/p_4.PNG" alt="" />
+</p>
+<h5 id="leetcode172">leetcode172</h5>
+<p>python log 用法<br>
+import math<br>
+math.log (5)  == ln5<br>
+math.log(5,2) == log2(5)</p>
+<h5 id="leetcode-1089">leetcode 1089</h5>
+<ol>
+<li>list.index(ele) 以回傳元素index</li>
+<li>python物件類似指標 <br>
+在function內<br>
+arr = arr[::-1]  #是不會改動到arr的<br>
+arr[1] = 0 #會改動到arr</li>
+</ol>
+<h5 id="dictionary-comprehension">dictionary comprehension</h5>
+<p>字典也可以comprehension製造<br>
+<img class="img-zoomable" src="/skill/p_5.PNG" alt="" />
+<br>
+應用:拿來建英文小寫字母字典表<br>
+<img class="img-zoomable" src="/skill/p_6.PNG" alt="" />
+
+其中<br>
+import string<br>
+string.ascii_lowercase是小寫list<br>
+注意:<br>
+table = {i for i in xxx : {} }   (X pattern要放最前面)<br>
+table = {i: {} for i in xxx}  (V)</p>
+<h5 id="關於set">關於set</h5>
+<p>set為甚麼會快? 使用hash 原理</p>
+<p>set為甚麼可以去重複?<br>
+使用 hash =&gt; hash值不同 == 兩者不一樣<br>
+hash值一樣 =&gt; 檢查兩者是不是真不一樣 (recap : collision)</p>
+<p>set comprehension: {i for i in [1,2,3]}</p>
+<h5 id="python有很多前閉後開的設計">python有很多前閉後開的設計</h5>
+<p>range(1, n+1)  才是  [1,n]<br>
+list [a:b+1]  才是      list[a]~list[b]</p>
+<h5 id="python物件">python物件</h5>
+<p>變數本身不是reference，但物件內容是  (類似指標變數)
+如 A = [1]
+<img class="img-zoomable" src="/skill/p_7.PNG" alt="" />
+</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/mics">雜記區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

@@ -6,18 +6,18 @@
     <description>Recent content on Little Cube`s box</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
-    <lastBuildDate>Fri, 21 Aug 2020 23:32:18 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 24 Aug 2020 16:48:24 +0800</lastBuildDate>
     
 	<atom:link href="https://littlecube2019.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hugo網頁實作 - sidebar</title>
-      <link>https://littlecube2019.github.io/hugo/sidebar/</link>
-      <pubDate>Thu, 20 Aug 2020 00:10:15 +0800</pubDate>
+      <title>Unix/Vim/bash區</title>
+      <link>https://littlecube2019.github.io/index/unix/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
       
-      <guid>https://littlecube2019.github.io/hugo/sidebar/</guid>
-      <description>玩Hugo時想實作的功能紀錄 - 關於sidebar</description>
+      <guid>https://littlecube2019.github.io/index/unix/</guid>
+      <description>關於unix/linux , vim , bash相關</description>
     </item>
     
     <item>
@@ -57,33 +57,39 @@
     </item>
     
     <item>
+      <title>Main</title>
+      <link>https://littlecube2019.github.io/special_topic/main/</link>
+      <pubDate>Mon, 24 Aug 2020 16:48:24 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/special_topic/main/</guid>
+      <description>專題的過程與成果紀錄區</description>
+    </item>
+    
+    <item>
+      <title>python隨手記</title>
+      <link>https://littlecube2019.github.io/skill/about_python/</link>
+      <pubDate>Sun, 23 Aug 2020 17:15:54 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/skill/about_python/</guid>
+      <description>用python解leetcode時順便練習的技巧</description>
+    </item>
+    
+    <item>
+      <title>C/C&#43;&#43;技巧與觀念</title>
+      <link>https://littlecube2019.github.io/skill/about_c/</link>
+      <pubDate>Sun, 23 Aug 2020 16:51:51 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/skill/about_c/</guid>
+      <description>在解題、寫作業、上課時所習得的一些技巧與觀念</description>
+    </item>
+    
+    <item>
       <title>Http簡介</title>
       <link>https://littlecube2019.github.io/web/http/</link>
       <pubDate>Fri, 21 Aug 2020 23:32:18 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/web/http/</guid>
-      <description>目錄
- 概述
-URL
- URI VS URL
-網址的正規化表示
-Query String Fragement
-URL的設計原則
-http傳輸內容
-  概述   HTTP是建立在TCP/IP之上使用request/response的client/server協定，屬於第五層apply layer的協定
-  HTTP有三大特性:
-1.Connectless:
-client、server此次傳封包時認識到對方，即使下一次傳同樣的組合也不會有任何記憶 ==&amp;gt;不會記連結==&amp;gt;省下傳輸時間
-2.media independent:
-只要是雙方(Client/server)看的懂的資料(符合MIME)，都可以傳==&amp;gt;用甚麼媒體傳都可以==&amp;gt;可傳多型資料
-3.stateless:
-不會記錄任何狀態嚴格來說1也包含在內)==&amp;gt;網頁間與封包間無法得到彼此資訊==&amp;gt;資安佳+較有效率
-    補充.MIME
-多用途網際網路郵件擴展MIME，Multipurpose Internet Mail Extensions
-是一個網際網路標準媒體型態，是網路郵件的擴展標準( 時代的痕跡，email至今的附件也是符合MIME的標準喔!)，而HTTP得知傳送資料的媒體型態則是通過傳送內容中header的content type 常見型別有 HTML、普通文字、jpeg、mpeg圖片、au、midi聲音、gzip、tar壓縮檔、avi 影像檔 … 可以說因為MIME的加入使網頁的傳輸內容更加豐富
-  URL URI VS URL  URI (統一資源識別符)類似於DB中 primary key的概念，任何能唯一定位資源的規則都可以叫URI
-比如 身分證字號可以唯一定位國民
-URL (統一資源定位器 aka 網址) 是 URI的一種特例，指以 協定/網域/地區 ..的方式定位網頁資源的一種規則</description>
+      <description>http簡介，網路如何溝通的協定</description>
     </item>
     
     <item>
@@ -92,22 +98,7 @@ URL (統一資源定位器 aka 網址) 是 URI的一種特例，指以 協定/�
       <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/web/js/</guid>
-      <description>簡介 Js 1995年被創造用於寫網頁、隔年被改良為 scripting language
-ECMA-262 規範了JS的語法規則
-ES6是整個規範最大的改動 ，例如加入OOP的概念 本質上很&amp;quot;安全&amp;rdquo;(不會碰記憶體等核心)
-同時JS能與HTML、CSS整合、相對簡單，並且被大多數瀏覽器支持
-JS遵從ECMAScript標準
-JS 是直譯、動態(runtime才檢查)、弱型別(隱轉)語言
-  Note:Scripting language是為了縮短傳統的「編寫、編譯、連結、執行」（edit-compile-link-run）過程而建立的
-參考: https://zh.wikipedia.org/wiki/%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80
-  Note: browser通常都內建JS的虛擬引擎
-如: chorme是V8 Firefox是SpiderMonkey
-  Note: 引擎大概的工作是 解析script &amp;gt; 編譯成機器碼 &amp;gt; 執行機器碼
-  在browser中JS 與使用者、伺服端互動溝通
-比如:
- 改動HTML tag、CSS style 回應使用者 如:滑鼠點擊 要求伺服端下載資料 取得、設定 cookie，依使用者決定呈現的data local (client) storage  同時JS也必須因為安全考量限制其功能
-比如:
- 不得操作OS等核心 除非使用者同意，不得使用硬體設備 Same origin policy (同源政策) 限制不同web間正常來說要獨立 (資安保護) 只能從一個server接收資料 (否則須權限)  基礎語法 1.Console,a keyword,refer to a object</description>
+      <description>javascript簡介，負責網頁動態互動</description>
     </item>
     
     <item>
@@ -116,30 +107,7 @@ JS 是直譯、動態(runtime才檢查)、弱型別(隱轉)語言
       <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/web/pyquery/</guid>
-      <description>pyquery 是與jquery類似的選擇器語法，可以方便的剖析網頁
-基本用法為
-import requests from pyquery import PyQuery as pq res = requests.get(url) doc = pq(res.text) 得到pyquery物件，pyquery物件可以直接選擇元素，比如
-title = doc(&amp;lsquo;h1&amp;rsquo;)
-並且由於回傳仍為pyquery物件(chaining特性)，因此可以連續選取 比如 doc(&amp;lsquo;h1&amp;rsquo;)(&#39;#ID&amp;rsquo;)
-或套用其他method
-選擇器語法   選取元素、class、id:
-(&amp;lsquo;element&amp;rsquo;)
-如doc(&amp;lsquo;h1&amp;rsquo;)
-(&#39;.class&amp;rsquo;)
-如doc(&#39;.div&amp;rsquo;)
-(&#39;#id&amp;rsquo;) 如doc(&#39;#main&amp;rsquo;)
-  選取屬性
-.attr(&amp;lsquo;attribute&amp;rsquo;)
-常用: doc(&amp;lsquo;a&amp;rsquo;).attr(&amp;lsquo;href&amp;rsquo;)
-  子孫與child doc(&amp;lsquo;A B&amp;rsquo;) 表示在A裡的B doc(&amp;lsquo;A&amp;gt;B&amp;rsquo;) 表示在A下一層的B
-  取得文字 .text()
-比如 doc(&amp;lsquo;a&amp;rsquo;).text()
-  html格式
-.html()
-   Note: pyquery物件與htmlElemnt物件 前者是pq(‘’)選擇完後會回傳
-可以再選擇、attr(‘…’)、.size()、.html()、.text()
-等等  後者包含於前者中，如果將pq物件取出一個如:doc[0]，就會得到htmlElement物件
-有.text、.attrib[‘href’] …等等</description>
+      <description>以jquery為概念的網頁剖析器</description>
     </item>
     
     <item>
@@ -148,26 +116,7 @@ title = doc(&amp;lsquo;h1&amp;rsquo;)
       <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/web/requests/</guid>
-      <description>requests是一個python模擬網路請求的套件
-基本用法為
-import requests r=requests.get(url) r就會得到response物件  可以使用dir(r) 轉成字典型態看出裡面的property 也可以使用help(r) 打開使用手冊  response 物件 response物件能夠告訴我們很多連線資訊 如
-連線相關 response.status_code(HTTPcode 200系列正常、300系列重導、400系列錯誤 &amp;hellip;.)
-*response物件若介於200-400之間，會被boolean轉型為true
-*最好還是使用status_code檢查，才能精準了解連線情況，比如204(無內容)與304(無修改) 原則上與200(成功連線) 有一些不同
-response.ok (是否連線成功 ， aka 200系列)
-內容相關 回傳的訊息內容，也就是負載(payload)，可以用response的方法與property去查看
-note:payload通常指實際傳輸的信息
-response.content 可以用二進位內容查看payload
-response.text 則可以用UTF-8 的格式查看文字內容
-response.encoding 則可以決定解碼方式，比如response.encoding=&#39;UTF-8&amp;rsquo;
-response.json() 則能將reponse的內容轉成字典(json-like)物件
-標頭相關 標頭(header)可以提供很多網頁的基本資訊，比如content-type ,date &amp;hellip;..
-response.headers 會回傳類字典物件，舉例如下
-HTTP get method 常用參數 最基本的要求資料方式
-get 除了可以給url之外，也能給其他參數使request應用更靈活 (和post最常被使用)
- params 可以加入QueryString headers 可以輸入headers資料
-比如有時被403拒絕就是缺少user-agent
-可加入my_headers = {&amp;lsquo;User-Agent&amp;rsquo;: &amp;lsquo;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.</description>
+      <description>用python模擬網路請求</description>
     </item>
     
     <item>
@@ -176,27 +125,7 @@ get 除了可以給url之外，也能給其他參數使request應用更靈活 (�
       <pubDate>Fri, 21 Aug 2020 17:45:33 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/web/css/</guid>
-      <description>CSS是串接樣式表(Cascade style sheet)，顧名思義就是用串接表的方式美化(style)網頁
-使用方法 引入CSS有三種方式 (1). inline style (style屬性)
-任何HTML tag都可以使用style屬性來進行inline style 例如
-&amp;lt;p sytle=&amp;quot;color:red; front-size:20px;&amp;quot;&amp;gt; this paragraph is red \&amp;lt;/p&amp;gt;
-(2).style tag
-HTML有style element供一次選擇某些種的元素
-Style tag 需放置於&amp;lt;head&amp;gt;部分中
-注意與上述方法格式上的差異
-如
-&amp;lt;head&amp;gt; &amp;lt;style&amp;gt;	p { color:red; front-size:20px; } &amp;lt;/style&amp;gt; &amp;lt;/head&amp;gt; 這個設定會使所有&amp;lt;p&amp;gt;內的文字為紅色，並字形大小為20個pixel
-(3). link the .css file (分檔)
-正式的大網頁會分開HTML與CSS檔 (管理、易讀)
-並且使用放置於&amp;lt;head&amp;gt;部分的link element 取用
-link介紹
-(a)&amp;lt;link&amp;gt; 沒有closing tag
-(b)&amp;lt;link&amp;gt;有三個重要屬性
-href 放入連結位置 */myStyle.css，也可以用相對路徑 ./myStyle.css
-type 輸入檔案類型，CSS為 text/css
-rel 檔案間的關係， CSS為 stylesheet
-如
-&amp;lt;link href=&amp;quot;./myStyle.css type=&amp;quot;text/css&amp;quot; rel=&amp;quot;stylesheet&amp;quot;&amp;gt;</description>
+      <description>css簡介，美化網站外觀</description>
     </item>
     
     <item>
@@ -205,24 +134,7 @@ rel 檔案間的關係， CSS為 stylesheet
       <pubDate>Fri, 21 Aug 2020 13:59:00 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/web/html/</guid>
-      <description>簡介   HTML (HyperTextMarkupLanguage 超文本標記語言)
-是網頁呈現的骨幹，決定網頁的內容
-  意義:
-Markup langauage 是定義如何呈現raw text的結構
-HyperText 表示電腦可取用其他Text或links，類似Hyperlinks的概念
-  組成:
-HTML由元素組成，而元素基本上是 opening tag , content , closing tag 的格式
-tag 會決定此元素呈現的類型，content則是元素的內容
-比如想呈現一個標題:
-&amp;lt;h1&amp;gt; this is a title &amp;lt;/h1&amp;gt;
-則&amp;lt;h1&amp;gt;、&amp;lt;/h1&amp;gt;是opening tag、 closing tag ，並表明這是一個標題
-this is a title 是content，表明標題的文字內容
-  架構:
-一個html文檔，基本上會遵循下列格式
-&amp;lt;!DOCTYPE html&amp;gt; 表明此文件是html文檔
-&amp;lt;head&amp;gt; 部分會放此網頁的meta data、 script、CSS 引入檔&amp;hellip; &amp;lt;body&amp;gt; 部分則是放網頁的內容
-(小知識: google chrome可以按下F12，觀察此網頁的html檔)
-  屬性 屬性加在opening tag 中，所有element都可以有屬性</description>
+      <description>簡介html，決定網頁呈現的骨幹與內容</description>
     </item>
     
     <item>
@@ -241,6 +153,15 @@ this is a title 是content，表明標題的文字內容
       
       <guid>https://littlecube2019.github.io/hugo/show_article/</guid>
       <description>玩Hugo時想實作的功能紀錄 - 關於文章呈現</description>
+    </item>
+    
+    <item>
+      <title>Hugo網頁實作 - sidebar</title>
+      <link>https://littlecube2019.github.io/hugo/sidebar/</link>
+      <pubDate>Thu, 20 Aug 2020 00:10:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/hugo/sidebar/</guid>
+      <description>玩Hugo時想實作的功能紀錄 - 關於sidebar</description>
     </item>
     
     <item>

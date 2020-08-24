@@ -21,30 +21,7 @@
 
 
 <meta property="og:title" content="pyquery 簡介" />
-<meta property="og:description" content="pyquery 是與jquery類似的選擇器語法，可以方便的剖析網頁
-基本用法為
-import requests from pyquery import PyQuery as pq res = requests.get(url) doc = pq(res.text) 得到pyquery物件，pyquery物件可以直接選擇元素，比如
-title = doc(&lsquo;h1&rsquo;)
-並且由於回傳仍為pyquery物件(chaining特性)，因此可以連續選取 比如 doc(&lsquo;h1&rsquo;)(&#39;#ID&rsquo;)
-或套用其他method
-選擇器語法   選取元素、class、id:
-(&lsquo;element&rsquo;)
-如doc(&lsquo;h1&rsquo;)
-(&#39;.class&rsquo;)
-如doc(&#39;.div&rsquo;)
-(&#39;#id&rsquo;) 如doc(&#39;#main&rsquo;)
-  選取屬性
-.attr(&lsquo;attribute&rsquo;)
-常用: doc(&lsquo;a&rsquo;).attr(&lsquo;href&rsquo;)
-  子孫與child doc(&lsquo;A B&rsquo;) 表示在A裡的B doc(&lsquo;A&gt;B&rsquo;) 表示在A下一層的B
-  取得文字 .text()
-比如 doc(&lsquo;a&rsquo;).text()
-  html格式
-.html()
-   Note: pyquery物件與htmlElemnt物件 前者是pq(‘’)選擇完後會回傳
-可以再選擇、attr(‘…’)、.size()、.html()、.text()
-等等  後者包含於前者中，如果將pq物件取出一個如:doc[0]，就會得到htmlElement物件
-有.text、.attrib[‘href’] …等等" />
+<meta property="og:description" content="以jquery為概念的網頁剖析器" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/web/pyquery/" />
 <meta property="article:published_time" content="2020-08-21T20:03:49+08:00" />
@@ -52,30 +29,7 @@ title = doc(&lsquo;h1&rsquo;)
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="pyquery 簡介"/>
-<meta name="twitter:description" content="pyquery 是與jquery類似的選擇器語法，可以方便的剖析網頁
-基本用法為
-import requests from pyquery import PyQuery as pq res = requests.get(url) doc = pq(res.text) 得到pyquery物件，pyquery物件可以直接選擇元素，比如
-title = doc(&lsquo;h1&rsquo;)
-並且由於回傳仍為pyquery物件(chaining特性)，因此可以連續選取 比如 doc(&lsquo;h1&rsquo;)(&#39;#ID&rsquo;)
-或套用其他method
-選擇器語法   選取元素、class、id:
-(&lsquo;element&rsquo;)
-如doc(&lsquo;h1&rsquo;)
-(&#39;.class&rsquo;)
-如doc(&#39;.div&rsquo;)
-(&#39;#id&rsquo;) 如doc(&#39;#main&rsquo;)
-  選取屬性
-.attr(&lsquo;attribute&rsquo;)
-常用: doc(&lsquo;a&rsquo;).attr(&lsquo;href&rsquo;)
-  子孫與child doc(&lsquo;A B&rsquo;) 表示在A裡的B doc(&lsquo;A&gt;B&rsquo;) 表示在A下一層的B
-  取得文字 .text()
-比如 doc(&lsquo;a&rsquo;).text()
-  html格式
-.html()
-   Note: pyquery物件與htmlElemnt物件 前者是pq(‘’)選擇完後會回傳
-可以再選擇、attr(‘…’)、.size()、.html()、.text()
-等等  後者包含於前者中，如果將pq物件取出一個如:doc[0]，就會得到htmlElement物件
-有.text、.attrib[‘href’] …等等"/>
+<meta name="twitter:description" content="以jquery為概念的網頁剖析器"/>
 
 
 
@@ -245,17 +199,37 @@ items = [item.text() for item in doc.items(&lsquo;li&rsquo;)]</p>
         <ul>
             
             <li>
-                <a href="/index/hugo">hugo相關</a>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
             </li>
             
             <li>
-                <a href="/index/web">網頁與爬蟲相關</a>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
             </li>
             
             <li>
                 <a href="/index/course">課程筆記備份區</a>
+                
+                     
             </li>
             
+            <li>
+                <a href="/index/mics">雜記區</a>
+                
+                     
+            </li>
+            
+                   
+                   
         </ul>
     </div>
 

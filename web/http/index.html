@@ -21,28 +21,7 @@
 
 
 <meta property="og:title" content="Http簡介" />
-<meta property="og:description" content="目錄
- 概述
-URL
- URI VS URL
-網址的正規化表示
-Query String Fragement
-URL的設計原則
-http傳輸內容
-  概述   HTTP是建立在TCP/IP之上使用request/response的client/server協定，屬於第五層apply layer的協定
-  HTTP有三大特性:
-1.Connectless:
-client、server此次傳封包時認識到對方，即使下一次傳同樣的組合也不會有任何記憶 ==&gt;不會記連結==&gt;省下傳輸時間
-2.media independent:
-只要是雙方(Client/server)看的懂的資料(符合MIME)，都可以傳==&gt;用甚麼媒體傳都可以==&gt;可傳多型資料
-3.stateless:
-不會記錄任何狀態嚴格來說1也包含在內)==&gt;網頁間與封包間無法得到彼此資訊==&gt;資安佳&#43;較有效率
-    補充.MIME
-多用途網際網路郵件擴展MIME，Multipurpose Internet Mail Extensions
-是一個網際網路標準媒體型態，是網路郵件的擴展標準( 時代的痕跡，email至今的附件也是符合MIME的標準喔!)，而HTTP得知傳送資料的媒體型態則是通過傳送內容中header的content type 常見型別有 HTML、普通文字、jpeg、mpeg圖片、au、midi聲音、gzip、tar壓縮檔、avi 影像檔 … 可以說因為MIME的加入使網頁的傳輸內容更加豐富
-  URL URI VS URL  URI (統一資源識別符)類似於DB中 primary key的概念，任何能唯一定位資源的規則都可以叫URI
-比如 身分證字號可以唯一定位國民
-URL (統一資源定位器 aka 網址) 是 URI的一種特例，指以 協定/網域/地區 ..的方式定位網頁資源的一種規則" />
+<meta property="og:description" content="http簡介，網路如何溝通的協定" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/web/http/" />
 <meta property="article:published_time" content="2020-08-21T23:32:18+08:00" />
@@ -50,28 +29,7 @@ URL (統一資源定位器 aka 網址) 是 URI的一種特例，指以 協定/�
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Http簡介"/>
-<meta name="twitter:description" content="目錄
- 概述
-URL
- URI VS URL
-網址的正規化表示
-Query String Fragement
-URL的設計原則
-http傳輸內容
-  概述   HTTP是建立在TCP/IP之上使用request/response的client/server協定，屬於第五層apply layer的協定
-  HTTP有三大特性:
-1.Connectless:
-client、server此次傳封包時認識到對方，即使下一次傳同樣的組合也不會有任何記憶 ==&gt;不會記連結==&gt;省下傳輸時間
-2.media independent:
-只要是雙方(Client/server)看的懂的資料(符合MIME)，都可以傳==&gt;用甚麼媒體傳都可以==&gt;可傳多型資料
-3.stateless:
-不會記錄任何狀態嚴格來說1也包含在內)==&gt;網頁間與封包間無法得到彼此資訊==&gt;資安佳&#43;較有效率
-    補充.MIME
-多用途網際網路郵件擴展MIME，Multipurpose Internet Mail Extensions
-是一個網際網路標準媒體型態，是網路郵件的擴展標準( 時代的痕跡，email至今的附件也是符合MIME的標準喔!)，而HTTP得知傳送資料的媒體型態則是通過傳送內容中header的content type 常見型別有 HTML、普通文字、jpeg、mpeg圖片、au、midi聲音、gzip、tar壓縮檔、avi 影像檔 … 可以說因為MIME的加入使網頁的傳輸內容更加豐富
-  URL URI VS URL  URI (統一資源識別符)類似於DB中 primary key的概念，任何能唯一定位資源的規則都可以叫URI
-比如 身分證字號可以唯一定位國民
-URL (統一資源定位器 aka 網址) 是 URI的一種特例，指以 協定/網域/地區 ..的方式定位網頁資源的一種規則"/>
+<meta name="twitter:description" content="http簡介，網路如何溝通的協定"/>
 
 
 
@@ -394,17 +352,37 @@ payload不考慮資料型態，只考慮位元組本身
         <ul>
             
             <li>
-                <a href="/index/hugo">hugo相關</a>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
             </li>
             
             <li>
-                <a href="/index/web">網頁與爬蟲相關</a>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
             </li>
             
             <li>
                 <a href="/index/course">課程筆記備份區</a>
+                
+                     
             </li>
             
+            <li>
+                <a href="/index/mics">雜記區</a>
+                
+                     
+            </li>
+            
+                   
+                   
         </ul>
     </div>
 

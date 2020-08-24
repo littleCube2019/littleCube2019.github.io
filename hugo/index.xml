@@ -12,21 +12,21 @@
     
     
     <item>
-      <title>Hugo網頁實作 - sidebar</title>
-      <link>https://littlecube2019.github.io/hugo/sidebar/</link>
-      <pubDate>Thu, 20 Aug 2020 00:10:15 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/hugo/sidebar/</guid>
-      <description>玩Hugo時想實作的功能紀錄 - 關於sidebar</description>
-    </item>
-    
-    <item>
       <title>Hugo網頁實作 - 文章呈現</title>
       <link>https://littlecube2019.github.io/hugo/show_article/</link>
       <pubDate>Thu, 20 Aug 2020 09:28:30 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/hugo/show_article/</guid>
       <description>玩Hugo時想實作的功能紀錄 - 關於文章呈現</description>
+    </item>
+    
+    <item>
+      <title>Hugo網頁實作 - sidebar</title>
+      <link>https://littlecube2019.github.io/hugo/sidebar/</link>
+      <pubDate>Thu, 20 Aug 2020 00:10:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/hugo/sidebar/</guid>
+      <description>玩Hugo時想實作的功能紀錄 - 關於sidebar</description>
     </item>
     
     <item>
