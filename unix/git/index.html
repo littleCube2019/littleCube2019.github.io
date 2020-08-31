@@ -15,20 +15,21 @@
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
 
 
-<title>Little Cube`s box - 筆記儲物櫃</title>
+<title>git實作原理簡介 - Little Cube`s box</title>
 
 
 
 
-<meta property="og:title" content="Little Cube`s box" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://littlecube2019.github.io/" />
-<meta property="og:updated_time" content="2020-08-24T16:48:24+08:00" />
+<meta property="og:title" content="git實作原理簡介" />
+<meta property="og:description" content="了解基本git是如何實作的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/unix/git/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Little Cube`s box"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="git實作原理簡介"/>
+<meta name="twitter:description" content="了解基本git是如何實作的"/>
 
 
 
@@ -85,36 +86,8 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-
-
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/unix/fsh/">linux檔案架構</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於linux檔案架構
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/unix/shell/">Bash Terminal簡介</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        bash terminal的基礎
-    </div>
-</div>
-
-<div class="post">
+<article>
+    
     <h2 class="post-item post-title">
         <a href="https://littlecube2019.github.io/unix/git/">git實作原理簡介</a>
     </h2>
@@ -122,144 +95,60 @@
         
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        了解基本git是如何實作的
-    </div>
-</div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="何謂版本控制">何謂版本控制</h1>
+<blockquote>
+<p>版本控制（英語：Version control）是維護工程藍圖的標準作法，能追蹤工程藍圖從誕生一直到定案的過程。
+此外，版本控制也是一種軟體工程技巧，藉此能在軟體開發的過程中，確保由不同人所編輯的同一程式檔案都得到同步。    &ndash;維基百科</p>
+</blockquote>
+<p>簡單來說，就是希望能備份某些重要的時點<br>
+對於程式專案來說，最暴力的方式就是用整個資料夾來備份，但這樣做成本會太高(重複記錄相同的檔案)，並且操作上沒有效率。</p>
+<p>相對而言git是採用<strong>指標節點</strong>的方式紀錄檔案(硬碟指標)，以及會將狀態的節點以<em>tree的方式串接起來</em>，回復、更改、分支都更加有效率<br>
+<img class="img-zoomable" src="/unix/git_1.PNG" alt="" />
+</p>
+<h1 id="file-system-與-git-的虛擬碼">file system 與 git 的虛擬碼</h1>
+<p>既然需要紀錄file system的資料，首先就要先認識他的結構</p>
+<p>file system本質上是一個以root為頂端的tree，資料夾為一個指標，指向其內含物，而資料可視為blob(Binary Large OBject)<br>
+因此此為遞迴的定義<br>
+例如:<br>
+<img class="img-zoomable" src="/unix/git_2.PNG" alt="" />
+</p>
+<p>git實際上以bash script 與C語言寫成<br>
+虛擬碼如下</p>
+<pre><code>type blob = array &lt;byte&gt;                         #binary data
+type tree = map &lt;string , tree | blob&gt;              #目錄內有其他目錄 或 檔案
+type commit = struct {   # 也就是一個狀態
+	parents : array &lt;commit&gt;  #指向parent狀態
+	author : string          #meta data
+	message : string
+	snapshot : tree        #當下狀態的目錄架構
+}
 
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/unix/git_man/">git常用指令</a>
-    </h2>
-    <div class="post-item post-meta">
-        
+type object = blob | tree | commit    #抽象化以store於硬體中
+disk = map &lt;string , object&gt;        #hash table的方式儲存
 
-    </div>
-    <div class="post-item post-summary markdown-body">
-        紀錄常使用的git指令與觀念
-    </div>
-</div>
+def store (obj):
+	id=hash(obj)
+	disk [id] = obj   #儲存進硬體hash table裡
 
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/skill/about_python/">python隨手記</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        用python解leetcode時順便練習的技巧
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/skill/about_c/">C/C&#43;&#43;技巧與觀念</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        在解題、寫作業、上課時所習得的一些技巧與觀念
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/http/">Http簡介</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        http簡介，網路如何溝通的協定
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/js/">Javascript簡介</a>
-    </h2>
-    <div class="post-item post-meta">
-        
+def found (id):
+	return disk [id]
+</code></pre><p>註:在實作上，不會真的儲存所有資料，通常是儲存其id，作為reference<br>
+(所有obj都有id =&gt; 所有file , folder , commit 都有id<br>
+=&gt;所以至少snapshot , parents於commit中，只要記id就好)</p>
+<h1 id="hash-id">hash id</h1>
+<p>上述的資料的<strong>檔案內容</strong>會依 <strong>SHA-1 (secure hash algorithm)</strong> 雜湊成一組長度為40的16進位碼<br>
+特性為 容易給定message計算出hash 、反推困難、不容易碰撞 &hellip;</p>
+<p>例如它會將hello字串單向加密成aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d</p>
+<h1 id="參考資料">參考資料</h1>
+<p>missing semester :Lecture 6: Version Control (git) (2020)<br>
+<a href="https://www.youtube.com/watch?v=2sjqTHE0zok&amp;t=2401s">https://www.youtube.com/watch?v=2sjqTHE0zok&amp;t=2401s</a></p>
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        javascript簡介，負責網頁動態互動
-    </div>
-</div>
+</article>
 
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/pyquery/">pyquery 簡介</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        以jquery為概念的網頁剖析器
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/requests/">Requests 簡介</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        用python模擬網路請求
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<div class="pagination">
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item pag-current">
-        <a href="/">1</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/page/2/">2</a>
-    </div>
-    
-    
-    
-    <div class="pag-next">
-        <a href="/page/2/"><i class="iconfont icon-chevron-forward-circle-sharp"></i></i></a>
-    </div>
-    
-    
-    <div class="pag-last">
-        <a href="/page/2/"><i class="iconfont icon-caret-forward-circle-sharp"></i></a>
-    </div>
-    
-</div>
 
 
 

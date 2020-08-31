@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Unixes on Little Cube`s box</title>
+    <link>https://littlecube2019.github.io/unix/</link>
+    <description>Recent content in Unixes on Little Cube`s box</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Sun, 23 Aug 2020 19:51:15 +0800</lastBuildDate>
+    
+	<atom:link href="https://littlecube2019.github.io/unix/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>linux檔案架構</title>
+      <link>https://littlecube2019.github.io/unix/fsh/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/fsh/</guid>
+      <description>關於linux檔案架構</description>
+    </item>
+    
+    <item>
+      <title>Bash Terminal簡介</title>
+      <link>https://littlecube2019.github.io/unix/shell/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/shell/</guid>
+      <description>bash terminal的基礎</description>
+    </item>
+    
+    <item>
+      <title>git實作原理簡介</title>
+      <link>https://littlecube2019.github.io/unix/git/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/git/</guid>
+      <description>了解基本git是如何實作的</description>
+    </item>
+    
+    <item>
+      <title>git常用指令</title>
+      <link>https://littlecube2019.github.io/unix/git_man/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/git_man/</guid>
+      <description>紀錄常使用的git指令與觀念</description>
+    </item>
+    
+  </channel>
+</rss>

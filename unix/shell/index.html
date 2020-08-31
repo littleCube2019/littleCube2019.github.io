@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Bash Terminal簡介 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Bash Terminal簡介" />
+<meta property="og:description" content="bash terminal的基礎" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/unix/shell/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Bash Terminal簡介"/>
+<meta name="twitter:description" content="bash terminal的基礎"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/unix/shell/">Bash Terminal簡介</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>GUI  vs Command line<br>
+前者應給你選項，使用者導向<br>
+後者是你要自己給選項，自己知道自己要甚麼</p>
+<ul>
+<li>bash設計思想:你知道自己在做甚麼，所以不會&quot;保護&quot;你</li>
+</ul>
+<h1 id="file-system">File system</h1>
+<p>以&quot;root directory&rdquo; 開始的一顆tree<br>
+path 定義為root到當前目錄的路徑，分為相對與絕對<br>
+絕對就是要全部從root開始寫出來
+相對則是可以使用 . (當前目錄) 、 ..(上一層目錄) 這樣去操作<br>
+比如現在在/user/test/Cur目錄 ，需要移動到上一層 <br>
+絕對 cd /user/test<br>
+相對 cd ..</p>
+<p>心得: 大多情況下相對路徑方便很多，但如果要寫成shell script，則注意相對路徑會相對於<strong>呼叫時所在目錄，而非檔案所在目錄</strong></p>
+<h1 id="基本指令">基本指令</h1>
+<p>unix/linux系統預設的指令，也就是已經可執行的小程式</p>
+<h4 id="man-指令">man &lt;指令&gt;</h4>
+<p>開啟該指令說明書</p>
+<h4 id="echo-xxx">echo xxx</h4>
+<p>可以在termianl顯示 xxx<br>
+應用:快速建立文件<br>
+echo &ldquo;hello&rdquo; &gt; hello.txt<br>
+(關於 &gt; 重導後面會講解)</p>
+<h4 id="ls">ls</h4>
+<p>顯示當前目錄內的內容，預設不會顯示隱藏的目錄
+-a 參數: 顯示隱藏目錄<br>
+-l 參數: 顯示清單格式<br>
+兩者可以連用  即 ls -la</p>
+<h4 id="pwd">pwd</h4>
+<p>顯示當前目錄</p>
+<h4 id="cd-dir">cd &lt;dir&gt;</h4>
+<p>移動目錄</p>
+<ul>
+<li>Note: cd - =&gt; 類似遙控器的兩台互換功能</li>
+</ul>
+<h4 id="mkdir-dir">mkdir &lt;dir&gt;</h4>
+<p>創建目錄</p>
+<h4 id="cp-file-path--path">cp &lt;file path&gt;  &lt;path&gt;</h4>
+<p>將file 複製到path<br>
+注意，若要複製目錄要加上 -r 參數</p>
+<h4 id="rm-file-path">rm &lt;file path&gt;</h4>
+<p>刪除檔案，一樣目錄刪除要加-r<br>
+此外當有東西刪不掉可以用-f<br>
+但這指令非常邪惡，因為linux認為你知道你在做甚麼，所以刪除後東西就沒了</p>
+<h4 id="cat-file">cat &lt;file&gt;</h4>
+<p>印出檔案內的內容，原本是作為串接用的<br>
+比如cat fileA fileB<br>
+是把fileB 接在fileA 後面</p>
+<h4 id="mv-file-path-path">mv &lt;file path&gt; &lt;path&gt;</h4>
+<p>將file移動 <br>
+也用於改名，可以mv &lt;fileA&gt; &lt;fileB&gt;</p>
+<h1 id="萬用字元">萬用字元</h1>
+<p>正規化的萬用字元非常方便，並且在資料量大時也是有必要的</p>
+<h4 id="--表示後面接任意字元任意個">*  表示後面接任意字元任意個</h4>
+<p>比如<br>
+rm * 會刪除當下所有檔案<br>
+cat *.json 則會顯示當下所有的結尾是.json的檔案</p>
+<h4 id="---表示有一個任意字元">?   表示有一個任意字元</h4>
+<p>比如<br>
+??? 可以表所有3個字的檔案</p>
+<h4 id="--選擇">[ ] 選擇</h4>
+<p>[]  表示有一個[]內的字元           <br>
+比如:<br>
+[abc]  表示a或b或c</p>
+<ul>
+<li>可表示連續  [0-9]  [a-z]   表示0,1,2&hellip;9    a,b,c&hellip;.z
+^ 可表示反向選擇   [^abc] 表示非abc的任意字元</li>
+</ul>
+<p>綜合例子:<br>
+[^a-z]*  所有開頭非大寫的檔案<br>
+*[0-9]*  所有含有數字的檔案</p>
+<h4 id="-">^ $</h4>
+<p>^ 表示開頭<br>
+$ 表示結尾<br>
+通常用於sed等程式，用於匹配字串</p>
+<h1 id="資料流重導向">資料流重導向</h1>
+<p>資料流有三種</p>
+<ol>
+<li>標準輸入 (stdin)， 代碼是0，  使用 &lt; 或 &laquo; 符號操作</li>
+<li>標準輸出 (stdout)， 代碼是1，  使用 &gt; 或 &raquo; 符號操作</li>
+<li>標準錯誤輸出 (stderr)， 代碼是2，  使用 2&gt; 或 2&raquo; 符號操作</li>
+</ol>
+<p>通常標準輸入由鍵盤輸入，標準輸出則是印在螢幕上 <br>
+重導則可以將原本要印在螢幕上的資料，寫入檔案中</p>
+<p>比如<br>
+(./program&lt;intput.data) &gt; output.dat<br>
+可以將input.data 作為輸入給 program<br>
+然後將輸出結果引導到 output.dat</p>
+<p>./program &gt; /dev/null<br>
+(將資料丟入黑洞)</p>
+<p>&gt; 與 &gt;&gt;<br>
+前者會覆蓋原檔案<br>
+後者則會append在後面</p>
+<h1 id="指令判斷-與-pipline">指令判斷 與 pipline</h1>
+<h4 id="--">&amp;&amp; 、 ||</h4>
+<p>前者是第一個指令成功，就執行第二個 <br>
+後者是第一個指令失敗，就執行第二個</p>
+<p>比如<br>
+[ -z string ] &amp;&amp; echo &ldquo;Null&rdquo;  || echo &ldquo;Not null&rdquo;<br>
+[ -z string ]會檢查string是否為空，如果為空視為執行成功，否則為失敗</p>
+<h4 id="--pipe">|  (pipe)</h4>
+<p>將前者結果傳給後者<br>
+比如<br>
+cat fileA | cut -d &ldquo;,&rdquo; -f 1
+將fileA 印出後交得cut處理</p>
+<p>注意，善用pipe串接不同指令，可以很有效率的利用程式<br>
+同時中間也可以混雜自己寫的程式<br>
+而善用 &amp;&amp; || 萬用字元，可以寫出優雅跟簡潔的程式</p>
+<p>關於文字處理(cut、sed 、tr、grep)可以參考文字處理篇</p>
+<h1 id="參考資料">參考資料</h1>
+<p>影片介紹:<br>
+<a href="https://www.youtube.com/watch?v=oxuRxtrO2Ag">https://www.youtube.com/watch?v=oxuRxtrO2Ag</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/mics">雜記區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

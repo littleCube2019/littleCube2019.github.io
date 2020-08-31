@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>git常用指令 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="git常用指令" />
+<meta property="og:description" content="紀錄常使用的git指令與觀念" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/unix/git_man/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="git常用指令"/>
+<meta name="twitter:description" content="紀錄常使用的git指令與觀念"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/unix/git_man/">git常用指令</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="基礎設定">基礎設定</h1>
+<h4 id="git-config---global--username--your-name">git config &ndash;global  user.name  &lt;your name&gt;</h4>
+<h4 id="git-config---global--useremail--your-email">git config &ndash;global  user.email  &lt;your email&gt;</h4>
+<h4 id="git-config---list">git config &ndash;list</h4>
+<p>#可以查詢設定</p>
+<h4 id="git-config----global-alias縮寫-原指令">git config  &ndash;global alias.&lt;縮寫&gt; &lt;原指令&gt;</h4>
+<p>#可以縮寫指令<br>
+比如 branch =&gt; br , checkout =&gt; co<br>
+以上設定全部可以在 <strong>~/.gitconfig</strong> 中找到， 當然也能直接修改</p>
+<h1 id="版本控制">版本控制</h1>
+<h4 id="git-init">git init</h4>
+<p>#第一次時初始化，會製造.git資料夾存放所需參數 (參考git實作原理)<br>
+當不想被監控時，rm掉這個資料夾即為一個方法</p>
+<h4 id="git-add-">git add .</h4>
+<p>#表示加入所有檔案進入監控系統 (add 會放入staging area中，可以視為被記錄前的暫存區) <br>
+git add 也可以接&lt;file&gt;，自行選擇想監控的檔案<br>
+(註: 檔案沒有被監控的情況下，若未來想要復原到過去版本，這些未監控檔案(untracked file)會消失)</p>
+<h4 id="git-commit--m-message">git commit -m &lt;message&gt;</h4>
+<p>#表示正式加入git紀錄節點，未來可以隨時回復到此狀態，同時git強迫一定要加上訊息來記錄這個commit節點做了甚麼</p>
+<h4 id="建立gitignore-檔案">建立.gitignore 檔案</h4>
+<p>#裡面可以放<strong>不想被監控的檔案</strong>的路徑</p>
+<h1 id="查看狀態">查看狀態</h1>
+<h4 id="git-status">git status</h4>
+<p>#查看狀況(add、unstaging)</p>
+<h4 id="git-log">git log</h4>
+<p>#查看commit 狀況</p>
+<h4 id="git-log---all---graph---decorate">git log &ndash;all &ndash;graph &ndash;decorate</h4>
+<p>#則可以以樹狀圖的方式呈現分支</p>
+<h4 id="git-diff-file">git diff <!-- raw HTML omitted --></h4>
+<p>#可以查看與HEAD之間更新了甚麼<br>
+也可以在diff中間加入&lt;hashcode&gt;進行比較<br>
+&lt;hashcode&gt;可以在log中找到，關於hash可以參考原理筆記</p>
+<h1 id="還原移動節點">還原(移動節點)</h1>
+<h4 id="git-checkout--hashcode-or-name">git checkout  &lt;hashcode&gt; or &lt;name&gt;</h4>
+<p>&lt;name&gt;可以填入 master或之後的branch name</p>
+<h1 id="分支">分支</h1>
+<p>分支可以說是git強大的地方之一，允許分支間獨立發展、合併，比如程式要有測試版、開發版、debug版&hellip;等等平行開發(parallel development)時非常好用</p>
+<h4 id="git-branch-name">git branch &lt;name&gt;</h4>
+<p>#建立叫做&lt;name&gt;的分支<br>
+如果不加上&lt;name&gt;會顯示所有分支</p>
+<p>-d 參數會刪除該分支<br>
+-D 則會強制刪除，用於<del>發生不可思議的力量導致</del>無法刪除時使用</p>
+<h4 id="git-branch">git branch</h4>
+<p>#顯示所有分支</p>
+<h4 id="git-checkout-name">git checkout &lt;name&gt;</h4>
+<p>#切換分支，且在切換前會要求所有變動都commit了，否則可以使用-f參數強制切換</p>
+<h4 id="git-merge-name">git merge &lt;name&gt;</h4>
+<p>#當下分支與 &lt;name&gt;分支合併<br>
+但有時不是那麼理想，會發生衝突(conflict)<br>
+比如這個分支在file A加字， 那個分支在file B刪字<br>
+此時就需要決定要採用哪邊的</p>
+<h1 id="解決分支衝突">解決分支衝突</h1>
+<p>純文字檔、程式碼:<br>
+可以先使用git status查看情況<br>
+然後使用git merge &ndash;abort 暫停merge 狀態<br>
+接著會在衝突的檔案中發現comflict marker
+<img class="img-zoomable" src="/unix/git_man_4.PNG" alt="" />
+<br>
+修正好後git merge &ndash;continue 即可完成</p>
+<p>二進位檔、圖檔:<br>
+先決定要保留誰的，然後使用checkout更新即可
+git checkout &ndash;ours <!-- raw HTML omitted -->   # 留下merge基礎的
+git checkout &ndash;theirs <!-- raw HTML omitted -->   # 留下merge對象的</p>
+<h1 id="git-與-github">git 與 github</h1>
+<p>github是放置程式的遠端資料庫，<del>aka 工程師的FB</del><br>
+git可以將程式推上github，也可以將程式pull下來</p>
+<ul>
+<li>流程</li>
+</ul>
+<ol>
+<li>在Github上新增respository</li>
+<li>建立readme檔</li>
+<li>基本三連(init add commit)</li>
+<li>加入遠端支點</li>
+<li>推上去</li>
+</ol>
+<p>實際流程</p>
+<h4 id="0-git-clone-url--第一次以後用pull未建立respository也不需要此步驟">0. git clone URL  (第一次以後用pull，未建立respository也不需要此步驟)</h4>
+<h4 id="1-echo-what-you-want-to-say--readmemd">1. echo “what you want to say“ &gt; README.md</h4>
+<h4 id="2-git-init">2. git init</h4>
+<h4 id="3-git-add-readmemd">3. git add README.md</h4>
+<h4 id="4-git-commit-m-message">4. git commit –m &lt;message&gt;</h4>
+<h4 id="4-git--remote-add-origin-url專案的----第一次才需要">4. git  remote add &lt;origin&gt; URL(專案的)    (第一次才需要)</h4>
+<h4 id="5-git-push--u-origin-branchname">5. git push -u &lt;origin&gt; &lt;branchname&gt;</h4>
+<p>註 origin在這裡就只是一個變數，代表著專案的url
+註2 沒有branch情況下，就打主分支master</p>
+<h1 id="與他人協作">與他人協作</h1>
+<p>github之所以興盛的原因之一就在其開源，可以領教各路神人幫忙修專案</p>
+<ul>
+<li>概念<br>
+以畫畫為例 <br>
+概念上就是把別人展出的畫作影印複製一份回家<br>
+然後修修改改<br>
+最後想要放回別人展出的地方，就需要去請求原作者同意<br>
+若作者同意，就可以把你改良好的畫作展出給別人看了</li>
+</ul>
+<p>步驟</p>
+<ol>
+<li>可以把它人專案 fork 到自己那<br>
+<img class="img-zoomable" src="/unix/git_man_2.PNG" alt="" />
+</li>
+<li>然後clone自己家那份，修改好後 add、commit，然後推回自己家</li>
+<li>最後對作者發pull request，可以在此與作者溝通 (通常簡稱PR) <br>
+<img class="img-zoomable" src="/unix/git_man_3.PNG" alt="" />
+</li>
+<li>作者如果接受，按下merge pull request 就可以合併此次commit</li>
+</ol>
+<h1 id="常見問題">常見問題</h1>
+<ol>
+<li>推github被reject?
+<img class="img-zoomable" src="/unix/git_man_1.PNG" alt="" />
+
+通常就是沒有執行第0步，沒有先pull專案下來</li>
+</ol>
+<h1 id="參考資料">參考資料</h1>
+<p>高見龍老師的 為你自己學 Git<br>
+<a href="https://gitbook.tw/">https://gitbook.tw/</a><br>
+政大蔡銘峰老師課程<br>
+github教學</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/mics">雜記區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>
