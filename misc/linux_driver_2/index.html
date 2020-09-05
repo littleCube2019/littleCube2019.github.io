@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Linux Device Driver系列 2 (上) - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Linux Device Driver系列 2 (上)" />
+<meta property="og:description" content="建置與使用modules" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/misc/linux_driver_2/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux Device Driver系列 2 (上)"/>
+<meta name="twitter:description" content="建置與使用modules"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/misc/linux_driver_2/">Linux Device Driver系列 2 (上)</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="前置">前置</h1>
+<h3 id="設定kernel版本至26">設定kernel版本至2.6</h3>
+<p>可以使用kernel source tree<br>
+一個資料夾存放所有kernel相關資源，可以在此建立新kenrel 、安裝、並且重啟新的kernel</p>
+<h3 id="ubuntu-實例">Ubuntu 實例</h3>
+<p>參照這裡<a href="https://askubuntu.com/questions/700214/how-do-i-install-an-old-kernel" target="_blank">How to install an old kernel</a> <br>
+<strong>Ubuntu版本要舊到可以兼容kernel 2.6</strong></p>
+<ul>
+<li>下載對應版本三檔</li>
+<li>移動到某資料夾，sudo dpkg -i *.deb</li>
+<li>sudo reboot  並在期間長壓shift 進入grub模式，並選擇對應的kernel 開機</li>
+<li>最後使用uname -r 檢查版本是否正確</li>
+</ul>
+<h4 id="雷點之一">雷點之一:</h4>
+<p>dpkg 發生相依問題</p>
+<p>解法:注意錯誤訊息，看缺少的東西<br>
+比如此次缺少module-init-tools,故需<br>
+<code>sudo apt install module-init-tools</code></p>
+<h4 id="雷點之二">雷點之二:</h4>
+<p><code>Failed to symbolic-link /boot/initrd.img-&lt;version&gt; to initrd.img: File exists  </code></p>
+<p>解法: sudo rm /initrd.img<br>
+<strong>注意這個行為非常危險，需要先行備份或使用虛擬機等安全情況下使用</strong></p>
+<h4 id="雷點之三">雷點之三:</h4>
+<p>開機時顯示 FATAL kernel is too old</p>
+<p>解法: 要安裝舊版本的ubuntu系統</p>
+<h4 id="小知識1">小知識1:</h4>
+<p>Ubuntu 很多檔案格式是與Debian共用的，所以可以看到這次下載的副檔名皆為deb</p>
+<h4 id="小知識2">小知識2:</h4>
+<p>uname 可以看很多系統資訊
+uname &ndash;help 看選擇</p>
+<h4 id="小知識3">小知識3:</h4>
+<p>GNU GRUB（簡稱GRUB）是一個來自GNU項目的啟動引導程序。<br>
+GRUB是多啟動規範的實現，它允許用戶可以在計算機內同時擁有多個操作系統，並在計算機啟動時選擇希望運行的操作系統。   GRUB可用於選擇操作系統分區上的不同內核，也可用於向這些內核傳遞啟動參數</p>
+<h4 id="如何用18x-的ubuntu寫kernel-">如何用18.x 的Ubuntu寫kernel ?</h4>
+<ol>
+<li>製作Makefile</li>
+</ol>
+<pre><code>obj-m += &lt;yourfile&gt;.o
+all:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+clean:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+</code></pre><p>其中檔案要用C語言寫，並且最後make成.ko檔</p>
+<ol start="2">
+<li>查看訊息使用dmesg</li>
+</ol>
+<h1 id="hello-world----第一個module">hello world  - 第一個module</h1>
+<pre><code>#include &lt;linux/init.h&gt;
+#include &lt;linux/module.h&gt;
+MODULE_LICENSE(&quot;Dual BSD/GPL&quot;);
+static int hello_init(void)
+{
+ printk(KERN_ALERT &quot;Hello, world\n&quot;);
+ return 0;
+}
+static void hello_exit(void)
+{
+ printk(KERN_ALERT &quot;Goodbye, cruel world\n&quot;);
+}
+module_init(hello_init);
+module_exit(hello_exit);
+</code></pre><p>此程式碼大綱:</p>
+<ul>
+<li>MODULE_LICENSE提供證明，才進的去kernel</li>
+<li>創建兩個函式，一個用在載入kernel時，讓kernel顯示訊息，另一個用在移除kernel時，讓kernel顯示訊息</li>
+<li>module_init 與 module_exit 則是link上述function 至所說的時點中</li>
+</ul>
+<h3 id="printk函數">printk函數</h3>
+<p>存在於Linux kernel函數庫中，類似於C libarary的printf，但因為是kernel，所以獨立於(不需要)C libarary<br>
+透過insmod插入kernel後即可取用kernel內的公開符號(public symbols)<br>
+KERN_ALERT 則告知此訊息的重要性(priorty)</p>
+<h3 id="insmod--rmmod">insmod , rmmod</h3>
+<p>用於插入與移除寫好的module<br>
+比如insmod ./hello.ko 就會將hello.ko放入kernel，並依函數定義顯示Hello, world<br>
+rmmod hello 就會將hello.ko移出kernel，並依函數定義顯示Goodbye, cruel world</p>
+<ul>
+<li>註: 不同系統不一定會將結果顯示在螢幕上，可能也需要dmesg去看，或者去/var/log/messages 找</li>
+</ul>
+<h3 id="init-與-exit-的工作">init 與 exit 的工作</h3>
+<p>兩者有點像事件導向的程式設計<br>
+init告訴kernel，功能已準備就緒，隨時可以調用我 <br>
+exit告訴kernel，功能已被移除，不要再調用我<br>
+同時exit，也必須負責回收init所要過的資源</p>
+<h1 id="關於module">關於module</h1>
+<h3 id="kernel-module與一般程式碼之不同">kernel module與一般程式碼之不同</h3>
+<ol>
+<li>kernel module 幾乎無法link外部函式，只能用內部kernel已存在的(如printk)</li>
+<li>kernel module 發生error是很危險的，可能導致系統崩潰</li>
+</ol>
+<h3 id="user-mode-與-kernel-mode">user mode 與 kernel mode</h3>
+<p>OS 必須盡到分配資源 與 阻止未授權行為的功能，因此user mode 與 kernel mode出現於OS 理論中<br>
+實作上會在CPU內建立gate，以區分執行等級，低階等級下某些重要操作不被允許<br>
+同時Unix/Linux系統則利用這個硬體特性，做出了sudo與user兩個模式</p>
+<p>這兩個模式也當然會有自己的memory分區</p>
+<p>當有system call 發生 或 hardware interrupt，程式就會由user mode 轉入 kernel mode<br>
+Kernel code 的system call會執行於原呼叫程式(caller)，並且能調用原程式的資訊  (比如printk(var) 的 var變數紀錄於原process的記憶體中)<br>
+而處理interrupt的程式則獨立於任何process</p>
+<p>最後，module的角色可視為kernel功能的延伸，因此是在kernel space中執行，並且可能同時執行system call 與 interrupt handle</p>
+<h3 id="concurrency">Concurrency</h3>
+<p>很直覺的，kernel , device 的資源一定是被眾多process競逐的<br>
+所以需注意Critical section問題<br>
+並且linux適用於多核心與支持interrupt,preempt 因此 Concurrency是很重要的議題 (效率 與 確保資訊正確 )</p>
+<p>linux 的kernel 包含 driver 需要有可重入(reentrancy)的考量</p>
+<blockquote>
+<p>關於 <a href="https://magicjackting.pixnet.net/blog/post/113860339" target="_blank">可重入介紹</a><br>
+簡單來說就是要考慮到共用的問題</p>
+</blockquote>
+<h3 id="current-process">Current Process</h3>
+<p>kernel可經由一個current 的 global item得到<strong>當下執行的process</strong>  (current 定義於 asm/current.h) <br>
+current 會回傳一個process的 struct task_struct 指標 (struct task_struct 定義於 linux/sched.h)<br>
+所謂<strong>當下執行的process</strong>，即為呼叫kernel system call的process (比如 open , read &hellip;)</p>
+<p>然而，在現今多核心的情況下，再加上current 常常被呼叫到，因此current並不是真正意義上的global，
+而只是被存於kernel stack 的 task_struct 指標</p>
+<p>device driver 可以僅引入linux/sched.h就可以呼叫<br>
+比如</p>
+<pre><code>printk(KERN_INFO &quot;The process is \&quot;%s\&quot; (pid %i)\n&quot;,
+ current-&gt;comm, current-&gt;pid);
+</code></pre><p>會印出process名字 與其 process id (名字就是file name )<br>
+同時也可以看出current會儲存這兩個資訊</p>
+<h3 id="其他注意事項">其他注意事項</h3>
+<ol>
+<li>kernel分配到的記憶體stack非常小，通常只有一張4096-byte page<br>
+所以需要龐大變數時，最好動態的創造(heap)<br>
+Review: 記憶體規劃架構<br>
+<img class="img-zoomable" src="/misc/DD_2-1.PNG" alt="" />
+</li>
+<li>kernel API 有一部分 double underscore (__)的函式<br>
+這些函式非常底層，使用時需要額外注意</li>
+<li>kernel 不(輕易)做浮點數運算   <a href="https://stackoverflow.com/questions/13886338/use-of-floating-point-in-the-linux-kernel#:~:text=Unlike%20user%2Dspace%2C%20the%20kernel,it%20cannot%20easily%20trap%20itself.&amp;text=The%20short%20answer%20is%3A%20Don,operations%20are%20in%20the%20kernel." target="_blank">參考這裡的討論</a><br>
+簡而言之是為了效率問題，管理FPU(float point unit)太花時間</li>
+</ol>
+<h1 id="編譯與載入-module">編譯與載入 module</h1>
+<h3 id="關於深入文檔">關於深入文檔</h3>
+<p>可以由Documentation/kbuild、Documentation/Changes 查到完整的記載<br>
+其中ubuntu 要<code>apt install linux-doc</code> 並於  <code>/usr/share/doc/linux-doc</code> 查看</p>
+<h3 id="基礎的makefile-編譯部分">基礎的makefile (編譯部分)</h3>
+<pre><code># If KERNELRELEASE is defined, we've been invoked from the
+# kernel build system and can use its language.
+ifneq ($(KERNELRELEASE),)
+ obj-m := hello.o   
+# Otherwise we were called directly from the command
+# line; invoke the kernel build system.
+else
+ KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+ PWD := $(shell pwd)
+default:
+ $(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+endif
+</code></pre><p>其中obj-m是設定目標檔<br>
+KERNELDIR 是設定插入的kernel路徑
+M=$(PWD) 則是泛化的指定當前路徑 ，M option是指會移到該路徑進行make<br>
+<code>$(MAKE) -C $(KERNELDIR) M=$(PWD) modules</code> 寫死的例子是<br>
+<code>make -C ~/kernel-2.6 M=`~/driver_learning` modules</code><br>
+modules是一個target，會去尋找obj-m裡面的清單進行make</p>
+<h3 id="載入部分">載入部分</h3>
+<p>前面提及的insmod可以完成此任務<br>
+通常載入時會順便給Module Parameters，這個行為被稱為load-time configuration， 相較於compile-time configuration會更有彈性</p>
+<p>insmod被實做於kernel/module.c<br>
+其中sys_init_moudle會分配 kernel memory給module使用、解析module內的kernel reference對應到kernel symbol table<br>
+並且呼叫module 的 init 函式</p>
+<p>(注意: 在kernel中，system calls都會有 sys_ 的前綴詞，grep它們會很方便)<br>
+(注意2: 上次解決新電腦wifi問題時，也有使用到的modprobe功能基本上和insmod一樣是插入module，不一樣的是
+modprobe會在其他現有的module中尋找欲插入module中未定義的kernel symbol，簡單來說就是比較適合在已有的龐大系統中，加入新的小設定  )</p>
+<p>rmmod 會在module被kernel相信仍在作用時拒絕移出，有強制移除，但為了安全考量通常reboot會比較適當</p>
+<p>lsmod 會列出現在已載入kernel的module<br>
+lsmod其實就是去讀取/proc/modules這個虛擬檔案<br>
+(也可以從/sys/module得到看到一樣的資訊)
+如下例<br>
+<img class="img-zoomable" src="/misc/DD_2-2.PNG" alt="" />
+</p>
+<h3 id="kernel-symbol-table">Kernel Symbol Table</h3>
+<p>insmod會透過public kernel symbols table 來對應undfined symbol<br>
+(比如 printk , KERN_INFO)<br>
+該table會含global kernel item的地址，也就是函數與變數的位址</p>
+<p>module在載入kernel時，所exported的symbol也會變成kernel symbols table 的一部分<br>
+未來可供其他module使用 (modprobe的例子)</p>
+<p>module stacking :<br>
+可依高低階區分module，將高階的module建立在其他module之上 (使用他們定義的symbol)</p>
+<p>可藉由<br>
+EXPORT_SYMBOL(name);<br>
+EXPORT_SYMBOL_GPL(name);<br>
+兩種指令引入新變數，其中後者只能給GPL認證的使用</p>
+<h1 id="開始撰寫device-driver">開始撰寫Device Driver</h1>
+<h3 id="必備標頭檔">必備標頭檔</h3>
+<p>&lt;linux/module&gt;有眾多定義好的kernel symbol可以調用<br>
+<img class="img-zoomable" src="/misc/DD_2-4.PNG" alt="" />
+
+&lt;linux/init&gt; 則有module_init()  module_exit() 的定義<br>
+<img class="img-zoomable" src="/misc/DD_2-3.PNG" alt="" />
+</p>
+<p>以上資訊在ubuntu中可以於 /lib/modules/$( uname -r )/build/include/linux 中找到</p>
+<p>習慣上會將 MODULE_ 開頭的變數至於檔案最後</p>
+<h3 id="init--exit-function">init , exit function</h3>
+<pre><code>static int __init initialization_function(void)
+{
+ /* Initialization code here */
+}
+module_init(initialization_function);
+</code></pre><p>是泛化的init module架構<br>
+同時因為只允許該檔案使用，通常會宣告static</p>
+<blockquote>
+<p>Review static function
+Static function只能被宣告的Compilation Unit使用</p>
+</blockquote>
+<p>__init關鍵字，會讓kernel知道這個函數在init完後就沒用了，可以丟棄</p>
+<p>module可以註冊(register)許多不同的設備，包含device ,filesystem&hellip;<br>
+會由一個特殊的kernel function負責註冊，並且會此函數要吃被註冊的設備的資料結構的指標<br>
+同時此資料結構內也會有指標指向module<br>
+註冊函數會以register_ 開頭</p>
+<p>同理 exit函數也有架構:</p>
+<pre><code>static void __exit cleanup_function(void)
+{
+ /* Cleanup code here */
+}
+module_exit(cleanup_function);
+</code></pre><p>需要有exit函數，kernel才會允許卸載(unloaded)<br>
+__exit關鍵字表達此函數只能在卸載時被呼叫</p>
+<h1 id="參考資料">參考資料</h1>
+<p>Ch2: Building and Running Modules<br>
+<a href="https://lwn.net/Kernel/LDD3/">https://lwn.net/Kernel/LDD3/</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/dd">Device Driver系列</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">雜記區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

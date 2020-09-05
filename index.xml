@@ -12,15 +12,6 @@
     
     
     <item>
-      <title>linux檔案架構</title>
-      <link>https://littlecube2019.github.io/unix/fsh/</link>
-      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/unix/fsh/</guid>
-      <description>關於linux檔案架構</description>
-    </item>
-    
-    <item>
       <title>Unix/Vim/bash區</title>
       <link>https://littlecube2019.github.io/index/unix/</link>
       <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
@@ -45,6 +36,16 @@
       
       <guid>https://littlecube2019.github.io/index/hugo/</guid>
       <description>以Hugo實作此網站時的過程與紀錄</description>
+    </item>
+    
+    <item>
+      <title>Linux Device Driver系列</title>
+      <link>https://littlecube2019.github.io/index/dd/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/dd/</guid>
+      <description>為了精進了解虛幻的OS，2020暑假所研讀的項目之一
+ 關於linux device driver 簡介 建置與使用modules (上) 建置與使用modules (下)  </description>
     </item>
     
     <item>
@@ -99,6 +100,33 @@
       
       <guid>https://littlecube2019.github.io/unix/git_man/</guid>
       <description>紀錄常使用的git指令與觀念</description>
+    </item>
+    
+    <item>
+      <title>grep 與 regular expression</title>
+      <link>https://littlecube2019.github.io/unix/grep/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/grep/</guid>
+      <description>方便又高效的查找文字</description>
+    </item>
+    
+    <item>
+      <title>linux檔案架構</title>
+      <link>https://littlecube2019.github.io/unix/fsh/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/fsh/</guid>
+      <description>關於linux檔案架構</description>
+    </item>
+    
+    <item>
+      <title>OS Basic(依Neso Academy影片筆記) </title>
+      <link>https://littlecube2019.github.io/misc/os_basic/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/os_basic/</guid>
+      <description>參考OS公開課所做的筆記</description>
     </item>
     
     <item>
@@ -198,6 +226,33 @@
       
       <guid>https://littlecube2019.github.io/hugo/sidebar/</guid>
       <description>玩Hugo時想實作的功能紀錄 - 關於sidebar</description>
+    </item>
+    
+    <item>
+      <title>Linux Device Driver系列 1</title>
+      <link>https://littlecube2019.github.io/misc/linux_driver_1/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/linux_driver_1/</guid>
+      <description>關於linux device driver 簡介</description>
+    </item>
+    
+    <item>
+      <title>Linux Device Driver系列 2 (上)</title>
+      <link>https://littlecube2019.github.io/misc/linux_driver_2/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/linux_driver_2/</guid>
+      <description>建置與使用modules</description>
+    </item>
+    
+    <item>
+      <title>Linux Device Driver系列 2 (下)</title>
+      <link>https://littlecube2019.github.io/misc/linux_driver_2_2/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/linux_driver_2_2/</guid>
+      <description>建置與使用modules</description>
     </item>
     
     <item>

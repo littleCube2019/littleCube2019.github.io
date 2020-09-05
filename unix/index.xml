@@ -12,15 +12,6 @@
     
     
     <item>
-      <title>linux檔案架構</title>
-      <link>https://littlecube2019.github.io/unix/fsh/</link>
-      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/unix/fsh/</guid>
-      <description>關於linux檔案架構</description>
-    </item>
-    
-    <item>
       <title>Bash Terminal簡介</title>
       <link>https://littlecube2019.github.io/unix/shell/</link>
       <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
@@ -45,6 +36,24 @@
       
       <guid>https://littlecube2019.github.io/unix/git_man/</guid>
       <description>紀錄常使用的git指令與觀念</description>
+    </item>
+    
+    <item>
+      <title>grep 與 regular expression</title>
+      <link>https://littlecube2019.github.io/unix/grep/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/grep/</guid>
+      <description>方便又高效的查找文字</description>
+    </item>
+    
+    <item>
+      <title>linux檔案架構</title>
+      <link>https://littlecube2019.github.io/unix/fsh/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/fsh/</guid>
+      <description>關於linux檔案架構</description>
     </item>
     
   </channel>

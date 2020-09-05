@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Miscs on Little Cube`s box</title>
+    <link>https://littlecube2019.github.io/misc/</link>
+    <description>Recent content in Miscs on Little Cube`s box</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Sun, 23 Aug 2020 19:51:15 +0800</lastBuildDate>
+    
+	<atom:link href="https://littlecube2019.github.io/misc/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>OS Basic(依Neso Academy影片筆記) </title>
+      <link>https://littlecube2019.github.io/misc/os_basic/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/os_basic/</guid>
+      <description>參考OS公開課所做的筆記</description>
+    </item>
+    
+    <item>
+      <title>Linux Device Driver系列 1</title>
+      <link>https://littlecube2019.github.io/misc/linux_driver_1/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/linux_driver_1/</guid>
+      <description>關於linux device driver 簡介</description>
+    </item>
+    
+    <item>
+      <title>Linux Device Driver系列 2 (上)</title>
+      <link>https://littlecube2019.github.io/misc/linux_driver_2/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/linux_driver_2/</guid>
+      <description>建置與使用modules</description>
+    </item>
+    
+    <item>
+      <title>Linux Device Driver系列 2 (下)</title>
+      <link>https://littlecube2019.github.io/misc/linux_driver_2_2/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/linux_driver_2_2/</guid>
+      <description>建置與使用modules</description>
+    </item>
+    
+  </channel>
+</rss>

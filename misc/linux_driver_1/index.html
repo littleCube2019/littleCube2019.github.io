@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Linux Device Driver系列 1 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Linux Device Driver系列 1" />
+<meta property="og:description" content="關於linux device driver 簡介" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/misc/linux_driver_1/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux Device Driver系列 1"/>
+<meta name="twitter:description" content="關於linux device driver 簡介"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/misc/linux_driver_1/">Linux Device Driver系列 1</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="引言">引言</h1>
+<p>自由的作業系統中，例如linux，公開他們的內部是此類作業系統的優點之一，這讓原本只有一部分程式設計師了解的OS，能被公開的檢驗、了解、修改</p>
+<p>其中，Device Driver是複雜OS系統中很好的入門磚</p>
+<p>Device Driver可以是一個個不同的&quot;黑盒子&rdquo;，作為硬體、軟體之間的介面，並且抽象化地隱藏複雜的硬體實作，讓使用者可以統一呼叫、利用硬體資源</p>
+<p>linux driver 可以藉由標準呼叫(standardized call)來統一的與特定裝置溝通，並且因為模組化，所以linux driver相對易寫</p>
+<p>寫driver時雖然大部分有共同的規則與基礎，但還是須了解執行的裝置</p>
+<h1 id="device-driver的角色">Device Driver的角色</h1>
+<h3 id="以功能角度">以功能角度</h3>
+<p>Device driver應該<strong>提供功能</strong>，而不是使用功能<br>
+這是unix 設計的核心思想之一，大多數程式設計問題可以分為 &ldquo;提供甚麼功能&rdquo;(mechanism)以及&quot;怎麼使用功能&rdquo;(policy)兩大部分 <br>
+舉例而言:<br>
+圖形化介面是一種policy，他不需要知道硬體資源如何，都可以在不同機器上使用<br>
+而TCP/IP架構是一種mechanism，他提供傳輸的功能，但並沒有具體規定傳輸資料的功能</p>
+<p>因此driver只提供 &ldquo;抽象化界面&quot;這個功能 (mechanism)
+如何使用這個功能是高階系統的工作</p>
+<p>並且由於高階系統目的不盡相同，越是單純的提供功能越好(policy free)</p>
+<p><strong>重點: driver的工作是提供硬體資源介面，不應干涉(預設)使用者目的&rdquo;</strong></p>
+<p>當然出於某些目的，也有例外，比如IO driver為了簡化程式碼，必須限定提供byte-wide的存取，避免額外程式碼處理個別bit</p>
+<h3 id="以軟硬體角度">以軟硬體角度</h3>
+<p>是一個介於應用程式與硬體之間的軟體層 (與OS同層)<br>
+driver設計師必須要考量很多問題，<br>
+比如:<br>
+提供甚麼功能 - 即使同一device也可能提供不同功能<br>
+同步性(Concurrency)的使用 - 有眾多不同的實作方式</p>
+<blockquote>
+<p>補充:<br>
+(Concurrency vs Parallelism)<br>
+Concurrency : 多個人分解同一個工作，比如A負責洗菜、B負責炒菜、C負責上菜，會共用資源 ，實際例子:multi-thread<br>
+Parallelism : 多個人分別做同一個工作，比如A、B、C三條獨立又相同的生產線， 實際例子: 伺服器分流</p>
+</blockquote>
+<p><strong>重點: driver必須取捨 提供眾多的功能 與 撰寫的時間 與 複雜程度(error 發生率)</strong></p>
+<h1 id="kernel的工作">kernel的工作</h1>
+<p>Unix系統中，process會在執行時要求資源，比如計算能力、記憶體、網路連線 &hellip;<br>
+kernel(OS)就是一個大區塊的程式負責處理這些要求，並且大致可以分為</p>
+<ol>
+<li>
+<p>Process Management<br>
+kernal負責process的創造、消滅、處理IO， 甚至process之間的溝通(signal、pipe &hellip;)<br>
+除此之外也會掌管process的排程，決定誰可以使用CPU</p>
+</li>
+<li>
+<p>Memory Management
+Memory是重要的資源，kernel會建立一個虛擬位址供process使用，以管理、分配有限的資源 <br>
+不同的系統有不同的記憶體分配機制，從最簡單的malloc/free 到 更為複雜的功能</p>
+</li>
+<li>
+<p>File System
+萬物於Unix皆視為檔案， kernel會建立結構化的檔案系統於非結構化的硬體中<br>
+Unix也提供不同的檔案系統類型，比如Linux-standard ext3 、 FAT</p>
+</li>
+<li>
+<p>Divice Control
+幾乎所有的系統操作終端都是實體裝置，而操作執行device的code就稱為device driver， 這也是本書的重點</p>
+</li>
+<li>
+<p>Networking
+網路必須由OS管理，因為網路並不是一個特定process<br>
+在給特定process處理之前，傳送封包與非同步事件必須被管理、認證、分配</p>
+</li>
+</ol>
+<h1 id="loadable-modules">Loadable Modules</h1>
+<p>linux一個很好的功能就是可以在系統執行時增加、移除kernel的功能 <br>
+這些<strong>可被加入的程式碼片段被稱為module</strong>，而device driver也是其中之一</p>
+<p>這些module可以分別使用insmod與rmmod程式來加進、移出kernel</p>
+<p>下圖是個不同功能module的例子<br>
+<img class="img-zoomable" src="/misc/DD_1-1.PNG" alt="" />
+</p>
+<h1 id="classes-of-devices-and-modules">Classes of Devices and Modules</h1>
+<p>linux的module基本上可以分為三類</p>
+<ul>
+<li>char module</li>
+<li>block module</li>
+<li>network module
+分別對應到三種裝置類型</li>
+</ul>
+<h5 id="character-devices">character devices</h5>
+<p>可以取用stream of bytes (比如檔案)<br>
+應用於至少有open,close,read,write的system call<br>
+應用例子有 text console (/dev/console)  以及 serial port</p>
+<p>大多數character device只是資料流，所以無法往回 (printf buffer為例)</p>
+<h5 id="block-devices">Block devices</h5>
+<p>block device通常可以建立檔案系統 (比如disk)
+unix系統中block devices會以block為單位 (通常是512bytes)處理資料讀寫</p>
+<p>linux則是允許和char device一樣以byte為單位<br>
+因此兩者只差在kernel內部管理資料的方式</p>
+<h5 id="network-interface">Network interface</h5>
+<p>網路交換一定要通過網路介面，也就是與其他host交換資料一定要通過Network interface<br>
+通常這個interface是硬體，但也有軟體的例子，比如loopback interface</p>
+<blockquote>
+<p>補充 loopback interface<br>
+<a href="https://www.itread01.com/content/1546063053.html#:~:text=Linu%E6%94%AF%E6%8F%B4%E7%92%B0%E5%9B%9E%E4%BB%8B%E9%9D%A2,%E4%BB%8B%E9%9D%A2%EF%BC%8C%E4%B8%A6%E5%91%BD%E5%90%8D%E7%82%BAlocalhost%E3%80%82" target="_blank">參考這裡</a>
+簡單來說就是常見的localhost，也就是IP 127.x.x.x (A類網路) 的部分都會使用此介面
+以允許執行在<strong>同一臺主機</strong>上的客戶程式和伺服器程式通TCP/IP進行通訊</p>
+</blockquote>
+<p>network driver 不知道連線相關的東西，只負責處理封包<br>
+並且只有在需要data transmission時會被呼叫</p>
+<h3 id="其他分類">其他分類</h3>
+<p>driver也可以依對應到的裝置區分<br>
+比如USB(Universal serial bus) module、serial modules、 SCSI module &hellip;</p>
+<p>實例: 一個USB module可能是char , block 與 network<br>
+char :  usb serial port<br>
+block : usb memory card<br>
+network : usb Ethernet interface</p>
+<h1 id="安全議題">安全議題</h1>
+<p>seruity check會被kernel code執行<br>
+只有有權限的(authorized)user可以載入module， 由init_module進行檢查</p>
+<p>同時driver在寫入功能時也必須注意權限<br>
+當操作會使用global資源、可能消耗硬體、影響其他使用者時都必須要求執行權限</p>
+<p>也必須要注意比如</p>
+<ul>
+<li>buffer overrun等C語言容易犯的錯</li>
+<li>不要信任收到的input</li>
+<li>小心未初始化的memory，尤其是kernel掌管的memory (用完要清空，否則重要資訊(password、log)可能被偷)</li>
+<li>第三方的程式  (比如可能被鑽init_module的漏洞)</li>
+</ul>
+<h1 id="雜記">雜記</h1>
+<h3 id="版本號">版本號</h3>
+<p>所有的linux software package都有對應的版本號<br>
+要對應好相對的版本才能正確地執行，並且現代的package management基本上都會檢查相依性<br>
+<strong>本書使用2.6 kernel   至2020已更新到5.8.5</strong></p>
+<p>小常識: 通常偶數版本的kernel 是穩定版，奇數版本的kernel是開發版</p>
+<h3 id="license">License</h3>
+<p>linux Version 2 以後的版本都有GNU General Public Licence (GPL)驗證<br>
+讓任何人都可以重新發布、甚至販售以被GPL認證的東西為基礎的產品，並且接收方可以收到原始碼，也可以做一樣的事情</p>
+<h1 id="參考資料">參考資料</h1>
+<p><a href="https://lwn.net/Kernel/LDD3/">https://lwn.net/Kernel/LDD3/</a>
+chapter 1 : An Introdution to Device Drivers</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/dd">Device Driver系列</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">雜記區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

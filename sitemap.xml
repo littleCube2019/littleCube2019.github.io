@@ -3,11 +3,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://littlecube2019.github.io/unix/fsh/</loc>
-    <lastmod>2020-08-23T19:51:15+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://littlecube2019.github.io/index/unix/</loc>
     <lastmod>2020-08-23T19:51:15+08:00</lastmod>
   </url>
@@ -19,6 +14,11 @@
   
   <url>
     <loc>https://littlecube2019.github.io/index/hugo/</loc>
+    <lastmod>2020-08-20T00:02:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/index/dd/</loc>
     <lastmod>2020-08-20T00:02:13+08:00</lastmod>
   </url>
   
@@ -63,7 +63,27 @@
   </url>
   
   <url>
+    <loc>https://littlecube2019.github.io/unix/grep/</loc>
+    <lastmod>2020-08-23T19:51:15+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://littlecube2019.github.io/index/</loc>
+    <lastmod>2020-08-23T19:51:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/unix/fsh/</loc>
+    <lastmod>2020-08-23T19:51:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/misc/</loc>
+    <lastmod>2020-08-23T19:51:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/misc/os_basic/</loc>
     <lastmod>2020-08-23T19:51:15+08:00</lastmod>
   </url>
   
@@ -145,6 +165,21 @@
   <url>
     <loc>https://littlecube2019.github.io/hugo/sidebar/</loc>
     <lastmod>2020-08-20T00:10:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/misc/linux_driver_1/</loc>
+    <lastmod>2020-08-20T00:02:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/misc/linux_driver_2/</loc>
+    <lastmod>2020-08-20T00:02:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/misc/linux_driver_2_2/</loc>
+    <lastmod>2020-08-20T00:02:13+08:00</lastmod>
   </url>
   
   <url>

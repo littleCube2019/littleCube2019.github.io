@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>grep 與 regular expression - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="grep 與 regular expression" />
+<meta property="og:description" content="方便又高效的查找文字" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/unix/grep/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="grep 與 regular expression"/>
+<meta name="twitter:description" content="方便又高效的查找文字"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/unix/grep/">grep 與 regular expression</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="簡介">簡介</h1>
+<h3 id="grep">grep</h3>
+<p>grep 是unix 預設的程式，是global regular expression print 的縮寫<br>
+是 標準文字編輯器 的工具之一</p>
+<p>常用使用格式為 grep &ldquo;regex&rdquo; file<br>
+比如 grep &ldquo;apple&rdquo; file.txt</p>
+<h3 id="regular-expression-regex">regular expression (regex)</h3>
+<p>格式化的表達字串的方法<br>
+由字母集與特殊字元組成<br>
+特殊字元可以幫助表達式簡潔與有效<br>
+比如 . 代表任意一個字元</p>
+<p>也在使用vim 、 sed 等文字編輯時可以幫上忙  (比如substitute)</p>
+<h1 id="常用方法">常用方法</h1>
+<h3 id="跳脫字元-">跳脫字元 \</h3>
+<p>想要真的匹配特殊字元 (把他們當字元看待，而非所表示的功能)<br>
+可以加上 \<br>
+比如要匹配 .<br>
+就必須用 \.</p>
+<p>另外，當匹配認不出以下功能時，也可以試著加跳脫字元看看<br>
+比如\?</p>
+<h3 id="任意一字元">任意一字元</h3>
+<p>. 可以表達任一字元<br>
+比如 &ldquo;f.x&rdquo;<br>
+可以表示 fox , fax, fex ,fbx &hellip;.</p>
+<h3 id="0-or-多個字元">0 or 多個字元</h3>
+<p>C* 可以表達0個 或多個字元C<br>
+比如 &ldquo;fo*x&rdquo;<br>
+可以表示 fx ,fox,foox,fooox &hellip;.</p>
+<h3 id="1-or-多個字元">1 or 多個字元</h3>
+<p>C+  可以表示表示1個或多個字元C<br>
+類似於*，只是會要求至少出現一次</p>
+<h3 id="頭尾配對--">頭尾配對 $ ^</h3>
+<p>C$ 匹配結尾為C的字串<br>
+^C 匹配開頭為C的字串</p>
+<p>比如 &quot;&rdquo;</p>
+<h3 id="非空格s---空格s">非空格\S   空格\s</h3>
+<p>比如 &ldquo;.*oomer&rdquo;<br>
+會包含the consoomer<br>
+但是 &ldquo;\S*oomer&rdquo;<br>
+則只會匹配consoomer</p>
+<h3 id="optional--">optional  \?</h3>
+<p>C\? ，則會匹配有C的以及沒有C的<br>
+比如 &ldquo;https\?&rdquo;<br>
+則 http , https 都會被匹配</p>
+<h3 id="範圍">範圍</h3>
+<p>[a-b] 對有序列的字串表示從a到b<br>
+比如 
+[0-5]  0~5
+[0-9]  所有數字
+[a-z]  所有小寫字母 
+[A-Za-z] 所有字母</p>
+<h1 id="整合應用">整合應用</h1>
+<h3 id="所有大寫開頭大寫結尾的字串">所有大寫開頭，大寫結尾的字串?</h3>
+<p>&ldquo;^[A-Z].*[A-Z]$&rdquo;</p>
+<h1 id="參考資料">參考資料</h1>
+<p>Regular Expressions (Regex): All the Basics - luke smith<br>
+<a href="https://www.youtube.com/watch?v=77I4ZkhuHsQ&amp;t=229s">https://www.youtube.com/watch?v=77I4ZkhuHsQ&amp;t=229s</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/dd">Device Driver系列</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">雜記區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

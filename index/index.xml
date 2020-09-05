@@ -39,6 +39,16 @@
     </item>
     
     <item>
+      <title>Linux Device Driver系列</title>
+      <link>https://littlecube2019.github.io/index/dd/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/dd/</guid>
+      <description>為了精進了解虛幻的OS，2020暑假所研讀的項目之一
+ 關於linux device driver 簡介 建置與使用modules (上) 建置與使用modules (下)  </description>
+    </item>
+    
+    <item>
       <title>雜項筆記</title>
       <link>https://littlecube2019.github.io/index/misc/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>

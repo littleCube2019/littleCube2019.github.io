@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Linux Device Driver系列 2 (下) - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Linux Device Driver系列 2 (下)" />
+<meta property="og:description" content="建置與使用modules" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/misc/linux_driver_2_2/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux Device Driver系列 2 (下)"/>
+<meta name="twitter:description" content="建置與使用modules"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/misc/linux_driver_2_2/">Linux Device Driver系列 2 (下)</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p><a href="/misc/linux_driver_2">延續上一篇</a></p>
+<h1 id="錯誤處理">錯誤處理</h1>
+<p>把device item (通常會用指標指向一個struct表示)加入kernel的過程，也就是註冊(registeration)，(此刻會在 /dev/ 目錄底下建立一個檔案)，是可能失敗的，比如要求的記憶體目前不可用<br>
+所以必須時刻確認呼叫module的return value，確認行為都是正確執行的</p>
+<h3 id="goto">goto</h3>
+<p>一般而言goto會破壞程式的可讀性與架構<br>
+但在錯誤處理時卻是比較簡明的寫法 (比如 try , catch , try expect &hellip;)</p>
+<p>以下為註冊ini函式練習</p>
+<pre><code>int __init my_init_function(void)
+{
+ int err;
+ /* registration takes a pointer and a name */
+ err = register_this(ptr1, &quot;skull&quot;);
+ if (err) goto fail_this;
+ err = register_that(ptr2, &quot;skull&quot;);
+ if (err) goto fail_that;
+ err = register_those(ptr3, &quot;skull&quot;);
+ if (err) goto fail_those;
+ return 0; /* success */
+ fail_those: unregister_that(ptr2, &quot;skull&quot;);
+ fail_that: unregister_this(ptr1, &quot;skull&quot;);
+ fail_this: return err; /* propagate the error */
+ }
+</code></pre><p>這邊要注意， return 值被稱為__error code__<br>
+被定義於 linux/errno.h 中<br>
+通常是負數， (也就是為甚麼main function會return 0)<br>
+這些負數值在顯示時，user programs一般都會轉換成有意義的錯誤訊息字串</p>
+<p>當然，如果今天要註冊的item很多或很複雜，可以額外一個cleanup function<br>
+在error發生時，goto這個function</p>
+<h3 id="race-condition">race condition</h3>
+<p>要注意就算是這個module註冊的設備，也很有可能被其他module拿去使用<br>
+所以最好是在註冊完立刻使用，也就是說，<strong>最好在要使用時才註冊</strong></p>
+<h1 id="module-parameters">Module parameters</h1>
+<p>module可以透過insmod , modprobe在插入時接收參數，如 <br>
+<code>insmod hellop howmany=10 whom=&quot;Mom</code><br>
+可以泛化為<br>
+<code>insmod &lt;module&gt; &lt;arg1&gt;=xxx &lt;arg2&gt;=xxx ...</code></p>
+<p>module也可以在內部傳這些參數<br>
+要透過moduleparam.h 的module_param 巨集函數<br>
+會接收，variable name , type , permissions mask<br>
+比如 <code>module_param(howmany, int, S_IRUGO);</code></p>
+<h3 id="parameter-type">parameter type</h3>
+<ul>
+<li>bool</li>
+<li>invbool
+invert bool , 真值會為false , 假值會為true</li>
+<li>charp
+char pointer value,存user-provided strings</li>
+<li>int</li>
+<li>long</li>
+<li>short</li>
+<li>uint</li>
+<li>ulong</li>
+<li>ushort<br>
+比uint還短的整數</li>
+</ul>
+<h3 id="array">array</h3>
+<p>格式<br>
+module_param_array(name,type,num,perm);<br>
+分別收 陣列名、元素型態、元素個數、permissions value</p>
+<h3 id="permission-value">permission value</h3>
+<p>可以參考 linux/stat.h<br>
+可以決定該變數的存取權<br>
+比如 perm == 0 L 沒有任何sysfs entry(文件系統)<br>
+perm == S_IRUGO 則大家都可以使用，但不能修改<br>
+perm == S_IRUGO|S_IWUSR 則root可以修改</p>
+<p>通常都會不允許修改</p>
+<h1 id="參考資料">參考資料</h1>
+<p>Ch2: Building and Running Modules<br>
+<a href="https://lwn.net/Kernel/LDD3/">https://lwn.net/Kernel/LDD3/</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/dd">Device Driver系列</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">雜記區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

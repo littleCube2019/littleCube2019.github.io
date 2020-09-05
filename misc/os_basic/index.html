@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>OS Basic(依Neso Academy影片筆記)  - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="OS Basic(依Neso Academy影片筆記) " />
+<meta property="og:description" content="參考OS公開課所做的筆記" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/misc/os_basic/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OS Basic(依Neso Academy影片筆記) "/>
+<meta name="twitter:description" content="參考OS公開課所做的筆記"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/misc/os_basic/">OS Basic(依Neso Academy影片筆記) </a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="基礎">基礎</h1>
+<h3 id="簡介">簡介</h3>
+<p>OS是管理 hardware 的 program<br>
+並且提供Application program的基礎，達到中介(intermediray) 使用者 與 電腦硬體<br>
+<img class="img-zoomable" src="/misc/os_basic_1.PNG" alt="" />
+</p>
+<ul>
+<li>
+<p>如上圖，分層可以分為<br>
+User<br>
+System/Application program   (文字處理器、編譯器、瀏覽器 &hellip;)<br>
+OS<br>
+Hardware  (* IO devices 比如麥克風、音響、螢幕、鍵盤 &hellip;.)</p>
+</li>
+<li>
+<p>比如打開一個word要編輯文件，word會和要<strong>disc</strong>的資料，並且輸出在<strong>螢幕</strong>上，改動後要存回<strong>disc</strong> ， 這些都會用到Hardware。<br>
+而OS，可以提供一個泛化的<strong>接口</strong>，避免我們需要為每一個任務寫一種source code</p>
+</li>
+<li>
+<p>User可以簡單、抽象化的打開、使用應用程式，調用硬體會交給OS (比如要求資料、分配記憶體)</p>
+</li>
+</ul>
+<h3 id="os的目標與功能">OS的目標與功能</h3>
+<p>目標: 追求方便 與 效率<br>
+比如windows偏重方便，linux偏重效率<br>
+功能:</p>
+<ol>
+<li>User 與 hardware 的中介</li>
+<li>分配資源 (allocation of resources)</li>
+<li>管理記憶體、安全 &hellip;</li>
+</ol>
+<h1 id="電腦硬體架構">電腦硬體架構</h1>
+<p>理解OS之前，可以先了解電腦的硬體架構<br>
+現代的泛用(general-purpose)電腦由一或多個CPU、 device controller ，bus , shared memory 所組成<br>
+其中bus會連接CPU、device controller 到shared memory<br>
+<img class="img-zoomable" src="/misc/os_basic_1.PNG" alt="" />
+</p>
+<h3 id="重要名詞">重要名詞</h3>
+<ul>
+<li>Bootstrap program :<br>
+在開機時最一開始被執行的程式，被儲存於ROM中<br>
+必須要load OS 與執行OS系統<br>
+需要載入OS kernel進入memory</li>
+<li>Interrupt :<br>
+Hardware 與 software 偵測到事件時，會傳送給OS的訊號<br>
+(Hardware 會由bus傳送訊號)<br>
+當CPU接受interrupt， 會終止手邊的工作，跳到handler的記憶體位址</li>
+<li>system call : 
+software向OS kernel傳送interrupt，要求更高權限運行的服務</li>
+</ul>
+<h1 id="參考資料">參考資料</h1>
+<ul>
+<li>Introduction to Operating System<br>
+<a href="https://www.youtube.com/watch?v=vBURTt97EkA&amp;list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O">https://www.youtube.com/watch?v=vBURTt97EkA&amp;list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O</a></li>
+</ul>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/dd">Device Driver系列</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">雜記區</a>
+                
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>
