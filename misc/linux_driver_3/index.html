@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Char Driver 實作 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Char Driver 實作" />
+<meta property="og:description" content="實作char driver" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/misc/linux_driver_3/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Char Driver 實作"/>
+<meta name="twitter:description" content="實作char driver"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/misc/linux_driver_3/">Char Driver 實作</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>char driver相較其他兩者較為簡單<br>
+本章將以scull (Simple Character Utility for Loading Locality)為例介紹char driver</p>
+<h1 id="sucll">sucll</h1>
+<p>所謂scull，是以<strong>一塊記憶體</strong>為裝置的char driver<br>
+scull 無關硬體，只與被kernel分配的記憶體互動</p>
+<h3 id="設計">設計</h3>
+<p>scull可以作為使用computer memory 的driver的基礎<br>
+同時scull有多種type，<a href="https://yunlinsong.blogspot.com/2016/01/scull-sample-from-ldd3.html" target="_blank">可以參考這裡</a></p>
+<ul>
+<li>Note: 可以看到各種scull非常有記憶體的影子</li>
+</ul>
+<h3 id="major-and-minor-number">Major and Minor Number</h3>
+<p>在/dev ls -l 可以看到每行檔案(or 資料夾)最開頭有英文字或-，代表其檔案類型<br>
+<img class="img-zoomable" src="/misc/DD_3-1.PNG" alt="" />
+</p>
+<blockquote>
+<p>-  代表一般檔案<br>
+d  代表目錄<br>
+b  block driver<br>
+c  character driver<br>
+l  linking file (超連結)<br>
+p  pipeline file<br>
+s  socket file</p>
+</blockquote>
+<p>而c就表示char driver，也就是我們本章的目標</p>
+<p>其中另一區，修改時間前面的兩個數字，就是Major 與 minor number<br>
+Majar number 表達了該device (Review : device在linux中皆為檔案)<br>
+被哪一個driver管理，舉例而言:<br>
+vcs1 and vcsa1 devices 皆被 driver 7 管理</p>
+<p>minor number 則是用來區分具體裝置的，就像是旅館名-房號決定一個房間<br>
+major number + minor number 也決定一個裝置</p>
+<p>在2.6版本，通常會用dev_t這個資料結構紀錄device number , 也會有對應的函式取用<br>
+但有可能未來版本會更動</p>
+<h4 id="寫char-driver第一步就是取得使用的裝置number">寫char driver第一步就是取得使用的裝置number</h4>
+<p>利用</p>
+<pre><code>int register_chrdev_region(dev_t first, unsigned int count,
+ char *name);
+</code></pre><p>實現，其中first是該裝置第一個device number ， 而count會往後要多個device(依device number連續往下)
+name則是為這一段device 取名 ，最後會出現於 /proc/devices  和  sysfs</p>
+<ul>
+<li>Note: 如我count太大，可能會spill到其他major number (旅館房間裝不下，借其他旅館)<br>
+此時只要有足夠的可用device，就沒有問題(其他旅館與原先旅館是相同的，就沒有問題)<br>
+但大多數情況下，因為不曉得major number，而會使用</li>
+</ul>
+<pre><code>int alloc_chrdev_region(dev_t *dev, unsigned int firstminor,
+ unsigned int count, char *name);
+</code></pre><p>來分配，其中dev是輸出型parameter，最後值會被改成allocated range的第一個數字<br>
+firstminor 則是第一個minor number，通常為0<br>
+剩下與register無異</p>
+<p>動態的用alloc分配也可以避免很多衝突與麻煩</p>
+<p>當然，使用完成也需要call 
+<code> unregister_chrdev_region(dev_t first, unsigned int count);</code> <br>
+來釋放資源  (通常放在exit function)</p>
+<h1 id="三大常見資料結構">三大常見資料結構</h1>
+<h3 id="-file-operations">* File Operations</h3>
+<p>通常會把file 視為物件，file operation視為其method，這種OOP概念在linux kernel 中很常見<br>
+file_operations 通常用 fops 簡稱<br>
+這個結構裡大多數欄位都是一個<strong>指向一個file operation function的指標</strong>  (若沒有支援會留下NULL，而每個欄位對NULL的應對方式又有所不同)<br>
+以下是一些重點欄位介紹</p>
+<ul>
+<li>
+<p>struct module *owner<br>
+指向&quot;擁有&quot;這個結構的module，防止module被卸載後，結構裡的操作函式還在被使用<br>
+通常直接給THIS_MODULE即可</p>
+</li>
+<li>
+<p>loff_t (*llseek) (struct file *, loff_t, int);<br>
+用於<strong>移動檔案當下讀/寫位置</strong>，而後會回傳一個新位置(正數，負數代表錯誤) 
+loff_t代表long offset，至少是64bits 長<br>
+如果是NULL會有無法預測的行為發生</p>
+</li>
+<li>
+<p>ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);<br>
+取用device的data<br>
+如果是NULL會造成fail<br>
+會回傳成功讀取多少byte</p>
+</li>
+<li>
+<p>ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);<br>
+送資料到device<br>
+如果是NULL會造成fail<br>
+會回傳成功寫入多少byte</p>
+</li>
+<li>
+<p>int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);
+ioctl (input/output control)<br>
+是一種system call 提供針對特定裝置的操作(device-specific)指令<br>
+比如格式化某個機械式硬碟的track<br>
+如果裝置為提供這種操作，會回傳error</p>
+</li>
+<li>
+<p>int (*open) (struct inode *, struct file *);
+雖然這是device file的第一個操作 (一定要先開檔才有後續操作)<br>
+但是是可以給NULL的，此時總是會成功開啟device，然而這種情況下driver不會收到通知</p>
+</li>
+<li>
+<p>int (*release) (struct inode *, struct file *);
+與open相對的關檔<br>
+也是可以給NULL</p>
+</li>
+</ul>
+<p>其他還有很多函式，可以參考本書章節<br>
+這裡列出的就是基本的scull會用到的操作</p>
+<pre><code>struct file_operations scull_fops = {
+ .owner = THIS_MODULE,
+ .llseek = scull_llseek,
+ .read = scull_read,
+ .write = scull_write,
+ .ioctl = scull_ioctl,
+ .open = scull_open,
+ .release = scull_release,
+};
+
+</code></pre><h3 id="-file">* File</h3>
+<p>file 結構代表一個正開啟的檔案<br>
+(不一定是device driver ，<strong>每一個開啟的file 在kernel space 都有一個對應的file 結構</strong>)</p>
+<p>一個指向file的指標被稱為filp或file</p>
+<p>介紹幾個常見欄位，剩下一樣參考原書</p>
+<ul>
+<li>
+<p>mode_t f_mode<br>
+決定可讀、可寫權限，通常會用macro FMODE_READ and FMODE_WRITE 賦值</p>
+</li>
+<li>
+<p>loff_t f_pos;<br>
+當下的讀寫位址</p>
+</li>
+<li>
+<p>void *private_data;<br>
+通常在open時被設定<br>
+可以記錄一些module的狀態，或是自由地給使用者運用<br>
+在release時記得free就好</p>
+</li>
+</ul>
+<h3 id="-inode">* inode</h3>
+<p>是kernel內部表示一個檔案，與file 不同的是，一個檔案可以有多種file表達(比如read、write模式)，
+但一定只有一個inode</p>
+<p>只有兩個與driver 相關feild</p>
+<ul>
+<li>dev_t i_rdev<br>
+也就是inode代表的device file，這裡會填上device major number</li>
+<li>struc cdev * i_cdev</li>
+</ul>
+<p>在2.5版以後也可以藉由傳inode pointer 來完成device的解除註冊</p>
+<h1 id="char-device註冊">char device註冊</h1>
+<p>引入linux/cdev.h</p>
+<p>void cdev_init(struct cdev *cdev, struct file_operations *fops);<br>
+輸入一個cdev與其對應的操作</p>
+<p>int cdev_add(struct cdev *dev, dev_t num, unsigned int count);<br>
+告訴kernel cdev的存在</p>
+<p>void cdev_del(struct cdev *dev);<br>
+當要移除的時候使用</p>
+<h1 id="開關檔函式練習">開關檔函式練習</h1>
+<h3 id="open">open</h3>
+<p>open其實不只有開檔，還需要</p>
+<ul>
+<li>檢查是否發生裝置特定的錯誤</li>
+<li>初始化裝置</li>
+<li>如果需要的話，更新f_op pointer</li>
+<li>分配給需要filp-&gt;private_data的資料結構</li>
+</ul>
+<pre><code>int scull_open(struct inode *inode, struct file *filp)
+{
+ struct scull_dev *dev; /* device information */
+ dev = container_of(inode-&gt;i_cdev, struct scull_dev, cdev);
+ filp-&gt;private_data = dev; /* for other methods */
+ /* now trim to 0 the length of the device if open was write-only */
+ if ( (filp-&gt;f_flags &amp; O_ACCMODE) = = O_WRONLY) {
+ scull_trim(dev); /* ignore errors */
+ }
+ return 0; /* success */
+}
+
+</code></pre><p>其中container_of(inode-&gt;i_cdev, struct scull_dev, cdev);<br>
+是一個改良後得巨集<br>
+代替原本的開檔(open函式指標)，回傳sucll_dev的結構</p>
+<h3 id="release">release</h3>
+<p>release需要負責</p>
+<ul>
+<li>回收分配給filp-&gt;private的東西</li>
+<li>關閉使用的硬體裝置</li>
+</ul>
+<pre><code>int scull_release(struct inode *inode, struct file *filp)
+{
+ return 0;
+}
+</code></pre><p>release則是因為沒有需要關閉的硬體，所以簡單return 0就好</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

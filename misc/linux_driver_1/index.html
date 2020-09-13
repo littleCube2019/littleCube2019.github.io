@@ -139,21 +139,21 @@ kernal負責process的創造、消滅、處理IO， 甚至process之間的溝通
 除此之外也會掌管process的排程，決定誰可以使用CPU</p>
 </li>
 <li>
-<p>Memory Management
+<p>Memory Management<br>
 Memory是重要的資源，kernel會建立一個虛擬位址供process使用，以管理、分配有限的資源 <br>
 不同的系統有不同的記憶體分配機制，從最簡單的malloc/free 到 更為複雜的功能</p>
 </li>
 <li>
-<p>File System
+<p>File System<br>
 萬物於Unix皆視為檔案， kernel會建立結構化的檔案系統於非結構化的硬體中<br>
 Unix也提供不同的檔案系統類型，比如Linux-standard ext3 、 FAT</p>
 </li>
 <li>
-<p>Divice Control
+<p>Divice Control<br>
 幾乎所有的系統操作終端都是實體裝置，而操作執行device的code就稱為device driver， 這也是本書的重點</p>
 </li>
 <li>
-<p>Networking
+<p>Networking<br>
 網路必須由OS管理，因為網路並不是一個特定process<br>
 在給特定process處理之前，傳送封包與非同步事件必須被管理、認證、分配</p>
 </li>
@@ -170,14 +170,14 @@ Unix也提供不同的檔案系統類型，比如Linux-standard ext3 、 FAT</p>
 <ul>
 <li>char module</li>
 <li>block module</li>
-<li>network module
+<li>network module<br>
 分別對應到三種裝置類型</li>
 </ul>
 <h5 id="character-devices">character devices</h5>
 <p>可以取用stream of bytes (比如檔案)<br>
 應用於至少有open,close,read,write的system call<br>
 應用例子有 text console (/dev/console)  以及 serial port</p>
-<p>大多數character device只是資料流，所以無法往回 (printf buffer為例)</p>
+<p>大多數character device只是資料流，所以無法往回 (printf buffer為例)  (以序列為主，主要用於滑鼠、鍵盤、終端機&hellip; <a href="https://bluelove1968.pixnet.net/blog/post/222283825" target="_blank">參考這裡</a>)</p>
 <h5 id="block-devices">Block devices</h5>
 <p>block device通常可以建立檔案系統 (比如disk)
 unix系統中block devices會以block為單位 (通常是512bytes)處理資料讀寫</p>
@@ -251,38 +251,38 @@ chapter 1 : An Introdution to Device Drivers</p>
         <ul>
             
             <li>
-                <a href="/index/dd">Device Driver系列</a>
-                
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/hugo">hugo相關區</a>
-                
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/unix">Unix/Vim/bash區</a>
-                
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/web">網頁與爬蟲相關區</a>
-                
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/misc">雜記區</a>
-                
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/course">課程筆記備份區</a>
-                
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
                      
             </li>
             

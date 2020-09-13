@@ -40,12 +40,16 @@
     
     <item>
       <title>Linux Device Driver系列</title>
-      <link>https://littlecube2019.github.io/index/dd/</link>
+      <link>https://littlecube2019.github.io/index/device_driver/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
       
-      <guid>https://littlecube2019.github.io/index/dd/</guid>
-      <description>為了精進了解虛幻的OS，2020暑假所研讀的項目之一
- 關於linux device driver 簡介 建置與使用modules (上) 建置與使用modules (下)  </description>
+      <guid>https://littlecube2019.github.io/index/device_driver/</guid>
+      <description>為了精進、了解虛幻的OS所研讀的項目之一
+  關於linux device driver 簡介
+  建置與使用modules (上)
+  建置與使用modules (下)
+  Char Driver 實作 
+  </description>
     </item>
     
     <item>
@@ -229,6 +233,15 @@
     </item>
     
     <item>
+      <title>Char Driver 實作</title>
+      <link>https://littlecube2019.github.io/misc/linux_driver_3/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/linux_driver_3/</guid>
+      <description>實作char driver</description>
+    </item>
+    
+    <item>
       <title>Linux Device Driver系列 1</title>
       <link>https://littlecube2019.github.io/misc/linux_driver_1/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
@@ -253,6 +266,24 @@
       
       <guid>https://littlecube2019.github.io/misc/linux_driver_2_2/</guid>
       <description>建置與使用modules</description>
+    </item>
+    
+    <item>
+      <title>Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)</title>
+      <link>https://littlecube2019.github.io/misc/markov_decision_processes_1/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/markov_decision_processes_1/</guid>
+      <description>線上影片筆記</description>
+    </item>
+    
+    <item>
+      <title>底層函式介紹 - process相關</title>
+      <link>https://littlecube2019.github.io/misc/process/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/process/</guid>
+      <description>fork , wait, exec unix底層與process函式 簡介</description>
     </item>
     
     <item>

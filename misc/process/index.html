@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>底層函式介紹 - process相關 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="底層函式介紹 - process相關" />
+<meta property="og:description" content="fork , wait, exec unix底層與process函式 簡介" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/misc/process/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="底層函式介紹 - process相關"/>
+<meta name="twitter:description" content="fork , wait, exec unix底層與process函式 簡介"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/misc/process/">底層函式介紹 - process相關</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="fork">fork</h1>
+<p>位於unistd.h中 <br>
+fork()會複製一個子process，和原process一模一樣，並且是由被呼叫的fork()的下一行開始執行<br>
+如果是child的fork()，會回傳0 ，如果是parent的fork(), 會回傳新創造的child的process id</p>
+<p>注意child 會完全和parent共用一樣底層資源(register,file , program counter )</p>
+<h3 id="例一--指數增長的fork">例一 : 指數增長的fork()</h3>
+<p><img class="img-zoomable" src="/misc/p_1.PNG" alt="" />
+<br>
+Q1:共有多少個process被執行?<br>
+A1: 8次<br>
+<img class="img-zoomable" src="/misc/p_2.PNG" alt="" />
+<br>
+也可以換個角度，用從第幾個fork()產生的process就會變成二元樹<br>
+<img class="img-zoomable" src="/misc/p_3.PNG" alt="" />
+</p>
+<p>Q2: x 會有多少種可能? <br>
+A2: 一種 (x只會印1)<br>
+因為雖然資源相同，但不同process會有不同的記憶體，區域變數是不會共用的</p>
+<h3 id="例二--parent-or-child">例二 : parent or child</h3>
+<p><img class="img-zoomable" src="/misc/p_4.PNG" alt="" />
+<br>
+這是常用判斷child 還是 parent的條件式</p>
+<p>有趣的點有兩個</p>
+<ol>
+<li>即使child 繼承pid，也還是得到0</li>
+<li>child , parent 不一定誰先執行完  (兩者同時存在，看排程)</li>
+</ol>
+<h1 id="wait">wait</h1>
+<p>上例中為了克服有趣的點2，也就是避免parent比child還早結束 (可能有非預期結果)<br>
+因此通常會為parent 加上wait()函式<br>
+位於sys/wait.h 中</p>
+<h3 id="例子">例子</h3>
+<p><img class="img-zoomable" src="/misc/p_5.PNG" alt="" />
+</p>
+<h1 id="exec-系列">exec 系列</h1>
+<p>共有六個函式 位於unistd.h中
+<img class="img-zoomable" src="/misc/p_6.PNG" alt="" />
+ <br>
+功能皆為<strong>以其他程式替代child的執行</strong>，因為C語言沒有overload，所以才會有六個以應付各種情況</p>
+<p>通常參數會吃執行檔案、命令引數、環境變數<br>
+比如執行 ls -l ~/test<br>
+執行檔案為ls指令，也就是 &ldquo;/usr/bin/ls&rdquo;<br>
+命令引數為 &ldquo;ls&rdquo; , &ldquo;-l&rdquo; , &ldquo;~/test&rdquo; , NULL   (以空格split的字串陣列,並且最後填NULL表示結束)<br>
+環境變數比如 <code>char * env[] = {&quot;PATH=/home/gateman&quot;, &quot;USER=lei&quot;, &quot;STATUS=testing&quot;, NULL};</code></p>
+<p>變數命名規則</p>
+<p><img class="img-zoomable" src="/misc/p_7.PNG" alt="" />
+</p>
+<h3 id="例子--ls--l">例子 : ls -l</h3>
+<p><img class="img-zoomable" src="/misc/p_8.PNG" alt="" />
+<br>
+<img class="img-zoomable" src="/misc/p_9.PNG" alt="" />
+<br>
+重點1:<br>
+execlp在中途就修改程式，將其變更為ls，所以並不會印出&quot;world&rdquo;<br>
+重點2:<br>
+了解參數格式:<br>
+execlp的後綴p，讓參數可以不用加path，程式會主動至$PATH搜尋<br>
+命令引數的確就是一串string陣列最後接上NULL</p>
+<h1 id="fork-exec">fork-exec</h1>
+<p>這兩步驟指令可以說是unix系統大多數process誕生的方法<br>
+這裡先介紹process</p>
+<h3 id="process">process</h3>
+<p>program 是程式設計師所寫的code<br>
+process則是program 載入記憶體執行的狀態  (an instance of a computer program that is being executed)</p>
+<p>一個process通常會記錄其   (使用ps指令可以觀察)<br>
+PID  (獨特ID，也是其資訊記錄於/proc中的檔名)<br>
+PPID (parent pid)<br>
+TTY  (屬於哪個terminal session)<br>
+UID  (哪位使用者擁有)<br>
+ARGS (當下程式引數)</p>
+<p>process結束時總是會給一個exit code <br>
+介於0~255可以表達結束的狀態<br>
+比如C/C++常用的return 0 就是正常結束</p>
+<h3 id="process誕生">process誕生</h3>
+<p>透過fork - exec的步驟<br>
+比如執行ls指令<br>
+會先呼叫bash，然後fork一份bash的code，最後再exec ls指令</p>
+<p>幾乎所有unix系統程式都是由init (PID==1) 這支程式所fork - exec 的<br>
+而init是開機後一定會啟動的一隻程式 <br>
+由於是掌管系統的重要角色它甚至能忽略terminate的signal</p>
+<p>如果parent先於child結束<br>
+若child已執行完畢，就會無法回收child的資源(pid table上仍有它)，被稱為<strong>Zombie</strong><br>
+若child仍在執行，被稱為<strong>orphan</strong>  (通常被發現後會由init收養)</p>
+<h3 id="signal">signal</h3>
+<p>process之間傳送訊息的方法</p>
+<p>通常使用kill 函式傳送<br>
+(kill 雖然一開始被設計為關閉程式，但後來單純用於傳送signal)</p>
+<p>可以使用kill -l 查看所有signal</p>
+<p>真正意義上的kill (terminate the process) 是9號訊息<br>
+可以使用 kill -9  &lt;pid&gt;<br>
+也可以使用 kill -SIGKILL &lt;pid&gt; 或者 kill -KILL &lt;pid&gt;<br>
+當然最常用的傳送方式是Ctrl+C</p>
+<h1 id="參考資料">參考資料</h1>
+<p><a href="https://www.itread01.com/content/1546349244.html">https://www.itread01.com/content/1546349244.html</a>
+<a href="https://ntust-csie-islab.github.io/107-OS-homework1/B10402113/">https://ntust-csie-islab.github.io/107-OS-homework1/B10402113/</a><br>
+<a href="https://www.cntofu.com/book/46/linux_system/linuxxi_tong_bian_cheng_zhi_jin_cheng_ff08_wu_ff09.md">https://www.cntofu.com/book/46/linux_system/linuxxi_tong_bian_cheng_zhi_jin_cheng_ff08_wu_ff09.md</a>
+<a href="https://www.brianstorti.com/an_introduction_to_unix_processes/">https://www.brianstorti.com/an_introduction_to_unix_processes/</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

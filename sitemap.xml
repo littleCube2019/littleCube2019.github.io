@@ -18,7 +18,7 @@
   </url>
   
   <url>
-    <loc>https://littlecube2019.github.io/index/dd/</loc>
+    <loc>https://littlecube2019.github.io/index/device_driver/</loc>
     <lastmod>2020-08-20T00:02:13+08:00</lastmod>
   </url>
   
@@ -168,6 +168,11 @@
   </url>
   
   <url>
+    <loc>https://littlecube2019.github.io/misc/linux_driver_3/</loc>
+    <lastmod>2020-08-20T00:02:13+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://littlecube2019.github.io/misc/linux_driver_1/</loc>
     <lastmod>2020-08-20T00:02:13+08:00</lastmod>
   </url>
@@ -179,6 +184,16 @@
   
   <url>
     <loc>https://littlecube2019.github.io/misc/linux_driver_2_2/</loc>
+    <lastmod>2020-08-20T00:02:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/misc/markov_decision_processes_1/</loc>
+    <lastmod>2020-08-20T00:02:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/misc/process/</loc>
     <lastmod>2020-08-20T00:02:13+08:00</lastmod>
   </url>
   

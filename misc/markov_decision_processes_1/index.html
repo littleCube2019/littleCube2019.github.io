@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上) - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)" />
+<meta property="og:description" content="線上影片筆記" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/misc/markov_decision_processes_1/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)"/>
+<meta name="twitter:description" content="線上影片筆記"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/misc/markov_decision_processes_1/">Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>以一個決策問題開場</p>
+<p>Q: 如何用最少的時間到達山景城?</p>
+<ol>
+<li>腳踏車</li>
+<li>開車</li>
+<li>uber</li>
+<li>飛行</li>
+</ol>
+<p>search problem:<br>
+以自動機的角度，目前就是輸入狀態s 與 行為a，轉移到新狀態Succ(s,a)</p>
+<p>問題是現實問題中，一組(s,a)可能有隨機不同的結果<br>
+比如 <br>
+機械手臂  決定移動軌跡，但可能有未預期的障礙 <br>
+農業 決定種植甚麼作物，但可能有未預期的天氣</p>
+<p>例子1:移動遊戲<br>
+影片中以一支的程式講解，其中各格會有獎勵與懲罰來講解<br>
+比如遇到岩漿 -50 ,到達目的 +20<br>
+並且可以調整隨機掉入岩漿的參數</p>
+<p>例子2: 擲骰子<br>
+另一支的程式遊戲<br>
+每一回合可以選擇留下 或 離開 <br>
+離開可以得到10塊，並結束遊戲 <br>
+留下可以獲得4塊，並且投一次六面骰子<br>
+如果骰出1、2，則結束遊戲，反之進入下一回合<br>
+<img class="img-zoomable" src="/misc/markov_1_1.PNG" alt="" />
+<br>
+其中虛紅線被稱為<strong>chance node</strong>， 即轉移後的狀態是有機率性的<br>
+以此例而言，進入遊戲有可能輸，也有可能贏 <br>
+並且就算結果存在100%也可以當chance node</p>
+<p>這些例子中都可以使用期待值，來求出<strong>optimal policy</strong><br>
+所謂policy，就是一連串的狀態轉移  (狀態,行為,新狀態)</p>
+<h1 id="markvoc-decision-process-定義">Markvoc Decision Process 定義</h1>
+<h3 id="markvoc-decision-process-定義--search-problem加上未定機率轉移">Markvoc Decision Process 定義  (search problem加上未定機率轉移)</h3>
+<ul>
+<li>T(s,a,s&rsquo;)  移動發生的機率<br>
+從s採取a行為後，到達s&rsquo;的機率<br>
+以上例而言<br>
+<img class="img-zoomable" src="/misc/markov_1_2.PNG" alt="" />
+</li>
+</ul>
+<p>很明顯的 固定s,a 對s&rsquo;求和必為1</p>
+<ul>
+<li>R(s,a,s&rsquo;)   獎勵  (通常會追求這個最大化)</li>
+<li>0 &lt;= <!-- raw HTML omitted -->γ &lt;= 1  discount  (通常為1)</li>
+</ul>
+<h3 id="search-problem-定義">search problem 定義:</h3>
+<p>States : 一群狀態的集合<br>
+s_start 屬於 States : 初始狀態<br>
+Action(s): 所有可能在狀態s下採取的行動<br>
+Succ(s,a): 在s狀態採取a後會到的新狀態s&rsquo;   	=&gt; 對應轉移機率T(s,a,s&rsquo;)<br>
+Cost(s,a): 在s狀態採取a後的成本  	=&gt; 對應獎勵 R(s,a,s&rsquo;)<br>
+IsEnd(s): 判定s是否為終點狀態</p>
+<p>接下來影片使用一個問題與實際程式碼講解<br>
+問題:<br>
+有N段路<br>
+從N ~ N+1 要花一分鐘 (walk)<br>
+從N ~ 2N 要兩分鐘，並可能有0.5機率失敗 (tram)</p>
+<p>程式會用一個物件包住上述的函式</p>
+<h3 id="what-is-solution">What is solution</h3>
+<p>就搜尋問題而言，解就是狀態圖中從起始位置到終點位置的path , aka一連串狀態轉移<br>
+對MDP而言，解是policy，policy是一個將狀態映射到行動的函式</p>
+<h1 id="policy-evaluation">Policy evaluation</h1>
+<p>用衡量來決定policy的好壞</p>
+<h3 id="定義-utility">定義: utility</h3>
+<p>policy會創造一個隨機路徑<br>
+utility會將這條路徑上的reward加總 (取discount) <br>
+utility會是隨機的   <br>
+以骰子例子而言<br>
+<img class="img-zoomable" src="/misc/markov_1_3.PNG" alt="" />
+</p>
+<p>path會應用上折抵率<br>
+u = r1 + <!-- raw HTML omitted -->γ*r2 + <!-- raw HTML omitted -->γ^2 * r3 + &hellip;</p>
+<p><!-- raw HTML omitted -->γ
+是表達對&quot;未來&quot;的調整<br>
+比如<!-- raw HTML omitted -->γ=1<br>
+就是save for future的感覺<br>
+<!-- raw HTML omitted -->γ=0<br>
+就是live in the moment (未來狀態不重要，也有種greedy的感覺)</p>
+<p><!-- raw HTML omitted -->γ 會依問題決定，通常不是超參數</p>
+<h3 id="定義-value">定義: value</h3>
+<p>utility的期待值<br>
+E[u]</p>
+<h3 id="定義-q-value-of-policy">定義: Q-value of policy</h3>
+<p>chance node的utility<br>
+可以Recursive的定義 <br>
+<img class="img-zoomable" src="/misc/markov_1_5.PNG" alt="" />
+ <br>
+<img class="img-zoomable" src="/misc/markov_1_4.PNG" alt="" />
+  <br>
+文字來說就是 <br>
+[某點期待值]為<br>
+對於所有可能採取行為與他們的結果， 將(行為,結果)的發生機率乘上 [總獎勵]  (獎勵期待值)<br>
+[總獎勵] 為 行為=&gt;結果 的獎勵 與 [未來會發生的獎勵]  (當下獎勵+未來獎勵)</p>
+<p>[未來會發生的獎勵]則是 [該可能結果的點期待值]  &lt;= 此處為遞迴定義  (未來獎勵相當於用這套方法套用至未來點)</p>
+<h3 id="dice-game-的例子">Dice Game 的例子</h3>
+<p><img class="img-zoomable" src="/misc/markov_1_6.PNG" alt="" />
+</p>
+<h1 id="求-policy-value值得演算法--iterative-algorithm">求 policy value值得演算法 : iterative algorithm</h1>
+<p>概念: 一開始隨機給值 (通常給0)，然後重複求值，直到收斂</p>
+<p>演算法</p>
+<pre><code># init
+for all states:
+  	V_pi_0(s) = 0  # 對pi策略，0表示iteration 0  
+
+
+# iter
+
+for iter = 1 ~ t_pe :
+	for each state s :
+		V_pi_t (s) = sum (T(s,a,s') [R(s,a,s') + gamma * V_pi_(t-1)(s') ] )
+# 本回合的s ，由&quot;上一回合&quot; &quot;周圍點&quot; 決定  
+</code></pre><h3 id="一個求值的例子">一個求值的例子</h3>
+<p><img class="img-zoomable" src="/misc/markov_1_7.PNG" alt="" />
+<br>
+如圖，可以看出收斂至4</p>
+<h3 id="問題--何時該停止-確定收斂">問題 : 何時該停止 (確定收斂)?</h3>
+<p>答案: 可以效法求小數精度 ==&gt; 設誤差值<br>
+當 <strong>上一回合 與  本回合 的絕對值差</strong>小於這個誤差就可以停止</p>
+<h3 id="增進效率--只需紀錄上回合">增進效率 : 只需紀錄上回合</h3>
+<p>由於本回合資訊取決於上一回合，上上之前的資訊其實都沒必要紀錄<br>
+(表格只需要紀錄前一行)</p>
+<h3 id="時間複雜度">時間複雜度</h3>
+<p>O (遞迴次數 * #狀態數 * #每個狀態可能的結果狀態)   (想想演算法)</p>
+<p>可以試著用這套演算法解Dice game的解<br>
+大概需要跑100次迴圈</p>
+<h1 id="目前小結">目前小結</h1>
+<p>MDP (markov decision process)  與<br>
+狀態圖形、chance node , 轉移機率、獎勵  有關</p>
+<p>Policy(策略) : 一個將狀態對應到行動的函數 ， 也是MDP的解</p>
+<p>Value of policy : 於隨機path的utility的期待值</p>
+<p>Policy evaluation :  一個迭代演算法去解value of policy</p>
+<h1 id="最優的值與策略">最優的值與策略</h1>
+<p>Goal : 找到期待值最大的策略
+定義 optimal value :
+在所有任意策略中，V_opt(s) 是最大的</p>
+<p>很直覺的，要找到最佳值，就是要找到最佳策略opt<br>
+pi_opt(s) =  argmax Q_opt (s,a)</p>
+<p>一樣可以由iteration value 求法
+<img class="img-zoomable" src="/misc/markov_1_8.PNG" alt="" />
+<br>
+只是這次需要每次都尋找最大值</p>
+<h3 id="時間複雜度-1">時間複雜度</h3>
+<p>O (遞迴次數 * #狀態數 * 狀態可採取的行為 * #每個狀態可能的結果狀態)   (想想演算法)</p>
+<p>心得: 就是暴力的去嘗試所有的可能性而已</p>
+<p>接著用程式實作 前面提到的走路題</p>
+<h3 id="convergence">Convergence</h3>
+<p>如果 gamma &lt; 1 或者 MDP 沒有cycle  =&gt;  一定會有收斂值<br>
+(有環又gamma == 1 =&gt; 沒有收練值 )</p>
+<h1 id="relaxation">Relaxation</h1>
+<p>概念:  解除一些限制，得到近似解、或更簡單的問題<br>
+再用以有的(經驗的 heuristics)方法去解決</p>
+<p>比如 把障礙物去掉就可以用曼哈頓距離解決<br>
+<img class="img-zoomable" src="/misc/markov_1_9.PNG" alt="" />
+</p>
+<p>以及走路題  去掉條件，可以使用DP解<br>
+<img class="img-zoomable" src="/misc/markov_1_10.PNG" alt="" />
+</p>
+<p><img class="img-zoomable" src="/misc/markov_1_11.PNG" alt="" />
+ 
+讓經驗解 h(s) 趨近 FutureCost(s)<br>
+如果差太多則不能使用</p>
+<p>課程結束</p>
+<p>補充:
+MDP就是強化式學習(Reinforcement Learning )的基本概念<br>
+包括 上下狀態獎勵遞迴式、未來遞減率<br>
+Q-learning 剛好跟Q_policy很像</p>
+<p>不過會有 其他參數<br>
+比如 greedy =&gt; 幾趴按照Q最佳解選擇，幾趴隨機選<br>
+比如 alpha =&gt; 此次結果多少比例用於更新學習  (也就是learning - rate )</p>
+<h1 id="參考">參考</h1>
+<p>Lecture 7: Markov Decision Processes - Value Iteration | Stanford CS221: AI (Autumn 2019)<br>
+<a href="https://www.youtube.com/watch?v=9g32v7bK3Co&amp;t=181s&amp;ab_channel=stanfordonline">https://www.youtube.com/watch?v=9g32v7bK3Co&amp;t=181s&amp;ab_channel=stanfordonline</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>
