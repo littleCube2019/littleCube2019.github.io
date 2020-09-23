@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Vue.js簡介 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Vue.js簡介" />
+<meta property="og:description" content="關於Vue的基本介紹" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/web/vue/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vue.js簡介"/>
+<meta name="twitter:description" content="關於Vue的基本介紹"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/web/vue/">Vue.js簡介</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>目錄</p>
+<blockquote>
+<p><a href="#1">簡介</a><br>
+<a href="#2">基本使用</a><br>
+<a href="#3">常用property</a></p>
+</blockquote>
+<h1 id="1">簡介</h1>
+<p>Vue.js (讀作view.js)<br>
+是一個2019左右竄紅的javascript framework <br>
+可以相對容易的建造前端、UI<br>
+並且也有比如virtual DOM 等效能上的改進<br>
+輕量 快速 &hellip; 優點</p>
+<h1 id="2">基本使用</h1>
+<p>先用html檔以script tag 引入 vue.js<br>
+<code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue&quot;&gt;&lt;/script&gt;</code></p>
+<p>vue的概念跟大多數template差不多，簡化網頁html的語法與增加可讀性</p>
+<h3 id="例子1-render-data-to-dom">例子1: render data to DOM</h3>
+<p><img class="img-zoomable" src="/web/vue_1.PNG" alt="" />
+</p>
+<p>上例可以看出Vue物件藉由指定<strong>element為id是app</strong>，就可以將data與該element綁定上，因此div可自由取用data內的資料 (此例為message)</p>
+<h3 id="例子2-loop">例子2: loop</h3>
+<p><strong>vue有提供tag attribute</strong>，這些vue attr大多為v開頭，比如v-bind,v-if,v-for &hellip;</p>
+<p>例如下例:<br>
+<img class="img-zoomable" src="/web/vue_2.PNG" alt="" />
+</p>
+<p>可以得知v-for = &ldquo;item in obj&rdquo;</p>
+<ul>
+<li>item: 一個自訂變數用於表示iteration中取出的東西<br>
+<strong>此例中就是data中todos各個 {text: &hellip;}</strong></li>
+<li>obj: 通常是 vue obj 中data的一組key:value
+中的key，並且這個key對應的value也是一個json，可以進行iteration<br>
+<strong>此例中就是data中的todos</strong></li>
+</ul>
+<h4 id="補充寫法">補充寫法</h4>
+<ol>
+<li>
+<p>v-for=&rdquo;(item, index) in items&rdquo;<br>
+其中 index (second variable)會從0開始往下統計，類似python的enumerate</p>
+</li>
+<li>
+<p>v-for = &ldquo;(value, name) in object&rdquo;<br>
+其中name (second variable) 就是object裡面的key</p>
+</li>
+</ol>
+<p>註: 以上兩個例子，second variable都只是一個變數名，會有差異是在items是一個array，object是一個物件</p>
+<ol start="3">
+<li>v-for = &ldquo;n in 10&rdquo; 就可以有 1~10的range</li>
+</ol>
+<h3 id="例子3-if">例子3: if</h3>
+<p>一樣藉由vue attr實現，這裡使用到v-if<br>
+<img class="img-zoomable" src="/web/vue_3.PNG" alt="" />
+<br>
+上例中v-if 若為true，則此tag呈現，反之，此tag不呈現</p>
+<h4 id="補充寫法-1">補充寫法</h4>
+<ol>
+<li>v-else 可以和v-if連用</li>
+<li>也有 v-if &ldquo;key==value&rdquo; 的條件式</li>
+</ol>
+<h3 id="本節重點摘要">本節重點摘要</h3>
+<ul>
+<li>vue 藉由分離html與vue object的方式，簡化html語法</li>
+<li>vue 會以el:&ldquo;element selector&quot;的方式指定所綁定的element tag</li>
+<li>html 可以自由取用綁定的vue obj中的data</li>
+<li>vue提供的vue tag attribute就可以做到基本的流程控制以及更多</li>
+</ul>
+<h1 id="3">常用property</h1>
+<p>vue物件除了有el , data以外，也可以有其他常用的property，輔助Vue實現更多功能</p>
+<h3 id="computed">computed</h3>
+<p>可以當作一個function table<br>
+裡面的function可以直接被取用</p>
+<p>目的: 一樣是<strong>簡化template</strong>中的可能使用到的函式<br>
+比如想要reverse字串，可以直接這樣寫在html裡</p>
+<pre><code>&lt;div id=&quot;example&quot;&gt;
+  {{ message.split('').reverse().join('') }}
+&lt;/div&gt;
+</code></pre><p>但是更推薦這樣寫，放在vue.js中處理，可以使html更簡潔<br>
+<img class="img-zoomable" src="/web/vue_4.PNG" alt="" />
+ 
+圖中可以看到為reversedMessage建立了一個對應的function<br>
+就可以直接在綁定的html tag裡呼叫</p>
+<h3 id="methods">methods</h3>
+<p>基本上和computed功能一樣，也是一個function對應表
+但是有一點不一樣，computed每次被呼叫，如果其<strong>相依值(dependencies)沒被改變的話，不會重新計算函式值</strong>，而會回傳原本計算值 <br>
+以上例而言，message不改變，reversedMessage不用重新計算<br>
+因此<strong>靜態值相關函數可以放computed,動態值相關函數再放methods可以節省計算資源</strong></p>
+<h3 id="created">created</h3>
+<p>相當於物件的建構子，對應一個函數即可
+<img class="img-zoomable" src="/web/vue_5.PNG" alt="" />
+</p>
+<h1 id="參考資料">參考資料</h1>
+<p><a href="https://vuejs.org/v2/guide/" target="_blank">vue.js guide</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

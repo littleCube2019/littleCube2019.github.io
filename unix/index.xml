@@ -12,6 +12,33 @@
     
     
     <item>
+      <title>cut處理文件</title>
+      <link>https://littlecube2019.github.io/unix/cut/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/cut/</guid>
+      <description>關於bash處理文件的方法&amp;ndash;cut</description>
+    </item>
+    
+    <item>
+      <title>sort處理文件</title>
+      <link>https://littlecube2019.github.io/unix/sort/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/sort/</guid>
+      <description>關於bash處理文件的方法&amp;ndash;sort</description>
+    </item>
+    
+    <item>
+      <title>tr處理文件</title>
+      <link>https://littlecube2019.github.io/unix/tr/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/tr/</guid>
+      <description>關於bash處理文件的方法&amp;ndash;tr</description>
+    </item>
+    
+    <item>
       <title>Bash Terminal簡介</title>
       <link>https://littlecube2019.github.io/unix/shell/</link>
       <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>

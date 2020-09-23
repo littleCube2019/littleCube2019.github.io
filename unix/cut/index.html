@@ -15,20 +15,21 @@
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
 
 
-<title>Indexes - Little Cube`s box</title>
+<title>cut處理文件 - Little Cube`s box</title>
 
 
 
 
-<meta property="og:title" content="Indexes" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://littlecube2019.github.io/index/" />
-<meta property="og:updated_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="og:title" content="cut處理文件" />
+<meta property="og:description" content="關於bash處理文件的方法&ndash;cut" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/unix/cut/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Indexes"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="cut處理文件"/>
+<meta name="twitter:description" content="關於bash處理文件的方法&ndash;cut"/>
 
 
 
@@ -85,165 +86,81 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-
-
-
-<div class="post">
+<article>
+    
     <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_3/">Char Driver 實作</a>
+        <a href="https://littlecube2019.github.io/unix/cut/">cut處理文件</a>
     </h2>
     <div class="post-item post-meta">
         
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        實作char driver
+    
+    
+    <div class="post-content markdown-body">
+        <p>可藉由 bash 指令 + pipeline 高效率的處理文件</p>
+<h1 id="cut">cut</h1>
+<p>剪出每一行所需要的資訊片段</p>
+<h3 id="剪出字串">剪出字串</h3>
+<p><code>cut -c 指定位置 檔案</code> <br>
+取出每行第一個字<br>
+比如  test.txt內含</p>
+<pre><code>this is a book  
+i`m a boy  
+
+woof woof woof  
+</code></pre><h4 id="格式1-給出第幾個字">格式1: 給出第幾個字</h4>
+<p>所有字串<strong>以1開始</strong>編號，如下例，1代表第一個字</p>
+<p>EX: <br>
+cut -c 1  test.txt <br>
+結果</p>
+<pre><code>t
+i
+
+w
+</code></pre><h4 id="格式2-給出範圍">格式2: 給出範圍</h4>
+<p>可以以<strong>起點-終點</strong>進行範圍指定<br>
+注意，範圍同時包含終點與起點</p>
+<p>EX:<br>
+cut -c 2-4 test.txt<br>
+結果</p>
+<pre><code>his  
+`m   
+  
+oof  
+</code></pre><h4 id="格式3-同時指定">格式3: 同時指定</h4>
+<p>可以以<strong>逗號</strong>同時指定範圍</p>
+<p>EX:
+cut -c 1-3,7 test.txt<br>
+結果</p>
+<pre><code>this    
+i`mb    
+wooo   
+</code></pre><h3 id="反向選擇">反向選擇</h3>
+<p>cut --complement 選取方式<br>
+可以進行選取指定方式<strong>以外</strong>的字串</p>
+<p>EX:<br>
+cut --complement -c 1-3,7 test.txt<br>
+結果</p>
+<pre><code>s i a book
+ a oy   
+
+f wof woof
+</code></pre><h3 id="處理固定pattern欄位">處理固定pattern欄位</h3>
+<p>cut -d &ldquo;分隔符&rdquo; -f 欄位</p>
+<p>EX:  test.csv</p>
+<pre><code>A,100,test
+B,10,dev
+C,1,train
+</code></pre><p>cut -d &ldquo;,&rdquo; -f 3  test.csv 
+結果:</p>
+<pre><code>test
+dev
+train
+</code></pre>
     </div>
-</div>
+</article>
 
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_1/">Linux Device Driver系列 1</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於linux device driver 簡介
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_2/">Linux Device Driver系列 2 (上)</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        建置與使用modules
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_2_2/">Linux Device Driver系列 2 (下)</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        建置與使用modules
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/markov_decision_processes_1/">Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        線上影片筆記
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/vue/">Vue.js簡介</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於Vue的基本介紹
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/process/">底層函式介紹 - process相關</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        fork , wait, exec unix底層與process函式 簡介
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/hugo/how_to_hugo/">簡介如何使用Hugo寫網頁</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        紀錄如何快速產生這個網頁
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<div class="pagination">
-    
-    <div class="pag-first">
-        <a href="/index/"><i class="iconfont icon-caret-back-circle-sharp"></i></a>
-    </div>
-    
-    
-    <div class="pag-previous">
-        <a href="/index/page/2/"><i class="iconfont icon-chevron-back-circle-sharp"></i></a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/index/">1</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/index/page/2/">2</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item pag-current">
-        <a href="/index/page/3/">3</a>
-    </div>
-    
-    
-    
-    
-</div>
 
 
 

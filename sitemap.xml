@@ -3,6 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://littlecube2019.github.io/unix/cut/</loc>
+    <lastmod>2020-08-23T19:51:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/unix/sort/</loc>
+    <lastmod>2020-08-23T19:51:15+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/unix/tr/</loc>
+    <lastmod>2020-08-23T19:51:15+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://littlecube2019.github.io/index/unix/</loc>
     <lastmod>2020-08-23T19:51:15+08:00</lastmod>
   </url>
@@ -189,6 +204,11 @@
   
   <url>
     <loc>https://littlecube2019.github.io/misc/markov_decision_processes_1/</loc>
+    <lastmod>2020-08-20T00:02:13+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://littlecube2019.github.io/web/vue/</loc>
     <lastmod>2020-08-20T00:02:13+08:00</lastmod>
   </url>
   

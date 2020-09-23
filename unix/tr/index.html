@@ -15,20 +15,21 @@
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
 
 
-<title>Indexes - Little Cube`s box</title>
+<title>tr處理文件 - Little Cube`s box</title>
 
 
 
 
-<meta property="og:title" content="Indexes" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://littlecube2019.github.io/index/" />
-<meta property="og:updated_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="og:title" content="tr處理文件" />
+<meta property="og:description" content="關於bash處理文件的方法&ndash;tr" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/unix/tr/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Indexes"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="tr處理文件"/>
+<meta name="twitter:description" content="關於bash處理文件的方法&ndash;tr"/>
 
 
 
@@ -85,165 +86,47 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-
-
-
-<div class="post">
+<article>
+    
     <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_3/">Char Driver 實作</a>
+        <a href="https://littlecube2019.github.io/unix/tr/">tr處理文件</a>
     </h2>
     <div class="post-item post-meta">
         
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        實作char driver
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="tr">tr</h1>
+<p>translate 的縮寫，可以用於替換字元或刪除輸入資料</p>
+<p>EX: test.txt</p>
+<pre><code>this is a document  
+dog   
+cat    
+dig    
+</code></pre><h3 id="替換字元">替換字元</h3>
+<p>EX:<br>
+cat test.txt | tr &ldquo;d&rdquo; &ldquo;c&rdquo;<br>
+結果</p>
+<pre><code>this is a cocument
+cog 
+cat 
+cig
+</code></pre><p>cat test.txt | tr &ldquo;\n&rdquo; &quot; &quot;<br>
+結果</p>
+<pre><code>this is a document dog cat dig 
+</code></pre><h3 id="刪除字元--d">刪除字元 -d</h3>
+<p>EX:
+cat test.txt | tr -d &quot; &quot;</p>
+<pre><code>thisisadocument
+dog 
+cat 
+dig
+</code></pre>
     </div>
-</div>
+</article>
 
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_1/">Linux Device Driver系列 1</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於linux device driver 簡介
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_2/">Linux Device Driver系列 2 (上)</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        建置與使用modules
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_2_2/">Linux Device Driver系列 2 (下)</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        建置與使用modules
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/markov_decision_processes_1/">Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        線上影片筆記
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/vue/">Vue.js簡介</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於Vue的基本介紹
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/process/">底層函式介紹 - process相關</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        fork , wait, exec unix底層與process函式 簡介
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/hugo/how_to_hugo/">簡介如何使用Hugo寫網頁</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        紀錄如何快速產生這個網頁
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<div class="pagination">
-    
-    <div class="pag-first">
-        <a href="/index/"><i class="iconfont icon-caret-back-circle-sharp"></i></a>
-    </div>
-    
-    
-    <div class="pag-previous">
-        <a href="/index/page/2/"><i class="iconfont icon-chevron-back-circle-sharp"></i></a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/index/">1</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/index/page/2/">2</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item pag-current">
-        <a href="/index/page/3/">3</a>
-    </div>
-    
-    
-    
-    
-</div>
 
 
 
