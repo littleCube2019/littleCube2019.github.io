@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>GAN 影片筆記系列二 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="GAN 影片筆記系列二" />
+<meta property="og:description" content="Conditional GAN" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/machine_learning/gan_2/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GAN 影片筆記系列二"/>
+<meta name="twitter:description" content="Conditional GAN"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/machine_learning/gan_2/">GAN 影片筆記系列二</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="conditional-gan--supervided">conditional gan  (Supervided)</h1>
+<h3 id="定義">定義</h3>
+<p>可以藉由輸入可操控的輸入(比如文字)<br>
+來得到想要的結果</p>
+<p>以下以text to image 解說</p>
+<h3 id="test-to-image">test to image</h3>
+<p>supervised learning<br>
+可以用傳統的supervised learning來做 <br>
+比如為每個image做label，然後學習即可</p>
+<p>問題點: 結果通常會模糊，因為模型會回傳不同型態同個物件的平均 (比如火車的正面與側面平均)</p>
+<p>Conditional gan<br>
+輸入一個文字與隨機vector，產出我們需要的image<br>
+<img class="img-zoomable" src="/GAN/GAN_2_1.PNG" alt="" />
+</p>
+<p>重點是，Discriminator不能按照原本的方式訓練，否則D方會<strong>不管輸入文字</strong>，只追求高品質<br>
+例如，(狗,random vec)，但原本訓練的方法會讓高品質的貓也通過<br>
+如下圖，還需要要求文字與圖配對正確   <br>
+<img class="img-zoomable" src="/GAN/GAN_2_2.PNG" alt="" />
+</p>
+<h3 id="演算法">演算法</h3>
+<p><img class="img-zoomable" src="/GAN/GAN_2_3.PNG" alt="" />
+</p>
+<p>訓練架構下圖比較有潛力<br>
+因為兩個Network自己了解為甚麼錯誤<br>
+<img class="img-zoomable" src="/GAN/GAN_2_4.PNG" alt="" />
+</p>
+<p>成果示例<br>
+<img class="img-zoomable" src="/GAN/GAN_2_5.PNG" alt="" />
+</p>
+<p>有趣的點:<br>
+有舉例模仿小精靈的遊戲畫面<br>
+用supervised的方式，遇到T型道路時小精靈會分裂<br>
+有對抗概念的則可以解決這個問題</p>
+<h1 id="unsupervised-conditional-generation">Unsupervised Conditional Generation</h1>
+<h3 id="方法一-直接轉換direct-transformation">方法一: 直接轉換(Direct Transformation)</h3>
+<p>把 Domain X 轉成 Domain Y<br>
+通常只能小改，比如顏色、質地<br>
+比如畫風轉換</p>
+<h4 id="作法">作法</h4>
+<p>利用特殊領域的Discriminator<br>
+比如梵谷畫作鑑別大師<br>
+並且還需要X與Y有某種關係<br>
+比如輸入風景照片，回傳梵谷自畫像就不會是我們希望的</p>
+<p>如何讓X與Y有關係?</p>
+<ol>
+<li>直接不管這件事 (也可以word,但不好)</li>
+<li>encoder輔助<br>
+<img class="img-zoomable" src="/GAN/GAN_2_7.PNG" alt="" />
+</li>
+<li>CycleGAN<br>
+<strong>再多訓練一個可以還原的generator</strong>
+<img class="img-zoomable" src="/GAN/GAN_2_8.PNG" alt="" />
+</li>
+</ol>
+<p>cycleGAN 問題: 隱藏資訊 <br>
+有可能Gx-&gt;y 與 Gy-&gt;x之間會用不對的方式隱藏資訊，最後失去CycleGAN的效果<br>
+比如
+紅螃蟹 =&gt; 黑龍蝦 =&gt; 紅螃蟹 (為甚麼會知道是紅色?)</p>
+<ol start="4">
+<li>starGAN
+<img class="img-zoomable" src="/GAN/GAN_2_9.PNG" alt="" />
+</li>
+</ol>
+<h3 id="方法二projection-to-common-space">方法二:projection to Common Space</h3>
+<p>使用encoder , decoder 架構 <br>
+<img class="img-zoomable" src="/GAN/GAN_2_6.PNG" alt="" />
+</p>
+<p>####實作方法
+<img class="img-zoomable" src="/GAN/GAN_2_10.PNG" alt="" />
+ 
+先train X系列、y系列的encoder-decoder</p>
+<p>然後再接上Dx、Dy進行判別 (此時兩系列+discriminator是兩條分別的VAEGAN)</p>
+<p>但是上下兩的VAEGAN分別訓練，可能導致兩個輸入vector意義不一樣(語言不通,你的第一維是性別，我的可能是年紀)</p>
+<p>語言不通解法:</p>
+<ol>
+<li>Couple GAN<br>
+離抽象意義屬性的周圍幾層必須是<strong>共用的</strong>
+<img class="img-zoomable" src="/GAN/GAN_2_11.PNG" alt="" />
+</li>
+<li>加上一個domain disrminator分辨抽象意義屬性的來源
+然後想盼法騙過它，使它無法分辨<br>
+這時表示兩者語言通了</li>
+</ol>
+<h1 id="參考資料">參考資料</h1>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=-3LgL3NXLtI&amp;list=PLJV_el3uVTsMq6JEFPW35BCiOQTsoqwNw&amp;index=3&amp;ab_channel=Hung-yiLee">https://www.youtube.com/watch?v=-3LgL3NXLtI&amp;list=PLJV_el3uVTsMq6JEFPW35BCiOQTsoqwNw&amp;index=3&amp;ab_channel=Hung-yiLee</a></li>
+<li><a href="https://www.youtube.com/watch?v=LpyL4nZSuqU&amp;list=PLJV_el3uVTsMq6JEFPW35BCiOQTsoqwNw&amp;index=2&amp;ab_channel=Hung-yiLee">https://www.youtube.com/watch?v=LpyL4nZSuqU&amp;list=PLJV_el3uVTsMq6JEFPW35BCiOQTsoqwNw&amp;index=2&amp;ab_channel=Hung-yiLee</a></li>
+</ul>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

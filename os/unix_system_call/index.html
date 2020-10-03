@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Unix system call (上) - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Unix system call (上)" />
+<meta property="og:description" content="關於unix system call的筆記 (概念篇)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/os/unix_system_call/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Unix system call (上)"/>
+<meta name="twitter:description" content="關於unix system call的筆記 (概念篇)"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/os/unix_system_call/">Unix system call (上)</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="歷史">歷史</h1>
+<p>現今Linux , Mac OS X　, FreeBSD , OpenBSD<br>
+都是由1980年代的System V 以及 BSD(Berkeley Software Distribution)發展而來。</p>
+<p>而手機的Android是由google修改Linux而來<br>
+ios是由Mac OS修改而來。</p>
+<h1 id="標準">標準</h1>
+<p>POSIX (Portable Operating System Interface for Unix)<br>
+是IEEE為在unix上執行軟體，所定義的API標準的總稱。</p>
+<p>SUS (Single Unix Specification)<br>
+單一unix規範，是POSIX的擴充，定義標準的unix作業系統，是由IEEE與The Open Group 所提出。</p>
+<h1 id="架構">架構</h1>
+<p><img class="img-zoomable" src="/os/sys_1.PNG" alt="" />
+<br>
+如上圖，system call code被放在kernel中，會通過特殊指令(比如Read、Write ..)來跳至kernel執行。 (所以是一種interrupt)</p>
+<p>其功能是讓process能使用硬體資源，比如讀取device的data。</p>
+<p>system call基本上可由一張整數對應到指令碼的table實作。</p>
+<p><img class="img-zoomable" src="/os/sys_2.PNG" alt="" />
+<br>
+如上圖是process狀態轉移表，<br>
+其中blocked是為了time sharing 架構而生<br>
+在等待資源、執行過久時會發生。<br>
+而等待資源通常就會是因為需要硬體資源而呼叫system call。</p>
+<p>(waiting狀態是Ready to be scheduled<br>
+blocked 狀態已經在schduling,可是在等資源)</p>
+<h1 id="種類">種類</h1>
+<p>通常system call會處理OS的工作<br>
+比如管理process , file, networking sockets, signals , terminal , threads I/O device &hellip;</p>
+<h3 id="signal">signal</h3>
+<p>signal通常是事件發生時會回傳的訊號<br>
+比如0是正常、seg fault也會有訊號&hellip;</p>
+<p>system call 也可以視為對Operating system請求工作</p>
+<h1 id="process">process</h1>
+<p><img class="img-zoomable" src="/os/sys_3.PNG" alt="" />
+<br>
+Address space就是那塊給process的記憶體空間<br>
+<img class="img-zoomable" src="/os/sys_4.PNG" alt="" />
+  <br>
+通常會用mmap (memory map) , munmap(memory unmap)，去跟OS要求記憶體</p>
+<pre><code>address = mmap(5000)  #以5000 bytes 開頭的一個page (一塊記憶體)  
+# do something  
+munmap(address)  
+</code></pre><ul>
+<li>
+<p>注意: mmap需要足夠的空間(如下圖) <br>
+<img class="img-zoomable" src="/os/sys_5.PNG" alt="" />
+</p>
+</li>
+<li>
+<p>注意: 為甚麼deallocate (unmap)重要?<br>
+通常情況下執行完成OS就會收回memory，但這在大型尤其是多工系統則非常重要。</p>
+</li>
+</ul>
+<h1 id="fork-與-exec">fork 與 exec</h1>
+<p><a href="/misc/process">基礎參考這裡</a><br>
+fork會分支程式<br>
+<img class="img-zoomable" src="/os/sys_6.PNG" alt="" />
+<br>
+值得注意的有兩點</p>
+<ol>
+<li>實體memory與邏輯記憶體有mapping關係</li>
+<li>fork剛出生的child process會先跟原程式共用RAM<br>
+直到新child被寫入時，再copy一份新frame給child寫入 (不用每次都製造一份一模一樣的複本)</li>
+</ol>
+<p>exec系列其實也只是把frame中的code替換而已。</p>
+<h1 id="environment">environment</h1>
+<p>即為系統設定檔，比如知名的PATH就是環境變數之一<br>
+&ldquo;環境&quot;本質上就是一堆name=value的變數所組成<br>
+環境變數會大寫</p>
+<p><img class="img-zoomable" src="/os/sys_7.PNG" alt="" />
+</p>
+<p>#user id 
+通常process id 會與user id 綁定，而user會與權限綁定，所以如果權限不夠高，會被system call 拒絕 <br>
+其中root (superuser) user id == 0</p>
+<p>每個process會有三個 user id</p>
+<ul>
+<li>real id : 決定擁有者</li>
+<li>effective id : 決定權限</li>
+<li>saved id : 由exec設定，與effective id 相符</li>
+</ul>
+<p>每個檔案和目錄都只會有一個user擁有(一個user id )</p>
+<p>EX:
+sudo 時會用exec 改變effective id 以執行更核心的程式</p>
+<p>seteuid , setuid 也可以改變uid，通常也會搭配在fork-exec過程中</p>
+<h1 id="參考資料">參考資料</h1>
+<ul>
+<li>主課程:https://www.youtube.com/watch?v=xHu7qI1gDPA&amp;t=144s&amp;ab_channel=BrianWill</li>
+<li>POSIX:https://zh.wikipedia.org/wiki/%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3#:~:text=%E5%8F%AF%E7%A7%BB%E6%A4%8D%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E6%8E%A5%E5%8F%A3,%E5%90%8D%E7%A7%B0%E4%B8%BAISO%2FIEC%209945%E3%80%82</li>
+</ul>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

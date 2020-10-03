@@ -53,6 +53,30 @@
     </item>
     
     <item>
+      <title>Operating System 相關筆記</title>
+      <link>https://littlecube2019.github.io/index/os/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/os/</guid>
+      <description>關於Operating System相關</description>
+    </item>
+    
+    <item>
+      <title>機器學習相關筆記</title>
+      <link>https://littlecube2019.github.io/index/machine_learning/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/machine_learning/</guid>
+      <description>GAN 影片筆記 Note 1 基本概念 
+Note 2 Conditional GAN
+Note 3 Basic Theory
+Note 4 
+數學、名詞 Cross entropy [KL divergence]
+參考資料 台大李宏毅老師youtube課程影片筆記
+ GAN播放清單  </description>
+    </item>
+    
+    <item>
       <title>雜項筆記</title>
       <link>https://littlecube2019.github.io/index/misc/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>

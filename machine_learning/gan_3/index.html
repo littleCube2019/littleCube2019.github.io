@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>GAN 影片筆記系列三 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="GAN 影片筆記系列三" />
+<meta property="og:description" content="Basic theory" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/machine_learning/gan_3/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GAN 影片筆記系列三"/>
+<meta name="twitter:description" content="Basic theory"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/machine_learning/gan_3/">GAN 影片筆記系列三</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="簡介">簡介</h1>
+<p>GAN的目標以數學角度來說，是要在高維空間中找到一個distribution<br>
+<img class="img-zoomable" src="/GAN/GAN_3_1.PNG" alt="" />
+<br>
+如上圖，2D平面是一個image space，藍色是人臉的圖片分布，則GAN就是要找出這個分布<br>
+(而那些點就是圖片，但人臉圖片只占所有圖片的一部分)</p>
+<h1 id="maximum-likelihood-estimation">Maximum Likelihood Estimation</h1>
+<p>該分布P_data(x)我們其實不知道是甚麼，只能用sample的方式<br>
+利用P_G(x;<!-- raw HTML omitted -->θ)去逼近P_data</p>
+<p>作法:<br>
+sample {x1,x2&hellip; xm} from P_data(x)
+我們計算 P_G(xi;<!-- raw HTML omitted -->θ)  (回傳值是xi在P_G內的機率)</p>
+<p>Likelihood<br>
+<img class="img-zoomable" src="/GAN/GAN_3_2.PNG" alt="" />
+	<br>
+我們希望在P_data內sample出的x1~xm，出現在P_G內的機率越大越好</p>
+<p>接下來尋找好的<!-- raw HTML omitted -->θ值，使L最大即可</p>
+<p>數學式如下:<br>
+<img class="img-zoomable" src="/GAN/GAN_3_3.PNG" alt="" />
+</p>
+<h3 id="問題-如何產生p_ggenerator">問題: 如何產生P_G(generator)?</h3>
+<p>上述如果不使用常態分佈，P_G(xi;<!-- raw HTML omitted -->θ) 無法求得(不知道機率密度函數)</p>
+<p>但如果使用常態分布，可能無法完整的擬合高維中的真實分佈，造成一些誤差(比如生成照 片模糊)</p>
+<p>解法:用Nerual Network作為Generator<br>
+將distribution通過一個NN，讓NN將分布的形狀&quot;改造&rdquo; 
+<img class="img-zoomable" src="/GAN/GAN_3_4.PNG" alt="" />
+</p>
+<h3 id="問題-如何計算divergence">問題: 如何計算divergence?</h3>
+<p>如果知道P_G、P_data的distribution，就可以用gradient descent<br>
+但通常無法得知</p>
+<p>解法: 使用Discriminator
+sample P_G (sample random vec,輸入G讓其生成)與 P_data</p>
+<p>本質上就是一個二分類問題(邏吉斯回歸)<br>
+<img class="img-zoomable" src="/GAN/GAN_3_5.PNG" alt="" />
+</p>
+<p>概念上: 兩堆越接近，會讓D越難區分，divergence越小</p>
+<p>求解數學式如下<br>
+<img class="img-zoomable" src="/GAN/GAN_3_6.PNG" alt="" />
+</p>
+<p>目標是找出D使其值最大，那麼對該式子以D這個函數微分，求解為0處就好
+解出D的形式如下 <br>
+<img class="img-zoomable" src="/GAN/GAN_3_7.PNG" alt="" />
+</p>
+<p>再代回Objective function，會的到JS divergence的結果<br>
+<img class="img-zoomable" src="/GAN/GAN_3_8.PNG" alt="" />
+</p>
+<p>也就是說，在此定義上，求discrimination<strong>目標函數最大化，就是最佳化divergence</strong></p>
+<h3 id="小結">小結</h3>
+<p>因此我們可以得到下列的稍微有點繞的結果<br>
+<img class="img-zoomable" src="/GAN/GAN_3_9.PNG" alt="" />
+
+紅點就是D在找的，(給定Distribute的最高點) <br>
+G3就是G在找的(在所有的D的最高點找出最小的(divergence最小的))<br>
+所以可得知其最高處就是divergence</p>
+<h1 id="求解演算法">求解演算法</h1>
+<p>就是GAN的做法
+init D,G
+for i in iter:<br>
+先固定G，更新D<br>
+再把G、D視為一個網路，固定D，更新G</p>
+<h3 id="數學觀點看演算法">數學觀點看演算法</h3>
+<p>如果單看最佳化式，將maxD部分視為L(G)<br>
+<img class="img-zoomable" src="/GAN/GAN_3_10.PNG" alt="" />
+<br>
+用gradient descent即可</p>
+<p>但是L(G)內有max operator，可以微分嗎?<br>
+答案是可以，只要將各範圍內的最大值函數，拿出來微分就好</p>
+<p>故每次確認自己的範圍，然後再算gradient，再更新參數 =&gt; loop 即可</p>
+<p>但這很顯然會發生問題:<br>
+如果D函數變動很大，那gradient有可能瞬間跑偏<br>
+如圖，紅點一變，反而離最大值很遠(就不是在量divergence了) 
+<img class="img-zoomable" src="/GAN/GAN_3_11.PNG" alt="" />
+<br>
+事實上，我們會假設<strong>函數變動不大</strong>，因此每次<strong>更新參數要小</strong></p>
+<p>演算法如下圖<br>
+<img class="img-zoomable" src="/GAN/GAN_3_12.PNG" alt="" />
+<br>
+注意G不能更新太多次</p>
+<p>直覺: 假分布的點會追求D(x)最高點，到最後真假分布會重和，D(X)會變水平線</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

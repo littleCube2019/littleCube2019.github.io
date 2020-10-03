@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machine_learnings on Little Cube`s box</title>
+    <link>https://littlecube2019.github.io/machine_learning/</link>
+    <description>Recent content in Machine_learnings on Little Cube`s box</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Thu, 20 Aug 2020 00:02:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://littlecube2019.github.io/machine_learning/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cross Entropy簡介</title>
+      <link>https://littlecube2019.github.io/machine_learning/cross_entropy/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/machine_learning/cross_entropy/</guid>
+      <description>關於Cross entropy</description>
+    </item>
+    
+    <item>
+      <title>GAN 影片筆記系列一</title>
+      <link>https://littlecube2019.github.io/machine_learning/gan_1/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/machine_learning/gan_1/</guid>
+      <description>GAN 基本介紹</description>
+    </item>
+    
+    <item>
+      <title>GAN 影片筆記系列三</title>
+      <link>https://littlecube2019.github.io/machine_learning/gan_3/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/machine_learning/gan_3/</guid>
+      <description>Basic theory</description>
+    </item>
+    
+    <item>
+      <title>GAN 影片筆記系列二</title>
+      <link>https://littlecube2019.github.io/machine_learning/gan_2/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/machine_learning/gan_2/</guid>
+      <description>Conditional GAN</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Cross Entropy簡介 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Cross Entropy簡介" />
+<meta property="og:description" content="關於Cross entropy" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/machine_learning/cross_entropy/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cross Entropy簡介"/>
+<meta name="twitter:description" content="關於Cross entropy"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/machine_learning/cross_entropy/">Cross Entropy簡介</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="imfomation">imfomation</h1>
+<h3 id="定義">定義</h3>
+<p><img class="img-zoomable" src="/Machine_Learning/CE_1.PNG" alt="" />
+</p>
+<h3 id="直覺">直覺</h3>
+<p><strong>發生機率越高的事件，資訊含量越低</strong></p>
+<p>比如:<br>
+豬有四隻腳 VS 有豬在飛</p>
+<p>前者不必說，大家都知道(幾乎總是發生，資訊含量小)<br>
+後者發生大家都會想看(發生機率小，資訊含量大)</p>
+<p>而此數學式則能表達這個直覺，當X事件發生的機率P(X)<br>
+很大，取負號後會變很小</p>
+<h3 id="由來">由來</h3>
+<p>imformation最早被應用於資訊領域的編碼問題<br>
+而編碼會使用bits為單位，因此會以log2進行計算</p>
+<p>而machine learning中最常使用自然對數ln(比如與常態分布掛勾)<br>
+可將log2替換為ln  (其他底數自然也可以)</p>
+<h3 id="some-fact">Some fact</h3>
+<ol>
+<li>由於0&lt;= P(X) &lt;= 1<br>
+這保證了logP(X)是負數，且P(X)越小，logP(X)絕對值越大</li>
+<li>P(x) = 1 , P(x)=0 也符合直覺</li>
+<li>獨立事件中P(x) = P1(x) * P2(x)，而他們的資訊量剛好會變成相加，這也符合直覺</li>
+</ol>
+<h1 id="shannon-entropy">Shannon entropy</h1>
+<h3 id="定義-1">定義</h3>
+<p><img class="img-zoomable" src="/Machine_Learning/CE_2.PNG" alt="" />
+</p>
+<p>定義為<strong>imformation的期待值</strong></p>
+<p>代表意義為<strong>最少需要多少bit來記錄這段資訊</strong></p>
+<p>舉例而言:<br>
+假如考過以1紀錄，反之為0<br>
+小明考試總是考過，需要多少bit紀錄這個訊息?<br>
+代入式子<br>
+H(X) = E[I(X)] = 1*-log2(1) = 0<br>
+告訴我們不需要紀錄他，畢竟他一定過</p>
+<p>小華50%考過，50%考不過，需要多少bit紀錄這個訊息?<br>
+代入式子<br>
+H(X) = E[I(X)] = 0.5*-log2(0.5)+0.5*-log2(0.5) = 1<br>
+告訴我們至少需要準備1bit紀錄這段訊息，因為他是0是1無法預測</p>
+<p>這套理論也應用於編碼中用於衡量一個方法的好與壞</p>
+<h3 id="some-fact-1">Some Fact</h3>
+<p>Entropy也被稱為亂度，事件發生越平均(越難以預測)，比如投公平硬幣，entropy最大<br>
+同時也可以以數學證明，Uniform distribution時，entropy最大</p>
+<h1 id="cross-entropy">Cross Entropy</h1>
+<p><img class="img-zoomable" src="/Machine_Learning/CE_3.PNG" alt="" />
+</p>
+<p>將p(X)視為真實分布(Ground True , 答案y)<br>
+q(X)視為模型分布(predict y_hat)<br>
+則binary 版本就是二分類中我們熟悉的版本</p>
+<h3 id="直覺-1">直覺</h3>
+<p>H(P,Q)可以視為以P的資料分布，用Q分布方式編碼<br>
+所以可以推出</p>
+<ol>
+<li>H(P,Q) 大多不等於 H(Q,P)</li>
+<li>H(P,P) = H(P) 一定是最小值</li>
+</ol>
+<h3 id="為甚麼要使用">為甚麼要使用</h3>
+<p>Cross entropy可以視作p(x)與q(x)的差距</p>
+<p>推論:<br>
+H(p,p) = H(p)<br>
+用同樣編碼、資料</p>
+<p>H(p,q) &gt;= H(p,p)<br>
+因為H(p)是該分布下最小的編碼成本<br>
+H(p,q)不可能比H(p)小</p>
+<p>結論: 
+<strong>當Cross Entropy越小，p與q的分布越接近</strong></p>
+<h1 id="延伸閱讀">延伸閱讀</h1>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/149186719" target="_blank">entropy脈絡</a></li>
+<li><a href="https://www.tau.ac.il/~mansour/advanced-agt&#43;ml/scribe5-lower-bound-MAB.pdf" target="_blank">Lower Bounds using Inform ation Theory Tools</a></li>
+</ul>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>
