@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>GAN 影片筆記系列四 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="GAN 影片筆記系列四" />
+<meta property="og:description" content="general framework of gan" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/machine_learning/gan_4/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GAN 影片筆記系列四"/>
+<meta name="twitter:description" content="general framework of gan"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/machine_learning/gan_4/">GAN 影片筆記系列四</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="介紹">介紹</h1>
+<p>本主題在說明GAN除了用JS divergence以外，也可以用其他divergence作為最佳化的目標</p>
+<p>雖然提供很好的基礎，但結論是不同的divergence效果差異不大</p>
+<h1 id="f-divergence">f-divergence</h1>
+<p>廣義的divergence，KL、JS都屬於這個集合內<br>
+<img class="img-zoomable" src="/GAN/GAN_4_1.PNG" alt="" />
+<br>
+其中p、q是兩個分佈，x是一筆sample的資料</p>
+<p>此外f要符合兩個性質</p>
+<ol>
+<li>f(1) = 0</li>
+<li>f is convex (最小值==極值)</li>
+</ol>
+<p>這兩個性質可以使f-divergence拿來衡量兩個分布的差異<br>
+<img class="img-zoomable" src="/GAN/GAN_4_2.PNG" alt="" />
+</p>
+<h3 id="常見divergence">常見divergence</h3>
+<p>f(x) = xlogx =&gt; KL<br>
+f(x) = -logx  =&gt; reverse KL<br>
+f(x) = (x-1)^2 =&gt; chi square</p>
+<h1 id="fenchel-conjugate">Fenchel conjugate</h1>
+<p>每一個 convex function，都有一個conjugate function f*  並滿足<br>
+<img class="img-zoomable" src="/GAN/GAN_4_3.PNG" alt="" />
+</p>
+<p>求解示例
+因為每一條xt-f(x)都是直線，然後把他們的upper bound 就是 f* <br>
+<img class="img-zoomable" src="/GAN/GAN_4_4.PNG" alt="" />
+</p>
+<p>同時f* 與 f 互為conjugate function</p>
+<h1 id="與gan有甚麼關係">與GAN有甚麼關係?</h1>
+<p>首先利用f-divergence , f 的 convex特性<br>
+將f替換
+<img class="img-zoomable" src="/GAN/GAN_4_5.PNG" alt="" />
+</p>
+<p>然後我們將t，視為一個會告訴我們x評價的<strong>discriminator</strong><br>
+<img class="img-zoomable" src="/GAN/GAN_4_6.PNG" alt="" />
+</p>
+<p>並且由於D(x)可能不夠完美，因此只會回傳區域解<br>
+但可以利用它逼近原式</p>
+<p><img class="img-zoomable" src="/GAN/GAN_4_7.PNG" alt="" />
+<br>
+經過一陣替換，就變成我們熟知的GAN型式</p>
+<h3 id="divergence-zoo">divergence Zoo</h3>
+<p><img class="img-zoomable" src="/GAN/GAN_4_8.PNG" alt="" />
+</p>
+<h1 id="替換divergence-潛力">替換divergence 潛力</h1>
+<p>Mode collapse問題<br>
+產生出的結果會越來越集中 <br>
+比如人臉生成結果越來越像</p>
+<p>Mode Dropping問題<br>
+產生出的結果會只有一個模式<br>
+比如人臉每次只能產生一個膚色的人</p>
+<p>以前大家猜測是divergence問題<br>
+<img class="img-zoomable" src="/GAN/GAN_4_9.PNG" alt="" />
+<br>
+如上圖，兩種方法的生成分佈不同 <br>
+(KL 比較平，並且取中點，造成模糊<br>
+reverse KL =&gt; Mode dropping )</p>
+<p><strong>但是後來實驗發現可能不完全是此原因</strong></p>
+<h3 id="如何解決mode-dropping-">如何解決Mode dropping ?</h3>
+<p>ensemble  (暴力解)<br>
+每個產生一種分佈，需要25個就train 25種分佈</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

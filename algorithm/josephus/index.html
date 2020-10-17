@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>演算法心得 - Josephus problem - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="演算法心得 - Josephus problem" />
+<meta property="og:description" content="Josephus problem" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/algorithm/josephus/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="演算法心得 - Josephus problem"/>
+<meta name="twitter:description" content="Josephus problem"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/algorithm/josephus/">演算法心得 - Josephus problem</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <blockquote>
+<p><a href="#1">問題概述</a><br>
+<a href="#2">暴力解</a><br>
+<a href="#3">遞迴數學解</a></p>
+</blockquote>
+<h1 id="1">問題概述</h1>
+<h3 id="故事">故事</h3>
+<p>有一群戰敗的士兵，他們決定寧死不降，因此決定圍成一個圈圈，由第一個人往下數2個，然後開槍殺掉被數中的人，再由被殺掉的下一個人開始，重複此過程</p>
+<p>而有一位士兵其實不想自殺，所以他決定站在<strong>最後一個</strong>被數到的位置(沒有其他人能監督他自殺了)，但他必須在過程開始前選好位置&hellip;.</p>
+<p>下圖是五人的小例子，紅槓數 == 第幾位被選中</p>
+<p><img class="img-zoomable" src="/algorithm/josephus_1.PNG" alt="" />
+</p>
+<h3 id="定義">定義</h3>
+<p>通俗化來說，我們可以有n個士兵，與開始數到第k個人被排除<br>
+並順時針從1至n進行編號    <br>
+就可以用J(n,k) 來表示在此情況下最後一個存活的人</p>
+<p>舉例來說:<br>
+很明顯地 J(1,k) == 1 ，因為總是只有第一人存活<br>
+又比如上述故事中，K(5,2) == 4 因為最後由第四個人存活</p>
+<h1 id="2">暴力法</h1>
+<p>我們可以用一個Queue進行<strong>模擬</strong><br>
+搭配一個一開始是k的計數器，Queue每次尾端會抽出一位，此時計數器會減一， 
+如果在抽出時計數器歸零 ==&gt; 被排除 ==&gt; 移出Queue ==&gt; 重置計數器<br>
+否則 ==&gt; 繼續數 ==&gt; 放回Queue前端</p>
+<p>此過程直到Queue剩下一個</p>
+<p>虛擬碼</p>
+<pre><code># initialize
+counter = k
+Queue = [1,2,3 ... n ]
+
+while Queue.size() &gt; 1 :  # repeat until only one element in queue
+ 	if counter == 0:
+		 Queue.Dequeue() # never put it back
+		 counter = k  # reset 
+	else:
+		Queue.Enqueue(Queue.Dequeue())  # put tail to head
+		counter -=1
+
+</code></pre><p>很明顯的，此方法要排除N-1個元素，而每次排除都必須要數k次<br>
+因此時間複雜度為 O(n*k)</p>
+<h1 id="3">遞迴數學解 </h1>
+<h3 id="概念">概念</h3>
+<p>我們可以由 n-1 個人的解，推到n個人的解</p>
+<p>舉例說明，一樣用故事中的例子，我們要求五個人的解<br>
+我們可以先求四個人的解<br>
+<img class="img-zoomable" src="/algorithm/josephus_2.PNG" alt="" />
+</p>
+<p>然後先求出五個人中被排除了那個人<br>
+<img class="img-zoomable" src="/algorithm/josephus_3.PNG" alt="" />
+</p>
+<p>然後因為下一個人是 &ldquo;四個人&rdquo; 的起點，我們可以直接知道起點就是最後生存的人<br>
+因此答案即為4號</p>
+<p><strong>問題在於: 如何轉換J(n-1,k)與J(n,k)起始點偏移</strong></p>
+<p>也就是上圖(4人解)中，起點是1號，但下圖(5人解)中，剩下四人的起點是4號</p>
+<p>換句話說我們需要找到一個一一對應函數 F
+使<br>
+1 =&gt; 4<br>
+2 =&gt; 5<br>
+3 =&gt; 1<br>
+4 =&gt; 2</p>
+<p>這樣我們可以將 J(n,k) 遞迴表示為 F(J(n-1,k))</p>
+<ul>
+<li>注意: F 可以說是被k決定，比如在此例中，k=3決定了3被排除，由此決定了F</li>
+</ul>
+<h3 id="一一對應">一一對應</h3>
+<p>首先先思考，我們要怎麼在當下回合知道，誰是下一個起點<br>
+通常答案是 加上k+1 後 環狀取餘n，這在環狀結構中很常見</p>
+<p>但是由於我們編號從1開始，k也是有從被排除的人是從起點自己開始數還是與起點間隔多少，抑或是下一個起點具起點多少&hellip; 等表達方法，因此我們將k 定義為最方便的，<strong>下一個起點位置</strong>
+這樣我們可以立刻知道下一個起點是 <strong>+k%n</strong></p>
+<p>套用這個新定義，我們的問題變成<br>
+0 =&gt; 3
+1 =&gt; 4
+2 =&gt; 0
+3 =&gt; 1
+其中原始問題 n=5,k=3</p>
+<p>再來思考在知道下一回合起點後，怎麼找到一一對應關係<br>
+從例子可以觀察出似乎也是 +k%n
+(0+3)%5 = 3
+(1+3)%5 = 4
+(2+3)%5 = 0
+(3+3)%5 = 1</p>
+<p>因此以上例所示範<br>
+我們可以很快得到J(5,3)的答案為 F(J(4,3)) = (J(4,3)+3)%5</p>
+<h3 id="證明--任意nk之一對一函數為-kn">證明 : 任意n,k之一對一函數為 +k%n</h3>
+<p>由於第k-1個被排除，並且起點為第k個<br>
+因此我們需要找到一個F 使以下對應關係成立<br>
+x  =&gt;  y<br>
+---------<br>
+0  =&gt; k<br>
+1  =&gt; k+1<br>
+.<br>
+.<br>
+n-k-1 =&gt; n-1<br>
+n-k   =&gt; 0<br>
+n-k+1 =&gt; 1<br>
+.<br>
+.<br>
+n-2	  =&gt; k-2</p>
+<p>Case1: 在y 於 k ~ n-1 區段中<br>
+其關係可表示為 y = x+k , x為 0 ~ n-k-1</p>
+<p>由於 x &lt;= n-k-1 <br>
+故 (x+k) &lt;= n-1 <br>
+(x+k)%n == x+k == y，恆成立</p>
+<p>Case2: 在y 於 0 ~ k-2 區段<br>
+其關係可表示為 y = x-n+k , x 為 n-k ~ n-2</p>
+<p>反推 x = y+n-k  <br>
+由於 n-k &lt;= x   <br>
+n &lt;= x+k = y+n
+(x+k)%n == (y+n)%n == y 恆成立</p>
+<p>結論，對任何n,k<br>
++k%n都是可以讓J(n-1,k),J(n,k)編碼對應的函數</p>
+<h3 id="遞迴式">遞迴式</h3>
+<p>因此我們可以列出遞迴式</p>
+<p>J(0,k) = 0<br>
+J(n,k) = J(n-1,k)+k % n<br>
+其中 n 表示人數，並從0開始順時針編碼，k表示被排除的下一個人(下一次起點)</p>
+<p>當然我們也可以做調整，使編碼從1開始<br>
+J(1,k) = 0<br>
+J(n,k) = (J(n-1,k)-1+k ) % n +1</p>
+<p>意思是先減一回到0，再通過0開始編碼的一對一函數得到y ，最後再加一回到以1開始邊碼<br>
+有點矩陣同構函數的味道</p>
+<p>這樣時間複雜度可以降到O(n)</p>
+<h1 id="總結">總結</h1>
+<ol>
+<li>想辦法由前項推後項</li>
+<li>找到前後項編碼的對應方法</li>
+</ol>
+<h1 id="變體">變體</h1>
+<p>leetcode 390. Elimination Game<br>
+如下圖<br>
+從1開始砍掉所有奇數位置的數 <br>
+然後<strong>倒過來</strong>執行<br>
+重複直到剩下一個數<br>
+<img class="img-zoomable" src="/algorithm/josephus_4.PNG" alt="" />
+</p>
+<p>由於每回合都會翻轉，因此不能簡單地使用前面推導的式子</p>
+<p>但是可以用一樣的概念，找到上下項，找到對應編碼</p>
+<p>可以觀察到，第一回合會刪掉所有奇數<br>
+所以<strong>可簡化成 J(n//2)</strong> 的問題</p>
+<p>再來是編碼，以例子而言，會先得到 <br>
+2 4 6 8<br>
+而我們知道J(4) == 2    (1,2,3,4 =&gt; 2,4 =&gt; 2) <br>
+所以要將<br>
+1 =&gt; 8<br>
+2 =&gt; 6<br>
+3 =&gt; 4<br>
+4 =&gt; 2</p>
+<p>可以暴力的求得為 8 - i*2 + 2</p>
+<p>因此我們有答案了</p>
+<pre><code>J(1) = 1 , J(2) = 2   
+if 奇數:  
+	J(n) = (n-1) - J(n//2)\*2 +2  
+if 偶數:  
+	J(n) = n - J(n//2)\*2 +2   
+</code></pre><p>此法速度79% , 空間利用100%</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

@@ -133,7 +133,7 @@ Hardware  (* IO devices 比如麥克風、音響、螢幕、鍵盤 &hellip;.)</p
 <p>理解OS之前，可以先了解電腦的硬體架構<br>
 現代的泛用(general-purpose)電腦由一或多個CPU、 device controller ，bus , shared memory 所組成<br>
 其中bus會連接CPU、device controller 到shared memory<br>
-<img class="img-zoomable" src="/misc/os_basic_1.PNG" alt="" />
+<img class="img-zoomable" src="/misc/os_basic_2.PNG" alt="" />
 </p>
 <h3 id="重要名詞">重要名詞</h3>
 <ul>
@@ -145,14 +145,43 @@ Hardware  (* IO devices 比如麥克風、音響、螢幕、鍵盤 &hellip;.)</p
 Hardware 與 software 偵測到事件時，會傳送給OS的訊號<br>
 (Hardware 會由bus傳送訊號)<br>
 當CPU接受interrupt， 會終止手邊的工作，跳到handler的記憶體位址</li>
-<li>system call : (參考 <a href="%22/misc/unix_system_call%22">unix system call</a>) 
+<li>system call : 
+(參考 <a href="/os/unix_system_call">unix system call</a>) 
 software向OS kernel傳送interrupt，要求更高權限運行的服務</li>
 </ul>
+<h1 id="io-structure">I/O structure</h1>
+<p>如上述，現代電腦架構由common bus 連結 device controller 、CPU 與 shared memory</p>
+<p>其中每個<strong>device controller</strong>會負責特定種類的裝置，其工作是維護Local buffer storage 與一組特定目的的register</p>
+<p>同時OS會有<strong>device driver</strong>對應每個device controller，其工作是管理controller與為使用者提供device抽象化的interface</p>
+<h3 id="io架構圖">IO架構圖</h3>
+<p><img class="img-zoomable" src="/misc/os_basic_3.PNG" alt="" />
+</p>
+<p>IO operation步驟</p>
+<ol>
+<li>
+<p>CPU給device IO request</p>
+</li>
+<li>
+<p>device driver給特定的controller的register指令</p>
+</li>
+<li>
+<p>device controller解讀指令</p>
+</li>
+<li>
+<p>device controller開始透過local buffer 轉移資料</p>
+</li>
+<li>
+<p>device controller完成工作，會通知device driver並發出interrupt</p>
+</li>
+<li>
+<p>IO完成後，device driver將控制權還給OS</p>
+</li>
+</ol>
+<p>這套流程在小量資料時沒問題，但大量資料時(超過local buffer好幾倍)，就會頻繁的發出interrupt，降低系統效能</p>
+<p>此時<strong>DMA</strong>(Direct Memory Access)就是為了改善此問題，不需要經由CPU，也就不會降低效能
+(此時只有完成工作需通知CPU，也就只需一次interrupt)</p>
 <h1 id="參考資料">參考資料</h1>
-<ul>
-<li>Introduction to Operating System<br>
-<a href="https://www.youtube.com/watch?v=vBURTt97EkA&amp;list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O">https://www.youtube.com/watch?v=vBURTt97EkA&amp;list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O</a></li>
-</ul>
+<p><a href="https://www.youtube.com/watch?v=vBURTt97EkA&amp;list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O" target="_blank">Introduction to Operating System</a></p>
 
     </div>
 </article>
@@ -204,6 +233,12 @@ software向OS kernel傳送interrupt，要求更高權限運行的服務</li>
             
             <li>
                 <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法區</a>
                 <br> ============= <br>
                      
             </li>

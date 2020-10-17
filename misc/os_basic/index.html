@@ -145,9 +145,13 @@ Hardware  (* IO devices 比如麥克風、音響、螢幕、鍵盤 &hellip;.)</p
 Hardware 與 software 偵測到事件時，會傳送給OS的訊號<br>
 (Hardware 會由bus傳送訊號)<br>
 當CPU接受interrupt， 會終止手邊的工作，跳到handler的記憶體位址</li>
-<li>system call : (參考 <a href="%22/misc/unix_system_call%22">unix system call</a>) 
+<li>system call : 
+(參考 <a href="/os/unix_system_call">unix system call</a>) 
 software向OS kernel傳送interrupt，要求更高權限運行的服務</li>
 </ul>
+<h3 id="io-structure">I/O structure</h3>
+<p>如上述，現代電腦架構由common bus 連結 device controller 、CPU 與 shared memory</p>
+<p>其中每個<strong>device controller</strong>會負責特定種類的裝置，其工作是維護Local buffer storage 與一組特定目的的register</p>
 <h1 id="參考資料">參考資料</h1>
 <ul>
 <li>Introduction to Operating System<br>
@@ -204,6 +208,12 @@ software向OS kernel傳送interrupt，要求更高權限運行的服務</li>
             
             <li>
                 <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法區</a>
                 <br> ============= <br>
                      
             </li>

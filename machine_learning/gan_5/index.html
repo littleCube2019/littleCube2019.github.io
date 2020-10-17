@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>GAN 影片筆記系列五 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="GAN 影片筆記系列五" />
+<meta property="og:description" content="GAN改進模型 WGAN、EBGAN" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/machine_learning/gan_5/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="GAN 影片筆記系列五"/>
+<meta name="twitter:description" content="GAN改進模型 WGAN、EBGAN"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/machine_learning/gan_5/">GAN 影片筆記系列五</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="原本gan的問題-js-divergence">原本GAN的問題: JS divergence</h1>
+<p>JS divergence不適合GAN模型的衡量<br>
+因為生成分佈與真實分佈通常<strong>兩分佈不會重疊</strong></p>
+<p>原因有兩個:</p>
+<ol>
+<li>
+<p>data的特性:<br>
+生成的目標物通常都只是高維資料中的低維manifold<br>
+就像兩條線要在平面中重疊，就算有交點，對平面來說&quot;點&quot;也可以忽略</p>
+</li>
+<li>
+<p>我們有抽樣:<br>
+即使兩分佈有overlap，抽樣後也幾乎可以忽略</p>
+</li>
+</ol>
+<p>而JS不適合衡量不重疊的資料，當分佈不重疊，JS總是回傳log2<br>
+如下圖 <br>
+<img class="img-zoomable" src="/GAN/GAN_5_1.PNG" alt="" />
+ <br>
+PG0與PG1在JS眼中效果一樣，但顯然PG1比較好<br>
+這樣就沒辦法在PG0時更新了</p>
+<p>另一直覺: 假如我們discriminator是二分類器<br>
+那不管PG0還是PG1，皆能達到100%準度</p>
+<h3 id="啟發ls-gan">啟發LS GAN</h3>
+<p>上述直覺可以用sigmoid圖釋<br>
+<img class="img-zoomable" src="/GAN/GAN_5_2.PNG" alt="" />
+<br>
+因為區分的太好，導致偏離中間的斜率區</p>
+<p>因此有人提出用回歸的方法(Least Square)<br>
+假資料低分、真資料高分<br>
+然後用回歸線更新，這樣保證斜率存在</p>
+<h1 id="wasserstein-gan-wgan">Wasserstein GAN (WGAN)</h1>
+<p>更換  Earth mover`s Distance (Wasserstein  distance) 來衡量</p>
+<h3 id="解釋">解釋</h3>
+<p>想像自己是一台推土機，要將生成分佈的土推到真分佈所需要的平均距離<br>
+<img class="img-zoomable" src="/GAN/GAN_5_3.PNG" alt="" />
+</p>
+<h3 id="問題--有多種不同鏟法moving-plan">問題:  有多種不同鏟法(moving plan)?</h3>
+<p>窮舉每一種可能，找出最短的平均距離<br>
+<img class="img-zoomable" src="/GAN/GAN_5_4.PNG" alt="" />
+</p>
+<p>接著講解怎麼衡量moving plan成本<br>
+<img class="img-zoomable" src="/GAN/GAN_5_5.PNG" alt="" />
+</p>
+<p>最後Earth mover`s Distance就是最小的moving plan成本</p>
+<h3 id="數學式">數學式</h3>
+<p>套用Wasserstein distance的目標函數經過化簡可以得到<br>
+<img class="img-zoomable" src="/GAN/GAN_5_6.PNG" alt="" />
+<br>
+解釋:  在保持D平滑的同時，來自真分佈的評分越高越好，來自生成分佈的評分越低越好</p>
+<p>其中 K-Lipschitz 是一種保持函數平滑的限制<br>
+|| f(x1) - f(x2) || &lt;= K * ||x1 - x2|| ，其中K==1 就是 1-Lipschitz</p>
+<p>解釋:  y的變化不能大過x變化的變數</p>
+<h3 id="問題怎麼限制1-lipschitz">問題怎麼限制1-Lipschitz</h3>
+<p>照常使用Gradient descent<br>
+然後使用<strong>Weight clipping</strong><br>
+強迫參數要在一個範圍內，如果超出就改成邊界值</p>
+<p>比如限制在-10~+10,超過10就設為10</p>
+<p>但這其實沒辦法保證1-Lipschitz，只能說是工程的手段去解決</p>
+<h3 id="improved-wgan">improved WGAN</h3>
+<p>利用一個數學性質讓目標函數更貼近1-Lipschitz 
+<img class="img-zoomable" src="/GAN/GAN_5_8.PNG" alt="" />
+
+白話文就是只要Discriminator是1-Lipschitz<br>
+所有data的gradient就會小於等於1</p>
+<p><img class="img-zoomable" src="/GAN/GAN_5_7.PNG" alt="" />
+<br>
+於是有人想到實作上可以加上<strong>懲罰項</strong> 來讓模型限制在1-Lipschitz</p>
+<p>可是由於我們無法算所有data的gradient(無窮個)<br>
+因此我們改<strong>sample兩個分佈中間的區域</strong><br>
+<img class="img-zoomable" src="/GAN/GAN_5_9.PNG" alt="" />
+<br>
+這作法不但實驗上效果好，也符合直覺，因為<strong>中間的區域就是模型分佈移動的方向</strong>，也是只有這塊區域才會影響結果</p>
+<p><img class="img-zoomable" src="/GAN/GAN_5_10.PNG" alt="" />
+<br>
+並且實作上會希望gradient越接近1越好  (實驗導向結果)</p>
+<h3 id="energy-based-gan-ebgan">Energy-based GAN (EBGAN)</h3>
+<p>使用autoencoder 替代discriminator  (不再是二分類器)<br>
+<img class="img-zoomable" src="/GAN/GAN_5_11.PNG" alt="" />
+</p>
+<p>好處: 可以pretrain discriminator</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

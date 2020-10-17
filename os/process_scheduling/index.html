@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>OS process scheduling - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="OS process scheduling" />
+<meta property="og:description" content="關於OS process scheduling概念" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/os/process_scheduling/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OS process scheduling"/>
+<meta name="twitter:description" content="關於OS process scheduling概念"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/os/process_scheduling/">OS process scheduling</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="簡介">簡介</h1>
+<p>為甚麼需要scheduling ?  為了實作multiprogram 去有效利用CPU資源</p>
+<p>所有程式的執行狀態都可以歸納為CPU burst 與 I/O burst兩種情況</p>
+<p>大部分程式只有短時間的CPU burst，與長時間的I/O burst</p>
+<p>有四個情形需要CPU scheduling</p>
+<ol>
+<li>running =&gt; waiting  (程式自己需要IO)</li>
+<li>running =&gt; ready (程式太久、其他情況需要被趕出去)</li>
+<li>wating =&gt; ready (程式結束IO)</li>
+<li>terminate (程式完成任務)</li>
+</ol>
+<h3 id="preemptive-vs-non-preemptive">preemptive VS Non-preemptive</h3>
+<p>Non-preemptive =&gt; 不可插隊<br>
+比如只在1、4時scheduling<br>
+意思即為: 在程式結束之前都會一直佔著CPU</p>
+<p>Preemptive=&gt; 可以插隊，相對的概念<br>
+4種情況都scheduling<br>
+效能通常比較好，但是相對要注意process synchronization</p>
+<h3 id="dispatcher">Dispatcher</h3>
+<p>給被scheduler 選定的process使用CPU的權利 <br>
+工作包含switching context , 修改Program counter</p>
+<h1 id="scheduling-algorithm">scheduling algorithm</h1>
+<p>throughput : 在一段時間內完成多少process<br>
+turnaround time : single job 執行的時間<br>
+waiting time : 在ready queue內等待的時間<br>
+response time : submision ~ <strong>第一次</strong>執行的時間</p>
+<h3 id="first-come-first-server-fcfs">First come First server (FCFS)</h3>
+<p>先到的process先執行<br>
+如下圖<br>
+<img class="img-zoomable" src="/os/process_sh_1.PNG" alt="" />
+<br>
+注意: FCFS就算有preemptive，也不會使用<br>
+注意: 順序影響很大，如果今天順序變為 P2 P3 P1<br>
+則waiting time 變為 0+3+6 = 9</p>
+<h3 id="shortest-job-first-sjf">shortest job first (SJF)</h3>
+<ul>
+<li>是最短waiting time 的演算法</li>
+<li>會受preemptive影響</li>
+<li>要考慮job進來的時間</li>
+</ul>
+<p>以下是Non-preemptive例子:<br>
+<img class="img-zoomable" src="/os/process_sh_2.PNG" alt="" />
+<br>
+比如雖然P3最短，但在t=0時只能選P1<br>
+又因為無法打斷，waiting time == response time</p>
+<p>以下是preemptive 例子:<br>
+<img class="img-zoomable" src="/os/process_sh_3.PNG" alt="" />
+<br>
+注意response time 是進入~第一次被執行</p>
+<p><strong>重大困難點</strong>:無法事先確定process執行時間</p>
+<h3 id="approximate-sjf">Approximate SJF</h3>
+<p>使用moving average，以過去的執行時間，推測新process的執行時間<br>
+<img class="img-zoomable" src="/os/process_sh_4.PNG" alt="" />
+<br>
+其中alpha表示對過去與現在的重視比例</p>
+<p>使用例子:
+<img class="img-zoomable" src="/os/process_sh_5.PNG" alt="" />
+</p>
+<h3 id="priority-scheduling">priority scheduling</h3>
+<p>泛化的scheduling，為每個process綁定一個權重<br>
+權重越高，越快使用CPU</p>
+<p>比如SJF，可以說是長度越短，權重越高</p>
+<p>問題:可能有starving =&gt; 權重低的永遠執行不到 <br>
+解法: aging，越久沒執行，權重會調越高</p>
+<h3 id="round-robin-scheduling">Round-Robin Scheduling</h3>
+<p><strong>加入time quamtum的概念</strong><br>
+實務上會設定10-100ms的TQ<br>
+當process執行超過TQ，就會被踢出並放到ready queue尾端  (必為preempted)</p>
+<p>討論: <br>
+TQ large =&gt; 趨近FCFS<br>
+TQ small =&gt; context switch overhead 增加<br>
+<img class="img-zoomable" src="/os/process_sh_6.PNG" alt="" />
+<br>
+直覺上可以理解， 通常RR會有比較高的完成所需時間，但會有較低的response time</p>
+<h3 id="multilevel-queue-scheduling">Multilevel Queue Scheduling</h3>
+<p>用<strong>機率</strong>去選擇處理哪個queue <br>
+<img class="img-zoomable" src="/os/process_sh_7.PNG" alt="" />
+<br>
+比如有50%的機率選擇system process queue<br>
+20% interactive queue &hellip;. 5% student process queue<br>
+選中queue就會執行裡面的程式<br>
+利用調整機率賦予權重，同時也避免starving</p>
+<h3 id="multilevel-feedback-queue-scheduling">Multilevel Feedback Queue Scheduling</h3>
+<p>結合 RR 的TQ 與 multilevel queue的多queue概念 <br>
+<img class="img-zoomable" src="/os/process_sh_8.PNG" alt="" />
+</p>
+<p>上下分層有意義，一定執行完上層，才往下執行<br>
+如果在該queue層未執行完，就會被推到下層(下層相較上層較晚執行、但執行時間可以更久)</p>
+<p>aging: 當job卡在下層太久，會被往上拉</p>
+<p>不像approximate SJF ，需要數學表達，實務上常採用</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

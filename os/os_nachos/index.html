@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>NachOS 簡介 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="NachOS 簡介" />
+<meta property="og:description" content="關於NachOS" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/os/os_nachos/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="NachOS 簡介"/>
+<meta name="twitter:description" content="關於NachOS"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/os/os_nachos/">NachOS 簡介</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>NachOS是類似虛擬機的作法，一個虛擬的作業系統</p>
+<h1 id="架構">架構</h1>
+<p><img class="img-zoomable" src="/os/nachos_1.PNG" alt="" />
+</p>
+<ul>
+<li>
+<p>要在OS run program，首先要有user program   NachOS user program都是以C++所撰寫</p>
+</li>
+<li>
+<p>NachOS 自然也有systemcall  (要引入systemcall.h)</p>
+</li>
+<li>
+<p>NachOS 的instruction set 是用MIPS，與linux的X86不同，但是因為NachOS有放入Machine simulation code，讓兩個平台translation</p>
+</li>
+<li>
+<p>NachOS kernel code，相當於NachOS核心</p>
+</li>
+</ul>
+<h1 id="重要檔案資料夾">重要檔案資料夾</h1>
+<p>lib/  放著被其他Nachos code的其他工具code</p>
+<p>machine/  machine simulation，改這裡可以理解為動到硬體</p>
+<p>threads/ Nachos本身是多線程程式，NachOS裡的main() routine也包含在此</p>
+<p>test/  放user program的部分(分類慣例)</p>
+<p>userprog/   NachOS operating code在此處</p>
+<p>network/  模擬網路連線</p>
+<p>filesys/ 會有兩種file system 實作於此 
+real file system : 真實產生file system
+stub file system : 將NachOS file system 借用 host OS system  (真實OS不可能發生)</p>
+<h1 id="安裝">安裝</h1>
+<p>搜尋 NachOS-4.0_MP1 照指令下載<br>
+唯一要注意的是 在使用test code，必須要用 
+../bulid.linux/nachos -e &lt;程式名&gt;<br>
+去讓nachos跑</p>
+<h1 id="參考資料">參考資料</h1>
+<p><a href="https://www.youtube.com/watch?v=9vrPlp_f5A0&amp;t=166s&amp;ab_channel=NTHUOCW">https://www.youtube.com/watch?v=9vrPlp_f5A0&amp;t=166s&amp;ab_channel=NTHUOCW</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

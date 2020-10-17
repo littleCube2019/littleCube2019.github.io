@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>OS process  - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="OS process " />
+<meta property="og:description" content="關於OS process概念" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/os/os_process/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OS process "/>
+<meta name="twitter:description" content="關於OS process概念"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/os/os_process/">OS process </a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="簡介">簡介</h1>
+<p>此篇講解OS的process基礎概念</p>
+<h1 id="process-定義">process 定義</h1>
+<h3 id="process-vs-program">process VS program</h3>
+<p>process 是動態，被<strong>載入記憶體</strong>中執行的程式<br>
+program 是靜態，被<strong>儲存於硬碟</strong>的binary code</p>
+<h3 id="process大致由以下幾區組成">process大致由以下幾區組成</h3>
+<p>Code segment(text section)   <br>
+Data section: globa var     <br>
+Stack: temp、local var<br>
+Heap: dynamic allocated var <br>
+Meta data : program counter , register contents<br>
+A set of resource : 如被開啟的file</p>
+<p><img class="img-zoomable" src="/os/process_1.PNG" alt="" />
+</p>
+<ul>
+<li>補充: thread是一種輕量版的process，也是CPU執行的最小單位，會share process的code,global data,file  (注意:register不share，可以以PC記憶)</li>
+</ul>
+<h1 id="process-state">process state</h1>
+<p>process的排程可以以狀態轉移圖表示<br>
+共有以下幾種狀態<br>
+New: process被創造<br>
+Ready: process被載入memory,等待被執行 <br>
+Running: process在CPU內執行<br>
+Waiting: process等待事件 <br>
+Terminated: process執行完畢</p>
+<p><img class="img-zoomable" src="/os/process_2.PNG" alt="" />
+<br>
+注意:</p>
+<ul>
+<li>ready狀態是否進入running，是由process scheduler(一套演算法)決定</li>
+<li>Running =&gt; Ready，非自願性，比如執行太久，time slice到了，或是別的程式IO完成</li>
+<li>Running =&gt; Waiting, 自願性，比如需要IO、或自知要等待事件</li>
+</ul>
+<h1 id="os管理process的方法">OS管理process的方法</h1>
+<p>使用PCB (process control block)  紀錄資訊<br>
+在process創建時，OS會創造的一個table物件進行管理</p>
+<p>這些資訊會被放在kernel space memory裡面</p>
+<p><img class="img-zoomable" src="/os/process_3.PNG" alt="" />
+</p>
+<h3 id="為甚麼會有pointer">為甚麼會有pointer?</h3>
+<p>&ldquo;因為把process放入Queue中&quot;這個概念，在實作上就是用Linked List把PCB串起來</p>
+<h3 id="重要資訊">重要資訊</h3>
+<p>process state , program counter , CPU register 這些OS需要的information  <br>
+CPU scheduling information (如:priority)<br>
+Memory-management (如: base/limit register)</p>
+<h1 id="process-與-context-switch">process 與 Context Switch</h1>
+<p><img class="img-zoomable" src="/os/process_4.PNG" alt="" />
+<br>
+在OS切換process時，都必須save-reload process資訊，但這些時間(switch time)就是overhead</p>
+<p>switch time時間取決於<br>
+memory speed <br>
+number of register <br>
+特殊instruction  (如單行load/save)<br>
+hardware support  (如多個set的register ,用於紀錄多個process狀態，減少memory access)</p>
+<h1 id="process-scheduling--簡介">process scheduling  簡介</h1>
+<p>Review: 為甚麼需要process scheduling<br>
+為了要最大化使用CPU =&gt; 需要multiprogramming<br>
+為了讓使用者有即時互動感 =&gt; 需要time sharing</p>
+<h3 id="queue">Queue</h3>
+<p>process scheduling 會使用多個Queue來管理process</p>
+<ul>
+<li>Job Queue : 存放new state，放所有process</li>
+<li>Ready Queue: 存放準備被執行的process</li>
+<li>Waiting Queue: 等待I/O的process , 一般會依device分為多個<br>
+下圖是個例子 <br>
+<img class="img-zoomable" src="/os/process_5.PNG" alt="" />
+</li>
+</ul>
+<h3 id="scheduler分類">scheduler分類</h3>
+<p>short-term (CPU scheduler) : 決定誰該被CPU執行 (ready -&gt; run) 
+(幾ms就schedule一次)</p>
+<p>medium term : 選定誰要swap out/in (ready -&gt; Disk)
+(為了要清出memory，把程式放回Disk上等待IO)</p>
+<ul>
+<li>現今Disk虛擬記憶體技術日漸改善，所以此角色重要度也有所下降</li>
+</ul>
+<p>long term(job scheduler): 決定誰要被load 進memory  (Disk -&gt; ready)<br>
+(決定 degree of multiprogramming<br>
+如果容許選的太多，會造成競爭，如果限制選的太少，效率會變差)</p>
+<ul>
+<li>在現今memory夠大，基本上不需要long term scheduler，此角色被medium term取代</li>
+</ul>
+<p><img class="img-zoomable" src="/os/process_6.PNG" alt="" />
+</p>
+<h1 id="process-實作">process 實作</h1>
+<p>可以配合<a href="/misc/process">此篇</a>一起閱讀</p>
+<h3 id="process-tree">process tree</h3>
+<p>process會有parent , child關係，並且有自己專屬的資料(如:pid、register &hellip;)，這正適合用tree表示<br>
+<img class="img-zoomable" src="/os/process_7.PNG" alt="" />
+ <br>
+可使用unix指令: ps -ael 查看</p>
+<h3 id="process-設計">process 設計</h3>
+<ol>
+<li>父子共享資源關係<br>
+可以是 全部共享、部分共享、全部不共享</li>
+<li>執行順序 <br>
+可以是同步執行 或 parent 等child</li>
+<li>address空間<br>
+child 是parent的複製品，兩者用變數溝通 <br>
+child 是直接load 新程式碼，兩者用message passing 溝通</li>
+</ol>
+<h1 id="interprocess-communication-ipc">Interprocess Communication (IPC)</h1>
+<p>定義:一套process間交換資料的方法  (網路也是廣義的IPC)<br>
+目的: 交換資訊(網路)、加速計算、方便管理、模組化(micro kernel)</p>
+<h3 id="方法">方法</h3>
+<ol>
+<li>shared memory<br>
+共同memory，兩者都可以取用 <br>
+缺點:需要synchronization<br>
+優點:快速</li>
+</ol>
+<p>作法:要跟OS要一塊memory<br>
+使用者自行決定怎麼利用這塊空間<br>
+並要管理synchronization問題</p>
+<h5 id="以consumer--producer-problem為例">以consumer &amp; producer problem為例</h5>
+<p>producer會寫入、consumer會讀取<br>
+<img class="img-zoomable" src="/os/process_8.PNG" alt="" />
+<br>
+注意:此法需要犧牲一格 (in+1)%B=out 表示in那一格一定是空的<br>
+<img class="img-zoomable" src="/os/process_9.PNG" alt="" />
+</p>
+<p>OS 是很常使用這套方法的，比如compile (in)
+link (out)的pipeline</p>
+<ol start="2">
+<li>message passing<br>
+類似email,直接傳訊息<br>
+缺點:需要copy、send、recieve，較慢<br>
+優點:跨電腦、小量資料的首選</li>
+</ol>
+<p>本身就解決同步問題(打電話時，對方接起來，本身就已經同步了)</p>
+<p>需要準備</p>
+<ol>
+<li>溝通連結</li>
+<li>receive/send api<br>
+讓程式可以透過send(message) , receive(message)來溝通</li>
+</ol>
+<h4 id="溝通連結">溝通連結</h4>
+<p>又可分為physical (shared memory(傳送時才開,法I則是一直開著) , HW bus , network)</p>
+<p>以及logical<br>
+定義方向、對稱關係、blocking or non-blocking (等不等待對方發/收到)&hellip;</p>
+<ul>
+<li>
+<p>Direct - 需要指定誰接誰收 <br>
+send(P, message)  <br>
+receive(Q,message) <br>
+(必定one-one 對應)<br>
+<img class="img-zoomable" src="/os/process_10.PNG" alt="" />
+<br>
+可以看到程式碼簡化很多<br>
+但會很死板，比如訊息無法重複利用</p>
+</li>
+<li>
+<p>Indirect - 建立一個mail box共同收發<br>
+send(A, message)  <br>
+receive(A,message)
+(many-to-many)   <br>
+兩個人都到mail box A去收發  <br>
+這樣訊息可以重複利用</p>
+</li>
+</ul>
+<ol start="3">
+<li>
+<p>Sockets:<br>
+網路以IP、port為節點，並以stream of bytes(沒有資料結構，要由協定決定如何解讀)交換資料
+<img class="img-zoomable" src="/os/process_11.PNG" alt="" />
+</p>
+</li>
+<li>
+<p>Remote Procedure Calls:<br>
+可以去call別人的API<br>
+與socket 差別，多了一層stub-skeleton去處理格式的問題
+<img class="img-zoomable" src="/os/process_12.PNG" alt="" />
+<br>
+甚至底端還是socket傳，經過處理後變成方便的資料結構</p>
+</li>
+</ol>
+<h1 id="參考資料">參考資料</h1>
+<p><a href="https://www.youtube.com/watch?v=KGwfr77Hb7M&amp;list=PL9jciz8qz_zyO55qECi2PD3k6lgxluYEV&amp;index=19&amp;ab_channel=davidhcefx" target="_blank">清大周志遠老師公開課</a></p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>
