@@ -12,6 +12,24 @@
     
     
     <item>
+      <title>背包問題 - 簡單版</title>
+      <link>https://littlecube2019.github.io/algorithm/backpack/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/algorithm/backpack/</guid>
+      <description>背包問題簡介與實例</description>
+    </item>
+    
+    <item>
+      <title>基礎graph - 圖的表示、DFS、BFS</title>
+      <link>https://littlecube2019.github.io/algorithm/graph_basic/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/algorithm/graph_basic/</guid>
+      <description>基礎圖論</description>
+    </item>
+    
+    <item>
       <title>演算法心得 - Josephus problem</title>
       <link>https://littlecube2019.github.io/algorithm/josephus/</link>
       <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>

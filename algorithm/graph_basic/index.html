@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>基礎graph - 圖的表示、DFS、BFS - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="基礎graph - 圖的表示、DFS、BFS" />
+<meta property="og:description" content="基礎圖論" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/algorithm/graph_basic/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="基礎graph - 圖的表示、DFS、BFS"/>
+<meta name="twitter:description" content="基礎圖論"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/algorithm/graph_basic/">基礎graph - 圖的表示、DFS、BFS</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="圖是甚麼">圖是甚麼</h1>
+<p>圖在數學上可定義為 G = (V,E) <br>
+其中V是圖上所有點所成的集合 <br>
+E是圖上所有邊所成的集合</p>
+<p>並且邊可以表示為 (u,v) ，u,v屬於V</p>
+<p>白話來說，圖是一些點與邊所構成的結構<br>
+可以說是泛化的資料結構，比如tree, linked list都是圖的子集</p>
+<p>正因為圖很泛化，可以記錄大量資訊<br>
+比如 社群網路的追蹤關係、各城市的交通流量</p>
+<p>至於方向、degree、權重、cycle、連通圖、子圖、二分圖..概念就不在此贅述</p>
+<h1 id="如何記錄圖">如何記錄圖</h1>
+<p><img class="img-zoomable" src="/algorithm/graph_basic_1.PNG" alt="" />
+<br>
+以上圖為例:</p>
+<h3 id="方法1-2d-matrix--adjacent-matrix">方法1: 2D matrix  (adjacent matrix)</h3>
+<p>會以2D 矩陣的方式，如果有邊可以記為1，或是其權重值<br>
+反之為0</p>
+<p><img class="img-zoomable" src="/algorithm/graph_basic_2.PNG" alt="" />
+
+比如 1-&gt;2 有邊 , 1-&gt;3 有邊 .. 所以對應值是1</p>
+<p>Some Fact :</p>
+<ul>
+<li>適合紀錄邊很多的圖，否則會有大量0 (稀疏矩陣)</li>
+<li>如果是無向圖，矩陣必對稱，只需記一半即可</li>
+</ul>
+<h3 id="方法2-linked-list--adjacent-list">方法2: linked list  (adjacent list)</h3>
+<p>會以點數量個linked list ，紀錄各點有指向的點   <br>
+<img class="img-zoomable" src="/algorithm/graph_basic_3.PNG" alt="" />
+</p>
+<p>Some Fact:</p>
+<ul>
+<li>適合紀錄有向、邊很少的圖</li>
+<li>實作上，每個節點都是一個struct (或class)<br>
+因此若有權重就放在裡面一起記錄，然後箭頭用指標就可以達到</li>
+<li>實作上，可能需要一個陣列把n個list紀錄起來</li>
+</ul>
+<h1 id="traversal">Traversal</h1>
+<p>紀錄完圖之後，常常會需要取出裡面的一條path，或是確認所有點<br>
+這時有兩個常見的做法，即BFS 與 DFS</p>
+<h3 id="bfs-breadth-first-search">BFS (Breadth-first search)</h3>
+<p>會優先搜尋鄰近點<br>
+以例子而言，<br>
+1 會先搜尋到 2、3 <br>
+2 搜尋到3 (但3看過了)<br>
+3 搜尋到4<br>
+4 搜尋到2 (但2看過了)</p>
+<p>通常會搭配Queue來實作，利用先進先出的特性，來紀錄下一回合該哪個點</p>
+<p>並且我們通常會讓點多記一個visited變數，如果訪問過就打開，否則遇到有cycle的圖會無窮traversal</p>
+<h4 id="概念">概念</h4>
+<pre><code>Queue = [各子圖起點們]  
+while Queue is not empty:
+	center_point = Queue.Dequeue()
+
+	for node in center_point`s neighbor:
+		if node not visited:
+			Queue.Enqueue(node)  
+			# do something 
+
+</code></pre><p>關鍵就是如何取得center_point`s neighbor
+(這邊的neighbor在有向圖中就是center point 指向的點)</p>
+<h4 id="matrix-版bfs">Matrix 版BFS</h4>
+<p>neighbor就是第center point列中 &gt; 0 的行號</p>
+<pre><code>for i in range(n_vertex):
+	if graph_matrix[center_point][i] &gt; 0:
+		center_point direct ith point  neighbor
+
+</code></pre><h4 id="list-版bfs">list 版BFS</h4>
+<p>neighbor 就是自己list 的linked list 上的所有點</p>
+<pre><code>for i in range(n_vertex):
+	for node in graph_list[i]:
+		node and ith point is neighbor
+</code></pre><h4 id="比較">比較</h4>
+<p>這是看出資料結構對演算法影響的時機之一</p>
+<p>matrix版本因為要檢查整的matrix，所以最後時間複雜度是 O(V^2)</p>
+<p>list版本則因為只需要查看每一個點連出去的邊<br>
+時間複雜度是 O(V+E)</p>
+<p>因此通常情況下，list比較適合做traversal</p>
+<h3 id="dfs-depth-first-search">DFS (Depth-first search)</h3>
+<p>會優先搜尋同一條path
+以例子而言，<br>
+1 會先搜尋到 2、3、4 (如果只traversal點，則到此結束)</p>
+<p>通常會搭配Stack來實作，利用先進後出的特性，來紀錄下一回合該哪個點</p>
+<h4 id="概念-1">概念</h4>
+<pre><code>Stack = [各子圖起點們]  
+while Stack is not empty:
+	center_point = Stack.pop()
+    
+    while center_point!=None &amp;&amp; center_point is not visited:
+    	#Do something 
+
+    	Next_center_point = center_point.getOneNeighbor()
+    
+    	Stack.push(Next_center_point)
+
+    	center_point = Next_center_point
+
+</code></pre><p>類似BFS，關鍵在於center_point.getOneNeighbor()</p>
+<p>matrix版本就是找出該列第一個非零的行號 <br>
+linked list版本就是傳下一個節點</p>
+<p>並且時間複雜度也是O(V^2) 與 O(V+E)</p>
+<p>注意:</p>
+<ul>
+<li>通常也可以用recursive來traversal (遞迴也是function stack實作，因此也有stack)</li>
+<li>stack 與 queue , DFS 與 BFS 互相對應</li>
+<li>DFS、BFS是很基礎的算法，以後演算法可能會以他們為基礎</li>
+</ul>
+<h1 id="另一個好的dfs與bfs例子">另一個好的DFS與BFS例子</h1>
+<p><img class="img-zoomable" src="/algorithm/graph_basic_4.PNG" alt="" />
+</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

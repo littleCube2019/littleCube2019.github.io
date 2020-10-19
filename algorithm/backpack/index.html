@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>背包問題 - 簡單版 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="背包問題 - 簡單版" />
+<meta property="og:description" content="背包問題簡介與實例" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/algorithm/backpack/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="背包問題 - 簡單版"/>
+<meta name="twitter:description" content="背包問題簡介與實例"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/algorithm/backpack/">背包問題 - 簡單版</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="問題概述">問題概述</h1>
+<h3 id="故事">故事</h3>
+<p>今天你想出門旅行，需要有一個大背包裝行李，雖然想帶的東西很多，但是背包空間、你的負重都必須有所限制&hellip;，求能裝最多東西的塞法?</p>
+<h3 id="np-問題">NP 問題</h3>
+<p>背包問題可以非常複雜(NP問題)<br>
+比如為負重、長、寬、高、效用做限制
+今天有<br>
+洋芋片 (10,20,20,40,50)  <br>
+換洗衣物 (5,5,5,5,200) <br>
+錢包 (50,10,10,5,1000)<br>
+神秘小方塊 (40,1,1,1,10000)</p>
+<p>背包的限制是 (60,25,25,25)，求效用極大化的放法<br>
+光是這樣就是5個維度要去檢查，可以想像其複雜程度</p>
+<h3 id="簡化">簡化</h3>
+<p>這篇要討論的是簡化版<br>
+意即給定一個限制數字s，與一個數字陣列arr<br>
+求不超過s的情況下，從arr中湊出最大的數字和</p>
+<p>可以把s想像成負重<br>
+arr是欲放入物品的重量</p>
+<p>舉例而言<br>
+s=6<br>
+arr = [2,3,5,8]</p>
+<p>則最大和就是 2+3 == 5 ，無法再加入其他數字<br>
+從例子中也可以看出解並不唯一，比如也可以單放5作為答案</p>
+<h1 id="暴力解">暴力解</h1>
+<h3 id="概念">概念</h3>
+<p>以上述例子而言<br>
+可以想像答案一定在 每個東西都放入 ~ 每個東西不放入 之間<br>
+也就是<br>
+2^4 種可能中，尋找最大值</p>
+<p>概念上為<br>
+<img class="img-zoomable" src="/algorithm/backpack_1.PNG" alt="" />
+</p>
+<p>可以觀察到:</p>
+<ul>
+<li>有些明顯就放不進去，就不需要討論，進行剪枝即可</li>
+<li>最後的確有抓到兩個解</li>
+<li>最多會有2^(len(arr))的運算結果</li>
+</ul>
+<p>因此複雜度為O(2^N)，N是arr的長度，也就是選擇數量</p>
+<p>這比起多項式時間是成長非常快的複雜度<br>
+因此通常不能直接這樣解</p>
+<h3 id="程式碼">程式碼</h3>
+<pre><code>def backpack (current_limit , arr , current_index):
+	if len(arr) == current_index:
+		return current_limit
+
+	if current_limit &lt; 0 :
+		return current_limit+1  # error
+
+	return min(backpack(current_limit-arr[current_index],arr, current_index+1), backpack(current_limit,arr, current_index+1))  #放入與不放入，同時記得index+1
+		
+</code></pre><p>得到current_limit最小值後， 用current_limit 減去就能得到最大值</p>
+<p>如果能把限制剛好填滿(即 backpack(current_limit,arr,0) == 0)，我們視為<strong>有解</strong></p>
+<h1 id="dp-改良">DP 改良</h1>
+<p>遞迴演算法，很常可以用DP來提速<br>
+通常就是建造table去紀錄前幾項，避免重複計算的部分</p>
+<p>概念上， 要問重量限制是10的背包，重量為4(第i個)東西可不可以放進去<br>
+可以改問重量限制是10-4 == 6 的背包，可不可以放第i+1個東西進去</p>
+<p>因此我們需要從limit小 =&gt; 大 去紀錄答案<br>
+同時因為有N個選擇，可以建一個二維表格去紀錄 <br>
+<img class="img-zoomable" src="/algorithm/backpack_2.PNG" alt="" />
+</p>
+<p>說明:</p>
+<ol>
+<li>
+<p>符號O表示 沒放進去，並且有解<br>
+符號I表示 放進去，並且有解<br>
+符號-表示 沒有解</p>
+</li>
+<li>
+<p>起始值，因為limit==0中，都不放入就有解<br>
+所以limit == 0 那行可以全部填O</p>
+</li>
+<li>
+<p>要分為&quot;放進去&rdquo; or &ldquo;沒放進&rdquo; 討論:</p>
+<ul>
+<li>放進去<br>
+查看限制是 limit - 當前值 ， 編號是 上一號是否有解，<br>
+如果有解，當前值放進去也一定有解</li>
+<li>沒放進去<br>
+查看 編號上一號 是否有解<br>
+有解的話不放進去也一定有解<br>
+<img class="img-zoomable" src="/algorithm/backpack_3.PNG" alt="" />
+</li>
+</ul>
+</li>
+<li>
+<p>從上而下，從左而右完成表格</p>
+</li>
+</ol>
+<h3 id="演算法">演算法</h3>
+<pre><code># make table
+Table = [['-' for i in range(limit) ] for i in range(len(arr))]
+
+# Table[i][j] 表示 第i個選擇，limit = j
+
+# initialize
+for i in range(len(arr)):
+	Table[i][0] = 'O'
+
+# DP 
+for j in range(limit):
+	current_limit = j
+	for i in range(1,len(arr)):
+		if current_limit &gt; arr[i] and Table[i-1][current_limit - arr[i]] = 'I' or 'O':  
+			Table[i][j] = 'I'   # 在確定符合index範圍後檢查是否放入
+			continue
+		elif j&gt;0 and Table[i-1][j] == 'I' or 'O':	
+			Table[i][j] = 'O' 
+			continue 
+		else:
+			Table[i][j] = '-'
+
+</code></pre><h3 id="backtrack">BackTrack</h3>
+<p>在製表完成後，如果有解，可以依最右下角<br>
+依反規則推得解的path</p>
+<p>如果本格是 O ， 表示往上一格是解<br>
+如果本格是 I ,  表示limit-本格的上一格  是解<br>
+如下圖
+<img class="img-zoomable" src="/algorithm/backpack_4.PNG" alt="" />
+</p>
+<h3 id="時間複雜度">時間複雜度</h3>
+<p>可以由O(2^N) 降至 O(N*limit*N) 的時間</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>
