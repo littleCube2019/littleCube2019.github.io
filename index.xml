@@ -161,6 +161,15 @@
     </item>
     
     <item>
+      <title>sigmoid-&gt;relu-&gt;maxout演進</title>
+      <link>https://littlecube2019.github.io/machine_learning/relu/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/machine_learning/relu/</guid>
+      <description>activated function的改變史</description>
+    </item>
+    
+    <item>
       <title>機器學習相關筆記</title>
       <link>https://littlecube2019.github.io/index/machine_learning/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
@@ -171,9 +180,11 @@ Note 2 Conditional GAN
 Note 3 Basic Theory
 Note 4 GAN framework
 Note 5 GAN 改進
-數學、名詞 Cross entropy
-KL divergence
-參考資料 台大李宏毅老師youtube課程影片筆記
+數學、名詞   Cross entropy
+  KL divergence
+  sigmoid -&amp;gt; relu -&amp;gt; maxout
+比較Overfitting vs Underfitting VS Vanishing Gradient 再帶到為甚麼需要relu
+  參考資料 台大李宏毅老師youtube課程影片筆記
  GAN播放清單  </description>
     </item>
     
@@ -268,6 +279,15 @@ KL divergence
     </item>
     
     <item>
+      <title>OS - 記憶體管理</title>
+      <link>https://littlecube2019.github.io/os/os_memory_management/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/os/os_memory_management/</guid>
+      <description>關於記憶體管理</description>
+    </item>
+    
+    <item>
       <title>OS Basic(依Neso Academy影片筆記) </title>
       <link>https://littlecube2019.github.io/misc/os_basic/</link>
       <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
@@ -304,6 +324,15 @@ KL divergence
     </item>
     
     <item>
+      <title>Set定義與基本運算</title>
+      <link>https://littlecube2019.github.io/discretemath/set_basic/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/discretemath/set_basic/</guid>
+      <description>set 是甚麼，與他的基本算子</description>
+    </item>
+    
+    <item>
       <title>Unix system call (上)</title>
       <link>https://littlecube2019.github.io/os/unix_system_call/</link>
       <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
@@ -322,12 +351,30 @@ KL divergence
     </item>
     
     <item>
+      <title>基礎的樹型資料結構</title>
+      <link>https://littlecube2019.github.io/algorithm/tree/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/algorithm/tree/</guid>
+      <description>Tree 101</description>
+    </item>
+    
+    <item>
       <title>演算法心得 - Josephus problem</title>
       <link>https://littlecube2019.github.io/algorithm/josephus/</link>
       <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/algorithm/josephus/</guid>
       <description>Josephus problem</description>
+    </item>
+    
+    <item>
+      <title>離散數學相關心得、筆記</title>
+      <link>https://littlecube2019.github.io/index/discretemath/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/index/discretemath/</guid>
+      <description>離散數學</description>
     </item>
     
     <item>

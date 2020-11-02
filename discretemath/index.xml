@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Discretemaths on Little Cube`s box</title>
+    <link>https://littlecube2019.github.io/discretemath/</link>
+    <description>Recent content in Discretemaths on Little Cube`s box</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Sun, 23 Aug 2020 19:51:15 +0800</lastBuildDate>
+    
+	<atom:link href="https://littlecube2019.github.io/discretemath/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Set定義與基本運算</title>
+      <link>https://littlecube2019.github.io/discretemath/set_basic/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/discretemath/set_basic/</guid>
+      <description>set 是甚麼，與他的基本算子</description>
+    </item>
+    
+  </channel>
+</rss>

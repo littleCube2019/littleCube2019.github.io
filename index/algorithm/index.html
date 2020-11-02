@@ -79,6 +79,29 @@
             
         </div>
     </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </header>
 
     <main>
@@ -108,6 +131,7 @@
 <h3 id="josephus-problemalgorithmjosephus"><a href="/algorithm/josephus">Josephus problem</a></h3>
 <h1 id="圖論">圖論</h1>
 <h3 id="graph_basicalgorithmgraph_basic"><a href="/algorithm/graph_basic">Graph_basic</a></h3>
+<h3 id="tree-101algorithmtree"><a href="/algorithm/tree">Tree 101</a></h3>
 <h1 id="dynamic-programing">Dynamic programing</h1>
 <p>用空間換取時間</p>
 <h3 id="backpack-problemalgorithmbackpack"><a href="/algorithm/backpack">Backpack problem</a></h3>
@@ -168,6 +192,12 @@
             
             <li>
                 <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
                 <br> ============= <br>
                      
             </li>

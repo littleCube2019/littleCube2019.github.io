@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>OS - 記憶體管理 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="OS - 記憶體管理" />
+<meta property="og:description" content="關於記憶體管理" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/os/os_memory_management/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="OS - 記憶體管理"/>
+<meta name="twitter:description" content="關於記憶體管理"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/os/os_memory_management/">OS - 記憶體管理</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>記憶體是CPU直接存取的重要紀錄空間
+也是process執行的地方</p>
+<p>尤其在多程式情況，記憶體分配更為重要</p>
+<h1 id="address-binding">address binding</h1>
+<p>variable , function, 整個process 如何對應到記憶體空間</p>
+<p>有三個時機點決定記憶體位址  <br>
+in compile time  <br>
+in load time  <br>
+in run time</p>
+<p>並有兩種動態配置空間的方法  <br>
+dynamic loading     <br>
+dynamic linking</p>
+<h3 id="compile-time">compile time</h3>
+<p>在Complie 時決定所有位址   <br>
+<img class="img-zoomable" src="/os/memory_1.PNG" alt="" />
+ <br>
+優點:簡單、快速<br>
+缺點:需要搬動時，要花大成本</p>
+<p><strong>為甚麼需要搬動?</strong></p>
+<ol>
+<li>虛擬記憶體要調配</li>
+<li>runtime時發現記憶體需要重分配</li>
+</ol>
+<h3 id="load-time">load time</h3>
+<p>會先用變數(暫存器)紀錄base address<br>
+等load time 時再由<strong>loader</strong>代入 <br>
+<img class="img-zoomable" src="/os/memory_2.PNG" alt="" />
+   <br>
+要搬動時只需要重load入memory就好<br>
+(不用重新翻譯C -&gt; 組語 (aka complie))</p>
+<h3 id="run-time">run time</h3>
+<p>會區分邏輯上的記憶體 跟 實際上的記憶體<br>
+也就是使用virtual address，這樣就可以結合compile time的方法於virtual address上</p>
+<p>使用<strong>MMU等特殊硬體</strong>去實現它 <br>
+<img class="img-zoomable" src="/os/memory_3.PNG" alt="" />
+</p>
+<h4 id="mmu---memory-management-unit">MMU - memory management unit</h4>
+<p>轉換邏輯與實際位址的硬體<br>
+CPU =&gt; logic address =&gt; MMU =&gt; physical address =&gt; memory</p>
+<p>MMU 會放一個加法器，與紀錄轉換的register <br>
+logical + MMU register = physical address</p>
+<h3 id="dynamic-loading">dynamic loading</h3>
+<p><strong>目標: 要用時才載入</strong> 
+程式執行時，需要用到的變數、函數才放進記憶體</p>
+<p>比如工程師失誤(多要了多餘的記憶體)<br>
+error handling (要很大量，但常常只使用一點點)</p>
+<p>如下圖， call到A才放進記憶體，並且執行完(比如C)會被釋放記憶體<br>
+<img class="img-zoomable" src="/os/memory_4.PNG" alt="" />
+</p>
+<p>實作上，會使用C的 dlfcn.h 函式庫<br>
+並且對目標(如cosine function進行宣告)<br>
+<img class="img-zoomable" src="/os/memory_5.PNG" alt="" />
+</p>
+<p>目前實務上使用dynamic loading大部分已非節省記憶體<br>
+而是希望動態時決定function，以保有彈性<br>
+static loading : 全部候選人放進memory</p>
+<h3 id="dynamic-linking">dynamic linking</h3>
+<p><strong>目標:重複的函式大家共用一份</strong></p>
+<p>如果A、B、C三個程式都需要my_function()<br>
+就算使用dynamic loading，因為都有需要，所以會重複三份在記憶體</p>
+<p>但其實我們可以保留一份就好<br>
+<img class="img-zoomable" src="/os/memory_6.PNG" alt="" />
+</p>
+<ul>
+<li>
+<p>DLL (dynamic link library) 也就是windows系列的動態lib，因為runtime才去找，所以常常是缺東西的主因</p>
+</li>
+<li>
+<p>設定為dynamic linking，程式會自動加入一段小程式構成stub</p>
+</li>
+</ul>
+<p>static linking:重複也塞進記憶體</p>
+<h1 id="swapping">Swapping</h1>
+<p>process可能會被從memory swap 到 backage store<br>
+而backage store 是一塊disk空間<br>
+獨立於檔案系統外</p>
+<p>swap 可以增加空間使用效率、讓重要的process放在memory裡</p>
+<p>swap 一定要發生在目標process在idle時<br>
+(I/O也不行，因為資料會寫到記憶體裡)</p>
+<p>實作:</p>
+<ol>
+<li>在使用(含IO)就不允許swap</li>
+<li>先把IO資料存在OS buffer</li>
+</ol>
+<p>剩下virtual memory會討論更細<br>
+(比如swap成本、準度)</p>
+<h1 id="memory-allocation">Memory Allocation</h1>
+<p>通常分為連續型與非連續型<br>
+差別在同一個process記憶體是不是在同一塊</p>
+<h3 id="連續型">連續型</h3>
+<h4 id="fixed-partition">Fixed-partition</h4>
+<p>每個process 都分配固定大小記憶體</p>
+<p>問題: 小型程式會浪費空間</p>
+<h4 id="variable-size-partition">Variable-size partition</h4>
+<p>會找process 間的空隙放入新process (Hole)<br>
+但是常常新process大小不等於Hole</p>
+<p>因此會有三種策略</p>
+<ol>
+<li>First fit : 塞第一個找到的hole</li>
+<li>Best fit : 塞進塞入後留空白空間最小的hole</li>
+<li>Worst fit : 塞最大的hole</li>
+</ol>
+<p>通常採用1. 以減少scan disk 次數<br>
+並且Worst fit 有時也不一定最差，因為塞最大hole之後，還會留下很多空間，而best fit可能塞完後留下一堆細小、無法利用的hole</p>
+<h3 id="fragmentation">Fragmentation</h3>
+<p>也就是留下的hole<br>
+依partition兩種方法，也有兩種類型的fragementation</p>
+<ol>
+<li>
+<p>External fragmentation:<br>
+發生於 Variable-size partition<br>
+也就是process空間之間的hole</p>
+</li>
+<li>
+<p>Internal fragmentation:<br>
+發生於 Fixed-partition <br>
+也就是process分配到固定空間，裡面沒用完的hole<br>
+<img class="img-zoomable" src="/os/memory_7.PNG" alt="" />
+</p>
+</li>
+</ol>
+<p>Internal fragmentation可以使用compression解決  (把process往同一個方向移動，直到緊緊密合，這也是清理硬碟的概念)</p>
+<h1 id="非連續型">非連續型</h1>
+<p>概念上就是利用logical、physical 的對應</p>
+<h2 id="paging-fixed-size">paging (fixed-size)</h2>
+<p>logical的分割叫做page  (查頁碼)<br>
+physical的分割叫做frames</p>
+<p>好處:對user而言記憶體是連續的(邏輯上)  提升空間使用的同時，降低programing 複雜度</p>
+<p>如下圖，中間就是俗稱的page table <br>
+<img class="img-zoomable" src="/os/memory_8.PNG" alt="" />
+</p>
+<h3 id="page-table-概念">page table 概念</h3>
+<p>每個process都有一個page table (所以OS會要maintain大量page table)</p>
+<p>frame size == page size<br>
+因為是預計要放相同程式</p>
+<p>logical address有兩個部分<br>
+Page number 與 page offset</p>
+<ul>
+<li>Page number (p) 表示第幾個page<br>
+n 個 bits決定最多能使用 2^n個page</li>
+<li>Page offset (d) 表示page裡面的位置，加上base address就是實際記憶體位址，並且也是實體記憶體的offset  <br>
+n個 bits決定page size  為 2^n<br>
+(ex: 4096 <strong>bytes</strong>的page size，表示12bit去紀錄)</li>
+</ul>
+<p><strong>查表方法</strong></p>
+<ol>
+<li>由page number 查表得到frame number</li>
+<li>把結果與page offset 串接</li>
+</ol>
+<p>cat(pageTable[p] , d )</p>
+<h3 id="page-size-frame-size-取捨">page size (frame size) 取捨</h3>
+<p>size太大: internal fragmentation會太多 =&gt; <strong>空間浪費</strong></p>
+<p>size 太小: 現今process memory越來越大，size太小會造成process被分割到更多frame，因page fault等原因會使<strong>效能降低</strong> 並且frame多表示紀錄的overhead也多</p>
+<h4 id="example1---address-translation">Example1   address translation</h4>
+<p><img class="img-zoomable" src="/os/memory_9.PNG" alt="" />
+<br>
+(註: 這題假設logical bits length == physical bits length)<br>
+<strong>先決定大小</strong></p>
+<ul>
+<li>
+<p>首先了解1KB ==&gt; page offset 有2^10 =&gt; 需要10bits紀錄</p>
+</li>
+<li>
+<p>總共13bits =&gt; frame 用 13 -10 =3 bit 紀錄</p>
+</li>
+</ul>
+<p><strong>再決定數值</strong></p>
+<ul>
+<li>
+<p>page 2 根據page table ，得到frame 5  =&gt; 用3bits 紀錄，所以是101</p>
+</li>
+<li>
+<p>offset 是20 =&gt; 用10bits記<br>
+=&gt;0000010100</p>
+</li>
+</ul>
+<p>串接後得實際記憶體位址為
+101 0000010100</p>
+<p><strong>注意: physical address 大小不一定需要等於 logical address大小</strong><br>
+offset(page size == frame size 相等) 相等，但#frame 通常不等於 #page  (#page &lt; #frame 才能多工)</p>
+<h4 id="example2">Example2</h4>
+<p>給定32bits 邏輯位址、36 bits 實體為址、 page size是4KB (2^12 B)<br>
+問</p>
+<ol>
+<li>
+<p>page table size?<br>
+page size 需用 12 bits 紀錄<br>
+故共有20bits長度用來記錄page編號<br>
+故有2^20 個page會被轉換<br>
+<strong>2^20個欄位</strong></p>
+</li>
+<li>
+<p>Max program memory?<br>
+一個process對應到一個page table ，一套邏輯位址<br>
+而此邏輯位址有32bits<br>
+故共有 2^32 bytes可供使用<br>
+<strong>2^32 byte=4GB</strong></p>
+</li>
+<li>
+<p>number of frames ?<br>
+因為page size == frame size == 4KB<br>
+故frame 共有 2^(36 - 12) = 2^24 個 
+<strong>2^24 個</strong></p>
+</li>
+</ol>
+<h3 id="page-table-實作">page table 實作</h3>
+<p>page table 被放在memory裡<br>
+page table 起點會被 page table base register 紀錄(PTBR)</p>
+<p>PTBR 會記錄physical memory address <br>
+並且被process 的PCB紀錄</p>
+<ul>
+<li>注意: page table 相當於要讀取兩字memory，一次透過PCB找到PTBR去載入page table (邏輯&gt;實體),一次去讀取真的值 <br>
+解決 2 memory read問題<br>
+使用translation look-aside buffer (TLB)<br>
+相當於cache概念，將以前讀過的先放在buffer裡，如果有中，就只需要讀一次memory</li>
+</ul>
+<p>TLB 就是將<strong>一個</strong>process的 logical address 對應到physical address</p>
+<p><img class="img-zoomable" src="/os/memory_10.PNG" alt="" />
+<br>
+流程: 先查TLB，沒查到再去page table 找</p>
+<p>如果context switch(換process)則TLB要清空(兩process同邏輯常常對應不同實體)</p>
+<p>或是TLB要多記(pid,logical address)</p>
+<h3 id="example-how-fast-is-tlb">Example: How fast is TLB?</h3>
+<p>20 ns 搜尋TLB<br>
+100 ns memory access</p>
+<p>Effective memory access time (EMAT)</p>
+<ul>
+<li>
+<p>假設70% TLB hit<br>
+EMAT = 0.7*120 + 0.3*(220) = 150</p>
+</li>
+<li>
+<p>假設98% TLB hit<br>
+EMAT = 0.98*120 + 0.02*220 = 122</p>
+</li>
+<li>
+<p>沒有TLB<br>
+則要access兩次<br>
+EMAT = 200</p>
+</li>
+</ul>
+<h1 id="page-雜記">page 雜記</h1>
+<h3 id="memory-protection">Memory protection</h3>
+<p>通常會加入protection bit在page table 裡<br>
+紀錄logical address被對應的physical 當下能否被取用</p>
+<p>PAGE table也是動態配置的，所以會有page table length register (PTLR) 去紀錄page table多大</p>
+<ul>
+<li>PTBR + PTLR 會決定page table 多大</li>
+</ul>
+<h3 id="shared-pages">shared pages</h3>
+<p>有時會需要共用page記憶體</p>
+<p>條件是這些code是pure code - 不會在執行時間被改變</p>
+<p>可用page table 多個logical address 對應到相同的physical address的多對一去實作</p>
+<h1 id="page-table-問題">page table 問題</h1>
+<p>假如page table Entry數太大，並且一個page table entry需要一定程度的空間  <br>
+(注意是page table 本身，不是page !!)</p>
+<p>會造成page table overhead 太大<br>
+很難找到一塊連續記憶體放入</p>
+<h2 id="解法1--hierachical-paging">解法1  Hierachical paging</h2>
+<p>如下圖，把大table 拆成多層小table</p>
+<p><img class="img-zoomable" src="/os/memory_11.PNG" alt="" />
+</p>
+<p>實作上自然會把logical address多拆出一部分紀錄下一層表的index<br>
+<img class="img-zoomable" src="/os/memory_12.PNG" alt="" />
+</p>
+<p>注意: 這個方法不但不會減少page table總大小，反而因為多記一層使<strong>總大小增加</strong><br>
+但是可以使之分散</p>
+<p>注意2: 會使access time 增加，n層table變access n+1次</p>
+<p>實務上不採用<br>
+舉例而言，64bit大概就需要五層<br>
+<img class="img-zoomable" src="/os/memory_13.PNG" alt="" />
+<br>
+但overhead會變超級大 (總量、memory access)</p>
+<h2 id="解法2--hashed-page-table">解法2  Hashed page table</h2>
+<p>hash table 如果產生碰撞就用linked list 串起來</p>
+<p>相較Hierachical paging，能更有效利用空間(Hierachical paging 不一定全是滿的)<br>
+<img class="img-zoomable" src="/os/memory_14.PNG" alt="" />
+</p>
+<h2 id="解法3-inverted-page-table">解法3 Inverted page table</h2>
+<p>不紀錄page table，改記錄frame table<br>
+為每一個frame紀錄 (PID , Page number )</p>
+<p>這樣只需要一個固定大小的array即可</p>
+<p>缺點:</p>
+<ol>
+<li>frame table很大，search成本大</li>
+<li>shared frame要額外設計<br>
+<img class="img-zoomable" src="/os/memory_15.PNG" alt="" />
+</li>
+</ol>
+<h2 id="segmentation-varible-size">segmentation (varible-size)</h2>
+<p>以使用者角度去切割<br>
+類似OOP的概念，把程式切割成多元件<br>
+再以元件為單位去對應<br>
+<img class="img-zoomable" src="/os/memory_16.PNG" alt="" />
+</p>
+<p>實作上，會用base address + offset的方式<br>
+並且也可以同時檢查是否是正確的segmentation<br>
+<img class="img-zoomable" src="/os/memory_17.PNG" alt="" />
+</p>
+<h3 id="page--segment">page + segment</h3>
+<p>可以先經過一層segment logical address 
+再用paging去對應到physical address<br>
+<img class="img-zoomable" src="/os/memory_18.PNG" alt="" />
+</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

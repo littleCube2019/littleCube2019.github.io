@@ -74,5 +74,14 @@
       <description>關於KL divergence</description>
     </item>
     
+    <item>
+      <title>sigmoid-&gt;relu-&gt;maxout演進</title>
+      <link>https://littlecube2019.github.io/machine_learning/relu/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/machine_learning/relu/</guid>
+      <description>activated function的改變史</description>
+    </item>
+    
   </channel>
 </rss>

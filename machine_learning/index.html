@@ -78,6 +78,29 @@
             
         </div>
     </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </header>
 
     <main>
@@ -270,13 +293,23 @@
     
     
     
+    
+    
+    
+    
+    <div class="pag-item">
+        <a href="/machine_learning/page/5/">5</a>
+    </div>
+    
+    
+    
     <div class="pag-next">
         <a href="/machine_learning/page/2/"><i class="iconfont icon-chevron-forward-circle-sharp"></i></i></a>
     </div>
     
     
     <div class="pag-last">
-        <a href="/machine_learning/page/4/"><i class="iconfont icon-caret-forward-circle-sharp"></i></a>
+        <a href="/machine_learning/page/5/"><i class="iconfont icon-caret-forward-circle-sharp"></i></a>
     </div>
     
 </div>
@@ -333,6 +366,12 @@
             
             <li>
                 <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
                 <br> ============= <br>
                      
             </li>

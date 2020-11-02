@@ -26,9 +26,11 @@ Note 2 Conditional GAN
 Note 3 Basic Theory
 Note 4 GAN framework
 Note 5 GAN 改進
-數學、名詞 Cross entropy
-KL divergence
-參考資料 台大李宏毅老師youtube課程影片筆記
+數學、名詞   Cross entropy
+  KL divergence
+  sigmoid -&gt; relu -&gt; maxout
+比較Overfitting vs Underfitting VS Vanishing Gradient 再帶到為甚麼需要relu
+  參考資料 台大李宏毅老師youtube課程影片筆記
  GAN播放清單  " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/index/machine_learning/" />
@@ -42,9 +44,11 @@ Note 2 Conditional GAN
 Note 3 Basic Theory
 Note 4 GAN framework
 Note 5 GAN 改進
-數學、名詞 Cross entropy
-KL divergence
-參考資料 台大李宏毅老師youtube課程影片筆記
+數學、名詞   Cross entropy
+  KL divergence
+  sigmoid -&gt; relu -&gt; maxout
+比較Overfitting vs Underfitting VS Vanishing Gradient 再帶到為甚麼需要relu
+  參考資料 台大李宏毅老師youtube課程影片筆記
  GAN播放清單  "/>
 
 
@@ -95,6 +99,29 @@ KL divergence
             
         </div>
     </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </header>
 
     <main>
@@ -121,8 +148,18 @@ KL divergence
 <a href="/machine_learning/gan_4">Note 4 GAN framework</a><br>
 <a href="/machine_learning/gan_5">Note 5 GAN 改進</a></p>
 <h1 id="數學名詞">數學、名詞</h1>
-<p><a href="/machine_learning/cross_entropy">Cross entropy</a><br>
-<a href="/machine_learning/kl_divergence">KL divergence</a></p>
+<ul>
+<li>
+<p><a href="/machine_learning/cross_entropy">Cross entropy</a></p>
+</li>
+<li>
+<p><a href="/machine_learning/kl_divergence">KL divergence</a></p>
+</li>
+<li>
+<p><a href="/machine_learning/relu">sigmoid -&gt; relu -&gt; maxout</a><br>
+比較Overfitting vs Underfitting VS Vanishing Gradient 再帶到為甚麼需要relu</p>
+</li>
+</ul>
 <h1 id="參考資料">參考資料</h1>
 <p>台大李宏毅老師youtube課程影片筆記</p>
 <ul>
@@ -185,6 +222,12 @@ KL divergence
             
             <li>
                 <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
                 <br> ============= <br>
                      
             </li>

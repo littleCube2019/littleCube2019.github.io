@@ -79,6 +79,29 @@
             
         </div>
     </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </header>
 
     <main>
@@ -105,6 +128,10 @@
 <h1 id="process">process</h1>
 <ul>
 <li><a href="/os/os_process">關於process</a></li>
+</ul>
+<h1 id="memory-management">memory management</h1>
+<ul>
+<li><a href="/os/os_memory_management">關於記憶體管理</a></li>
 </ul>
 <h1 id="nachos---虛擬作業系統實驗">NachOS - 虛擬作業系統實驗</h1>
 <ul>
@@ -171,6 +198,12 @@
             
             <li>
                 <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
                 <br> ============= <br>
                      
             </li>

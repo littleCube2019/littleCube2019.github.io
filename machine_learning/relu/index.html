@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>sigmoid-&gt;relu-&gt;maxout演進 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="sigmoid-&gt;relu-&gt;maxout演進" />
+<meta property="og:description" content="activated function的改變史" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/machine_learning/relu/" />
+<meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="sigmoid-&gt;relu-&gt;maxout演進"/>
+<meta name="twitter:description" content="activated function的改變史"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/machine_learning/relu/">sigmoid-&gt;relu-&gt;maxout演進</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="檢查training-set-與-overfitting">檢查training set 與 Overfitting</h1>
+<p>Deep Nerual Network常常被認為更容易overfitting<br>
+但事實上decision tree , KNN 更容易在training set上達到100%準確率</p>
+<p>而Overfitting並不是單純參數多、表現差的代稱<br>
+應該是 <em>testing set 比 training set 表現差時</em> 才能推論</p>
+<p>比如單純知道實際問題上 30層的網路 表現的 比10層網路差，並不能推論30層網路一定overfitting，必須檢查training set表現</p>
+<p>有可能發生30層在training表現比較差<br>
+但理論上30層效能一定大於等於10層(最差就學會10層的參數，最後20層放identical mapping)</p>
+<p><strong>tips: DNN 在訓練完畢後，檢查training set是很重要的一步</strong></p>
+<h1 id="underfiting-多層表現差">Underfiting? 多層表現差?</h1>
+<p>通常underfitting表示 <em>參數不足以擬合出好的模型</em> 造成表現差，</p>
+<p>而多層網路表現差，則不太符合這個定義</p>
+<p>老師比喻: underfitting像是等級不夠<br>
+多層表現差像是小智一開始的噴火龍，等級夠但不想打</p>
+<h1 id="vanishing-gradient-與-sigmoid">Vanishing Gradient 與 sigmoid</h1>
+<p>Vanishing gradient可能是造成多層網路表現反而較差的原因之一</p>
+<p>其發生結果是在多層網路傳播之下，最後gradient變動越來越小，導致只有前面幾層更新很快  後面幾層很快就收斂卡在local optimial</p>
+<p>其成因在sigmoid function<br>
+<img class="img-zoomable" src="/machine_learning/relu_1.PNG" alt="" />
+</p>
+<p>如圖，sigmoid會把實數域投影在0-1<br>
+會造成input大的變化，在output變動縮小很多<br>
+經過多層sigmoid，其變動當然會縮小到近乎消失</p>
+<h1 id="relu">Relu</h1>
+<p>為了解決vanishing gradient<br>
+除了有人提出layer-wise的訓練方法外</p>
+<p>也有人從根本提出新的activation function去解決 <br>
+<img class="img-zoomable" src="/machine_learning/relu_3.PNG" alt="" />
+</p>
+<p>如上圖，此方法有參考細胞閾值的概念<br>
+在超過某個值後，有gradient<br>
+沒超過就是0</p>
+<p><img class="img-zoomable" src="/machine_learning/relu_2.PNG" alt="" />
+<br>
+這樣相當於每次選擇某些cell做linear的計算<br>
+但對整個NN而言是非linear的</p>
+<h1 id="maxout">Maxout</h1>
+<p>連activation function都交給NN去學習<br>
+Relu以及其變體只是maxout的特例</p>
+<p>如下圖，這方法也是類似CNN中maxpooling的概念，把output分成一個個group，並選出最大的作為最後輸出<br>
+<img class="img-zoomable" src="/machine_learning/relu_4.PNG" alt="" />
+</p>
+<p>當然實作上，可以不只兩個輸出作為一個group
+那折點也可以變更多</p>
+<h3 id="relu是maxout的特例">relu是maxout的特例</h3>
+<p><img class="img-zoomable" src="/machine_learning/relu_5.PNG" alt="" />
+</p>
+<h3 id="如何微分">如何微分</h3>
+<p>對有通過的參數，就是線性function，那就可以直接更新，而沒有通過的可以先不用更新  大量資料總會train到它們的</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

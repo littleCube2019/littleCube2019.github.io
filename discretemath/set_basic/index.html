@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>Set定義與基本運算 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="Set定義與基本運算" />
+<meta property="og:description" content="set 是甚麼，與他的基本算子" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/discretemath/set_basic/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Set定義與基本運算"/>
+<meta name="twitter:description" content="set 是甚麼，與他的基本算子"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/discretemath/set_basic/">Set定義與基本運算</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>目錄<br>
+<a href="#intro">簡介</a><br>
+<a href="#set_rep">set表示</a><br>
+<a href="#in">屬於、包含</a><br>
+<a href="#power_set">power set</a><br>
+<a href="#two_set">交集、聯集、差集</a> 
+<a href="#Cproduct">Cartesian product</a> 
+<a href="#cardinality">cardinality</a></p>
+<h1 id="intro">簡介</h1>
+<p>set(集合)是數學上用來放置任何東西的抽象概念<br>
+因此set<strong>只在乎元素有無</strong>，並不紀錄順序、數量</p>
+<p>比喻而言，&ldquo;盒子&rdquo;(set)放置&quot;物品&rdquo;(element)<br>
+並且&quot;盒子&quot;也是&quot;物品&rdquo;，所以set也可以放進set裡</p>
+<h1 id="set_rep">Set表示法</h1>
+<p>set表示法就是紀錄&quot;盒子裡有甚麼&quot;的方法</p>
+<h4 id="法i-列舉法">法I: 列舉法</h4>
+<p>如其名，直接列舉所有甚麼元素<br>
+舉例:<br>
+桌上 = {飲料,電腦,檯燈,鍵盤,滑鼠}<br>
+S = {a,b,c}</p>
+<h4 id="法ii-set-build-notation">法II: set build notation</h4>
+<p>依其給定性質造出set<br>
+舉例:<br>
+桌上 = {東西 | 在我桌上的東西 }<br>
+座標平面 = {(x,y)| x,y<code>$\in$</code>R } <br>
+正整數 = {x | x<code>$\in$</code>N}</p>
+<p>特別地，空集合 { }記為<code>$\phi$</code></p>
+<pre><code>Ex1:  
+{1,2,3} = {2,3,1} = {1,1,2,3}   
+因為set不在乎數量與順序，上面三個集合都是放著1,2,3的盒子      
+
+Ex2:
+S = {{1},{2}}  是一個set 
+{S} = {{{1},{2}}}也是一個set
+
+</code></pre><h1 id="in">屬於、包含</h1>
+<h3 id="屬於-元素-集合">屬於: 元素-集合</h3>
+<p>表達某元素是否在set中<br>
+記做 <code>$a \in \{a\}$</code></p>
+<p>舉例而言<br>
+桌上 = {飲料,電腦,檯燈,鍵盤,滑鼠}<br>
+則<br>
+飲料 <code>$\in$</code> 桌上<br>
+電腦 <code>$\in$</code> 桌上<br>
+但 離散數學課本 <code>$\notin$</code>桌上</p>
+<ul>
+<li>演算法看世界</li>
+</ul>
+<pre><code>def isInSet(object,set):
+  for element in set: 
+    if element == object :
+       return &quot;object is in set&quot;
+  return &quot;object is NOT in set&quot;
+</code></pre><p>時間複雜度是O(N)，N是set的cardinality</p>
+<h3 id="包含-集合-集合">包含: 集合-集合</h3>
+<p>表達某個集合的元素是不是都在另一個集合裡<br>
+記作 A <code>$\subseteq$</code> B</p>
+<p>比如
+電腦組 = {電腦、鍵盤、滑鼠}<br>
+冰箱 = {飲料、水果}<br>
+桌上 = {飲料,電腦,檯燈,鍵盤,滑鼠}<br>
+則 電腦組 <code>$\subseteq$</code> 桌上<br>
+但 冰箱 <code>$\not\subseteq$</code> 桌上<br>
+因為 水果 這個元素不屬於 桌上 這個集合</p>
+<ul>
+<li>
+<p>邏輯看世界<br>
+<code>$A \subseteq B  \leftrightarrow  \forall X \in A \Rightarrow X \in B$</code><br>
+<strong>證明時邏輯很好用</strong></p>
+</li>
+<li>
+<p>演算法看世界</p>
+</li>
+</ul>
+<pre><code>def isSubset(setA,setB):
+  for elementA in setA: 
+	 if isInSet(elementA,setB) == &quot;object is NOT in set&quot;:
+	 	return &quot;setA is NOT a subset of setB&quot;
+  return &quot;setA is a subset of setB&quot;
+</code></pre><p>時間複雜度是O(N*M)，N,M是兩個set的cardinality</p>
+<p>Note:</p>
+<ol>
+<li>
+<p>可見&quot;屬於&quot;可以定義&quot;包含&rdquo;，並且&quot;包含&quot;檢查的時間是&quot;屬於&quot;的N倍</p>
+</li>
+<li>
+<p>屬於是一種檢查&quot;存在&quot;的感覺，一發現存在就完成運算<br>
+相對的， 包含是一種檢查&quot;不存在&quot;的感覺</p>
+</li>
+<li>
+<p>套用上面的演算法可以發現，<code>$\phi$</code> 包含於任何集合，因為他沒有任何元素可以被發現&quot;不存在&rdquo;</p>
+</li>
+</ol>
+<h3 id="ex1">Ex1</h3>
+<p>完成以下是非題<br>
+<code>$\phi\in\phi$</code>?<br>
+<code>$\phi\subseteq\phi$</code>?<br>
+<code>$\phi\in\{\phi\}$</code>?<br>
+<code>$\phi\subseteq\{\phi\}$</code>?   <br>
+<code>$\{\phi\}\in\{\phi\}$</code>?<br>
+<code>$\{\phi\}\subseteq\{\phi\}$</code>?</p>
+<p>答案由上而下為:<br>
+False 因為右側集合內沒有空集合   <br>
+True  因為左側集合內沒有找到不在右側集合內的東西  <br>
+True  因為右側集合內有空集合 <br>
+True  因為左側集合內沒有找到不在右側集合內的東西  <br>
+False 因為右側集合內沒有{空集合}<br>
+True  因為左側集合只有一個元素，並且在右側集合內找的到</p>
+<h3 id="真子集-proper-subset">真子集 (proper subset)</h3>
+<p>即為子集扣除集合相等的情況，子集與真子集的關係，可以用小於等於與小於來理解<br>
+記作 <code>$A \subset B $</code></p>
+<h3 id="集合相等">集合相等</h3>
+<p>若要說明兩個集合相等，可以使用下列性質<br>
+<code>$ A \subseteq B$   AND   $B \subseteq A \Rightarrow  A = B $</code></p>
+<p>意即兩者互為對方子集，則兩者相等</p>
+<p>舉例說明 <br>
+桌上 = {電腦,鍵盤,滑鼠}<br>
+電腦組 = {鍵盤,滑鼠,鍵盤}</p>
+<p>則因為<br>
+(=&gt;)<br>
+桌上所有元素都在電腦組裡 <br>
+(&lt;=)<br>
+電腦組所有元素都在桌上<br>
+所以 桌上 這個集合與 電腦組 這個集合相等</p>
+<h1 id="power_set">power set</h1>
+<p>定義 P(S) = {S的所有子集} 也就是S的所有子集合，所成的集合</p>
+<p>如 A = {1,2,3}<br>
+則P(A) = {{},{1},{2},{3},{1,2},{1,3},{2,3},{1,2,3}}</p>
+<p>Some Fact:</p>
+<ul>
+<li>空集合一定屬於P(A)，空集合也一定是任意集合的子集合，所以空集合屬於也包含於任意集合的power set</li>
+<li>經過power set ，集合數量會暴增成 2的指數^(元素個數)</li>
+</ul>
+<h1 id="two_set">交集、聯集、差集</h1>
+<h3 id="交集-intersection">交集 (intersection)</h3>
+<h3 id="聯集-union">聯集 (union)</h3>
+<h3 id="差集-difference">差集 (difference)</h3>
+<h3 id="延伸-對稱差集symmetric-difference">延伸: 對稱差集(symmetric difference)</h3>
+<h1 id="Cproduct">卡氏積</h1>
+<h1 id="cardinality">Cardinality</h1>
+<p>用於表示set抽象的&quot;大小&rdquo;<br>
+我們用<strong>元素個數</strong>來定義有限大小set的cardinality</p>
+<p>記做|S|</p>
+<p>比如 |{飲料,電腦,檯燈,鍵盤,滑鼠}| = 5<br>
+但注意， |{ { { 1 },{ 2 } } }| = 1 ，因為裡面只有 { { 1 },{ 2 } }一個東西</p>
+<p>並且|<code>$\phi$</code>|=0 也符合直覺</p>
+<h3 id="ex1-1">Ex1:</h3>
+<p>請用set build notation  表達 D = {1,1,2,2,3,3,4,5} ，並寫出D 的cardinality<br>
+Ans:<br>
+<code>$D = \{x \in Z^+\ |\ x&lt;6 \}$</code><br>
+|D| = 5 ，因為去重複後只有5個元素</p>
+<h3 id="ex2">Ex2:</h3>
+<p>求以下Cardinality<br>
+<code>$1.\ \phi $</code><br>
+<code>$2.\{\phi\}$</code><br>
+<code>$3.\{\{\phi\}\}$</code><br>
+答案依序為 0,1,1</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

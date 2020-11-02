@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>基礎的樹型資料結構 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="基礎的樹型資料結構" />
+<meta property="og:description" content="Tree 101" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/algorithm/tree/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="基礎的樹型資料結構"/>
+<meta name="twitter:description" content="Tree 101"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/algorithm/tree/">基礎的樹型資料結構</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p><img class="img-zoomable" src="/algorithm/tree_intro.PNG" alt="" />
+
+目錄<br>
+<a href="#intro">介紹</a><br>
+<a href="#binary">Binary tree</a><br>
+<a href="#bst">Binary search tree</a></p>
+<h1 id="intro">關於Tree</h1>
+<p>樹是一種常見的資料結構，如生活中可用於表示父系族譜、電腦中可以表示檔案系統<br>
+除此之外也是加速搜尋的一種資料結構</p>
+<h3 id="樹的定義">樹的定義</h3>
+<p>樹是一種圖，所以具有點集合、邊集合<br>
+樹有兩個限制</p>
+<ol>
+<li>樹是一個連通圖</li>
+<li>樹不會有Cycle</li>
+</ol>
+<p>這兩個定義可以導出一些性質<br>
+比如: 任何兩點間只會且只會有一條path、 樹是邊最少的連通圖&hellip;</p>
+<p>可以用父系族譜來理解<br>
+任何一個被寫在族譜上的人，一定跟其他人有關係(條件1)   <br>
+並且不可能有人同時是兩個父親的兒子(條件2)</p>
+<p>舉例:
+<img class="img-zoomable" src="/algorithm/tree_1.PNG" alt="" />
+</p>
+<h1 id="binary">Binary Tree</h1>
+<p>比樹多加了一層限制 : 每個節點最多只會有兩個子節點<br>
+上面的例子中，右一就不是binary tree,右二、右三則符合binary tree</p>
+<h3 id="traversal">Traversal</h3>
+<p>任意一張圖都可以用BFS、DFS來遍歷，樹也不例外<br>
+但由於樹的特性，使我們可以用以下四種方式遍歷，並得到不同的順序</p>
+<p>在此我們規定一律先探索左邊、再探索右邊<br>
+並以下圖為範例<br>
+<img class="img-zoomable" src="/algorithm/tree_2.PNG" alt="" />
+</p>
+<p>一. PreOrder<br>
+先到先做事 (做事可以是讀取節點值、修改節點、刪除節點 &hellip;.等操作)<br>
+然後才依序拜訪子節點</p>
+<p>做事順序為: A、B、C、D(C做完退回B、然後往右走)、E(B做完退回C、退回A&hellip;)</p>
+<p>二. InOrder<br>
+第一(左)子節點做完事，才做事，然後再拜訪右節點</p>
+<p>做事順序為: C (因為無左子節點==左子節點完事)、B、D、A、E</p>
+<p>三. PostOrder<br>
+依序拜訪子節點 、節點都做完事、才做事</p>
+<p>做事順序為: C、D、B、E、A</p>
+<p><strong>Note</strong>
+這三種traversal都是固定順序拜訪節點的，只是做事時機不同<br>
+因此在遞迴時調整 traversal(左節點) traversal(右節點) DoSomething() 順序即可</p>
+<p><strong>Note2</strong>
+因為固定都是下圖的順序<br>
+<img class="img-zoomable" src="/algorithm/tree_3.PNG" alt="" />
+</p>
+<p>因此可以想像每個節點有個旗子，pre在節點右邊；in在節點下方;post在節點左邊<br>
+並依這個箭頭順序，碰到旗子，就是做事時機</p>
+<p>四.level-order<br>
+就是BFS</p>
+<h1 id="bst">Binary Search Tree</h1>
+<p>在binary tree的條件下，加上&quot;比自己值大的節點在自己的右方、比自己值小的節點在自己左方&rdquo;<br>
+下圖是個例子: 可以驗證看看<br>
+<img class="img-zoomable" src="/algorithm/tree_4.PNG" alt="" />
+</p>
+<h3 id="特化搜尋">特化搜尋</h3>
+<p>這個資料結構如其名，就是為了搜尋效率而生，並且類似於binary search<br>
+以上圖為例<br>
+要搜尋9  <br>
+首先問10，因為比10小，所以排除了比10大的右邊所有節點，如果這棵樹夠&quot;平衡&rdquo;(左右兩側所有節點數目相近)，則幾乎少搜尋一半的數量</p>
+<p>而最糟情況下，BST只需要O(樹高)的時間完成搜尋</p>
+<h3 id="平衡的重要性">平衡的重要性</h3>
+<p>完美的平衡狀態是在任意節點的左子節點 == 右子節點<br>
+實務上可以差一個節點的高度  (考慮null)</p>
+<p>此時樹高將會是logn<br>
+因此搜尋複雜度為O(樹高) == O(logn)</p>
+<p>但是BST也可能依<strong>資料輸入順序</strong>導致形狀不同<br>
+比如 輸入 5 2 3 1 7 6 8<br>
+會是完美的平衡狀態</p>
+<p>但 輸入 1 2 3 4 5 6 7 8<br>
+則會退化成1維的linked list，此時樹高==n，造成搜尋複雜度降為O(n)</p>
+<p>因此以下的變體都是在追求樹的平衡</p>
+<h3 id="旋轉">旋轉</h3>
+<p>以下變體都會用到的操作-旋轉</p>
+<p>旋轉可以在改變形狀(就有機會改變樹高)的同時，不破壞BST的性質</p>
+<p>舉例而言<br>
+<img class="img-zoomable" src="/algorithm/tree_5.PNG" alt="" />
+<br>
+可以看到直觀上y點往上旋轉<br>
+仔細看則是y與x父子角色對調  同時B過繼給x</p>
+<ul>
+<li>不破壞其特性</li>
+</ul>
+<p>原因<strong>大小順序</strong>沒有破壞<br>
+仍是 A中所有節點 &lt; y &lt; B中所有節點 &lt; x &lt; C中所有節點</p>
+<p>直覺上，用一條線從左掃到右邊，只要相對位置沒有改變，怎麼旋轉都沒有關係</p>
+<ul>
+<li>實作</li>
+</ul>
+<p>實作上會用指標的調換</p>
+<pre><code>#維護父指標  
+y-&gt;parent = x-&gt;parent;  
+x-&gt;parent = y ; 
+B-&gt;parent = x ;  # 過繼  
+
+#維護子指標  
+y-&gt;right = x ;
+x-&gt;left = B; 
+</code></pre><h3 id="左旋-右旋">左旋 右旋</h3>
+<p>上述例子是一個右旋，因為將節點往右上翻過去<br>
+而左旋則是相對右旋，基本上是對稱的操作</p>
+<p>想像如果將linked list中間的點進行左旋，將會接近平衡狀態<br>
+就能改善樹高問題</p>
+<h3 id="操作的時間複雜度">操作的時間複雜度</h3>
+<p>插入: O(樹高)  最糟情況為插入點在leaf<br>
+搜尋: O(樹高) <br>
+<strong>刪除</strong><br>
+依目標節點的子樹存在分為三種情況:</p>
+<ol>
+<li>沒有子樹 - 直接改為Null即可</li>
+<li>只有一邊有子樹 - 直接把child取代原節點即可</li>
+<li>有兩棵子樹-<br>
+這種情況最麻煩，不能單純選一邊節點取代自己<br>
+因為不保證兩個子樹一定是中點<br>
+舉例如下<br>
+<img class="img-zoomable" src="/algorithm/tree_8.PNG" alt="" />
+</li>
+</ol>
+<p>因此需要找 <strong>子樹中的極端值</strong>做中點<br>
+例如左子樹的最大值、右子樹的最小值</p>
+<p>因為左子樹的最大值一定比右子樹都小<br>
+並且左子樹也不需要更動<br>
+右子樹最小值同理</p>
+<p>刪除時間複雜度因此為O(2*樹高)</p>
+<h1 id="avl-tree">AVL tree</h1>
+<p>為BST加上條件: 左右子樹最高差不能超過1<br>
+這樣可以保證搜尋最佳化 (O(logn) n是節點數)</p>
+<h3 id="平衡因子-balance-factor">平衡因子 (Balance Factor)</h3>
+<p>用來記錄此節點左右子樹高差 <br>
+我們這邊定義為 左樹高 - 右樹高<br>
+因此若範圍在 -1,0,+1 都是符合條件的</p>
+<p>常見對樹的操作為插入、讀取、刪除、搜尋<br>
+很顯然唯讀型的讀取、搜尋 不可能破壞AVL tree性質</p>
+<p>而插入或刪除則有可能造成左右兩側差距變大，因此我們先討論插入的情況</p>
+<h3 id="插入新節點">插入新節點</h3>
+<p>可以遞迴的定義插入AVL tree的情況:</p>
+<p>Base Case :<br>
+樹符合AVL tree 條件</p>
+<p>Recursive Case:<br>
+已知原本樹符合AVL tree條件 <br>
+插入新節點後，會有下列三種情況</p>
+<ol>
+<li>原本BF=0 ,插入新節點會變成 -1 or +1</li>
+<li>原本BF=+1 or -1 ,插入新節點會變成 0</li>
+<li>原本BF=+1 or -1 ,插入新節點會變成 +2 or -2</li>
+</ol>
+<p>很明顯地，我們只需要解決第三種情況，就可以依數學歸納法保證插入一定<br>
+不會破壞AVL tree 性質</p>
+<h3 id="case-3的四種情況">Case 3的四種情況</h3>
+<p>探討BF違反的<strong>最低處</strong>節點，可以分為四種情況</p>
+<ol>
+<li>LL  (不平衡的節點被插入在)在左子節點的左邊</li>
+<li>RR  右子節點的右邊<br>
+這兩種情況很單純，只要把問題<strong>子節點</strong>透過旋轉拉上來即可</li>
+</ol>
+<p>以下為LL例子<br>
+<img class="img-zoomable" src="/algorithm/tree_6.PNG" alt="" />
+ <br>
+<strong>Note</strong><br>
+為甚麼在意問題的子節點?旋轉的標的也是?<br>
+想想一根桿子，要拉成一半ㄑ型，必須從中點，子節點就是那個中點</p>
+<ol start="3">
+<li>LR  左子節點的右邊</li>
+<li>RL  右子節點的左邊</li>
+</ol>
+<p>這兩種情況就需要對<strong>子節點的子節點</strong>做兩次旋轉<br>
+以LR為例，就要先與子節點做右璇 <br>
+然後再與問題最低點做左旋<br>
+<img class="img-zoomable" src="/algorithm/tree_6.PNG" alt="" />
+</p>
+<p>原因:先把LR問題或RL問題歸化成LL問題或RR問題，再依法I解決即可</p>
+<p>刪除節點基本上就是<br>
+結合BST的刪除法，加上AVL的調整</p>
+<h3 id="時間複雜度">時間複雜度</h3>
+<p>由此可見，搜尋一定可以維持在O(logn)的良好狀態</p>
+<p>但犧牲的成本是每次插入、刪除要花<strong>常數時間</strong> 旋轉 <br>
+O(logn+k)<br>
+k是rotation時間</p>
+<h1 id="red-black-tree">red-black tree</h1>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

@@ -78,6 +78,29 @@
             
         </div>
     </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </header>
 
     <main>
@@ -98,6 +121,19 @@
     </div>
     <div class="post-item post-summary markdown-body">
         關於NachOS
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/machine_learning/relu/">sigmoid-&gt;relu-&gt;maxout演進</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        activated function的改變史
     </div>
 </div>
 
@@ -168,6 +204,19 @@
 
 <div class="post">
     <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/os/os_memory_management/">OS - 記憶體管理</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        關於記憶體管理
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
         <a href="https://littlecube2019.github.io/misc/os_basic/">OS Basic(依Neso Academy影片筆記) </a>
     </h2>
     <div class="post-item post-meta">
@@ -189,32 +238,6 @@
     </div>
     <div class="post-item post-summary markdown-body">
         參考OS公開課所做的筆記
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/os/os_process/">OS process </a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於OS process概念
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/os/process_scheduling/">OS process scheduling</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於OS process scheduling概念
     </div>
 </div>
 
@@ -278,13 +301,23 @@
     
     
     
+    
+    
+    
+    
+    <div class="pag-item">
+        <a href="/unix/page/5/">5</a>
+    </div>
+    
+    
+    
     <div class="pag-next">
         <a href="/unix/page/3/"><i class="iconfont icon-chevron-forward-circle-sharp"></i></i></a>
     </div>
     
     
     <div class="pag-last">
-        <a href="/unix/page/4/"><i class="iconfont icon-caret-forward-circle-sharp"></i></a>
+        <a href="/unix/page/5/"><i class="iconfont icon-caret-forward-circle-sharp"></i></a>
     </div>
     
 </div>
@@ -341,6 +374,12 @@
             
             <li>
                 <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
                 <br> ============= <br>
                      
             </li>
