@@ -149,7 +149,7 @@ git add 也可以接&lt;file&gt;，自行選擇想監控的檔案<br>
 <p>#查看commit 狀況</p>
 <h4 id="git-log---all---graph---decorate">git log &ndash;all &ndash;graph &ndash;decorate</h4>
 <p>#則可以以樹狀圖的方式呈現分支</p>
-<h4 id="git-diff-file">git diff <!-- raw HTML omitted --></h4>
+<h4 id="git-diff-file">git diff <file></h4>
 <p>#可以查看與HEAD之間更新了甚麼<br>
 也可以在diff中間加入&lt;hashcode&gt;進行比較<br>
 &lt;hashcode&gt;可以在log中找到，關於hash可以參考原理筆記</p>
@@ -182,8 +182,8 @@ git add 也可以接&lt;file&gt;，自行選擇想監控的檔案<br>
 修正好後git merge &ndash;continue 即可完成</p>
 <p>二進位檔、圖檔:<br>
 先決定要保留誰的，然後使用checkout更新即可
-git checkout &ndash;ours <!-- raw HTML omitted -->   # 留下merge基礎的
-git checkout &ndash;theirs <!-- raw HTML omitted -->   # 留下merge對象的</p>
+git checkout &ndash;ours <file>   # 留下merge基礎的
+git checkout &ndash;theirs <file>   # 留下merge對象的</p>
 <h1 id="git-與-github">git 與 github</h1>
 <p>github是放置程式的遠端資料庫，<del>aka 工程師的FB</del><br>
 git可以將程式推上github，也可以將程式pull下來</p>

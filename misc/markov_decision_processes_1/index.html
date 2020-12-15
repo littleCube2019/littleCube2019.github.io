@@ -164,7 +164,7 @@
 <p>很明顯的 固定s,a 對s&rsquo;求和必為1</p>
 <ul>
 <li>R(s,a,s&rsquo;)   獎勵  (通常會追求這個最大化)</li>
-<li>0 &lt;= <!-- raw HTML omitted -->γ &lt;= 1  discount  (通常為1)</li>
+<li>0 &lt;= <sub>γ &lt;= 1  discount  (通常為1)</li>
 </ul>
 <h3 id="search-problem-定義">search problem 定義:</h3>
 <p>States : 一群狀態的集合<br>
@@ -192,14 +192,14 @@ utility會是隨機的   <br>
 <img class="img-zoomable" src="/misc/markov_1_3.PNG" alt="" />
 </p>
 <p>path會應用上折抵率<br>
-u = r1 + <!-- raw HTML omitted -->γ*r2 + <!-- raw HTML omitted -->γ^2 * r3 + &hellip;</p>
-<p><!-- raw HTML omitted -->γ
+u = r1 + <sub>γ*r2 + <sub>γ^2 * r3 + &hellip;</p>
+<p><sub>γ
 是表達對&quot;未來&quot;的調整<br>
-比如<!-- raw HTML omitted -->γ=1<br>
+比如<sub>γ=1<br>
 就是save for future的感覺<br>
-<!-- raw HTML omitted -->γ=0<br>
+<sub>γ=0<br>
 就是live in the moment (未來狀態不重要，也有種greedy的感覺)</p>
-<p><!-- raw HTML omitted -->γ 會依問題決定，通常不是超參數</p>
+<p><sub>γ 會依問題決定，通常不是超參數</p>
 <h3 id="定義-value">定義: value</h3>
 <p>utility的期待值<br>
 E[u]</p>

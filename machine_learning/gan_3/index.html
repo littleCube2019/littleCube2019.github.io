@@ -129,20 +129,20 @@
 (而那些點就是圖片，但人臉圖片只占所有圖片的一部分)</p>
 <h1 id="maximum-likelihood-estimation">Maximum Likelihood Estimation</h1>
 <p>該分布P_data(x)我們其實不知道是甚麼，只能用sample的方式<br>
-利用P_G(x;<!-- raw HTML omitted -->θ)去逼近P_data</p>
+利用P_G(x;<sub>θ)去逼近P_data</p>
 <p>作法:<br>
 sample {x1,x2&hellip; xm} from P_data(x)
-我們計算 P_G(xi;<!-- raw HTML omitted -->θ)  (回傳值是xi在P_G內的機率)</p>
+我們計算 P_G(xi;<sub>θ)  (回傳值是xi在P_G內的機率)</p>
 <p>Likelihood<br>
 <img class="img-zoomable" src="/GAN/GAN_3_2.PNG" alt="" />
 	<br>
 我們希望在P_data內sample出的x1~xm，出現在P_G內的機率越大越好</p>
-<p>接下來尋找好的<!-- raw HTML omitted -->θ值，使L最大即可</p>
+<p>接下來尋找好的<sub>θ值，使L最大即可</p>
 <p>數學式如下:<br>
 <img class="img-zoomable" src="/GAN/GAN_3_3.PNG" alt="" />
 </p>
 <h3 id="問題-如何產生p_ggenerator">問題: 如何產生P_G(generator)?</h3>
-<p>上述如果不使用常態分佈，P_G(xi;<!-- raw HTML omitted -->θ) 無法求得(不知道機率密度函數)</p>
+<p>上述如果不使用常態分佈，P_G(xi;<sub>θ) 無法求得(不知道機率密度函數)</p>
 <p>但如果使用常態分布，可能無法完整的擬合高維中的真實分佈，造成一些誤差(比如生成照 片模糊)</p>
 <p>解法:用Nerual Network作為Generator<br>
 將distribution通過一個NN，讓NN將分布的形狀&quot;改造&rdquo; 

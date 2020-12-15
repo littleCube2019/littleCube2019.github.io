@@ -15,20 +15,21 @@
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
 
 
-<title>Webs - Little Cube`s box</title>
+<title>Hugo網頁實作 - sidebar - Little Cube`s box</title>
 
 
 
 
-<meta property="og:title" content="Webs" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://littlecube2019.github.io/web/" />
-<meta property="og:updated_time" content="2020-08-21T23:32:18+08:00" />
+<meta property="og:title" content="Hugo網頁實作 - sidebar" />
+<meta property="og:description" content="玩Hugo時想實作的功能紀錄 - 關於html與latex數學式" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/hugo/how_to_math_and_html/" />
+<meta property="article:published_time" content="2020-08-20T00:10:15+08:00" />
+<meta property="article:modified_time" content="2020-08-20T00:10:15+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Webs"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="Hugo網頁實作 - sidebar"/>
+<meta name="twitter:description" content="玩Hugo時想實作的功能紀錄 - 關於html與latex數學式"/>
 
 
 
@@ -108,211 +109,83 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-
-
-
-<div class="post">
+<article>
+    
     <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/unix/cut/">cut處理文件</a>
+        <a href="https://littlecube2019.github.io/hugo/how_to_math_and_html/">Hugo網頁實作 - sidebar</a>
     </h2>
     <div class="post-item post-meta">
         
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        關於bash處理文件的方法&ndash;cut
-    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>由於美觀與數學內容的需求，想要加入html功能與latex的數學式寫法</p>
+<h1 id="html">html</h1>
+<p>一般markdown是有支援html的，但hugo要設定才能使用</p>
+<p>解法: 到config.toml(或其他設定檔，那可能要找其他設定格式)<br>
+加入</p>
+<pre><code>[markup.goldmark]  
+    [markup.goldmark.renderer]  
+      unsafe = true  
+</code></pre><p>即可完成設定</p>
+<h1 id="latex數學式">latex數學式</h1>
+<p>設定較為複雜，大概流程是使用MathJax 3 套件，並進行引入、美化設定</p>
+<h3 id="step-1-創建html引入mathjax-3">step 1 創建html引入MathJax 3</h3>
+<p>於layouts/partials/ 創建 mathjax_support.html<br>
+(有使用主題的話在theme/layouts/pratials，以下路徑也是一樣)<br>
+寫入以下內容</p>
+<pre><code>&lt;script&gt;
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) =&gt; {
+      document.querySelectorAll(&quot;mjx-container&quot;).forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+&lt;/script&gt;
+&lt;script src=&quot;https://polyfill.io/v3/polyfill.min.js?features=es6&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; id=&quot;MathJax-script&quot; async
+  src=&quot;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&quot;&gt;&lt;/script&gt;
+</code></pre><h3 id="step-2-於主頁header引入剛剛的設定">step 2 於主頁header引入剛剛的設定</h3>
+<p>在 layouts/partials/header.html 的 head tag中<br>
+寫下 {{ partial &ldquo;mathjax_support.html&rdquo; . }}</p>
+<h3 id="step-3-美化">step 3 美化</h3>
+<p>於CSS檔加入以下設定</p>
+<pre><code>code.has-jax {
+    -webkit-font-smoothing: antialiased;
+    background: inherit !important;
+    border: none !important;
+    font-size: 100%;
+}
+</code></pre><p>完成</p>
+<h1 id="效果展示">效果展示</h1>
+<div style="color:red"> 
+這是div html tag 
+並設定這一區塊文字顏色為紅色  <br>
+<p>這是latex效果呈現<br>
+<code>$\sum_{n=1}^5 n^2$</code></p>
 </div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/unix/sort/">sort處理文件</a>
-    </h2>
-    <div class="post-item post-meta">
-        
+<h1 id="參考資料">參考資料</h1>
+<ul>
+<li><a href="https://gohugo.io/getting-started/configuration-markup#goldmark">https://gohugo.io/getting-started/configuration-markup#goldmark</a></li>
+<li><a href="https://geoffruddock.com/math-typesetting-in-hugo/">https://geoffruddock.com/math-typesetting-in-hugo/</a></li>
+</ul>
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        關於bash處理文件的方法&ndash;sort
-    </div>
-</div>
+</article>
 
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/unix/tr/">tr處理文件</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於bash處理文件的方法&ndash;tr
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/jquery/">jQuery 基礎</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於JQuery基本介紹與使用方式
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/machine_learning/cross_entropy/">Cross Entropy簡介</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        關於Cross entropy
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/machine_learning/gan_1/">GAN 影片筆記系列一</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        GAN 基本介紹
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/machine_learning/gan_3/">GAN 影片筆記系列三</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        Basic theory
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/machine_learning/gan_2/">GAN 影片筆記系列二</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        Conditional GAN
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/machine_learning/gan_5/">GAN 影片筆記系列五</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        GAN改進模型 WGAN、EBGAN
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/machine_learning/gan_4/">GAN 影片筆記系列四</a>
-    </h2>
-    <div class="post-item post-meta">
-        
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        general framework of gan
-    </div>
-</div>
-
-
-
-
-
-
-
-
-<div class="pagination">
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item pag-current">
-        <a href="/web/">1</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/web/page/2/">2</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/web/page/3/">3</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/web/page/4/">4</a>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div class="pag-item">
-        <a href="/web/page/5/">5</a>
-    </div>
-    
-    
-    
-    <div class="pag-next">
-        <a href="/web/page/2/"><i class="iconfont icon-chevron-forward-circle-sharp"></i></i></a>
-    </div>
-    
-    
-    <div class="pag-last">
-        <a href="/web/page/5/"><i class="iconfont icon-caret-forward-circle-sharp"></i></a>
-    </div>
-    
-</div>
 
 
 
