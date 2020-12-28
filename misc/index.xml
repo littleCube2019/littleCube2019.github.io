@@ -12,24 +12,6 @@
     
     
     <item>
-      <title>OS Basic(依Neso Academy影片筆記) </title>
-      <link>https://littlecube2019.github.io/misc/os_basic/</link>
-      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/misc/os_basic/</guid>
-      <description>參考OS公開課所做的筆記</description>
-    </item>
-    
-    <item>
-      <title>Char Driver 實作</title>
-      <link>https://littlecube2019.github.io/misc/linux_driver_3/</link>
-      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/misc/linux_driver_3/</guid>
-      <description>實作char driver</description>
-    </item>
-    
-    <item>
       <title>Linux Device Driver系列 1</title>
       <link>https://littlecube2019.github.io/misc/linux_driver_1/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
@@ -57,12 +39,30 @@
     </item>
     
     <item>
+      <title>Char Driver 實作</title>
+      <link>https://littlecube2019.github.io/misc/linux_driver_3/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/linux_driver_3/</guid>
+      <description>實作char driver</description>
+    </item>
+    
+    <item>
       <title>Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)</title>
       <link>https://littlecube2019.github.io/misc/markov_decision_processes_1/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/misc/markov_decision_processes_1/</guid>
       <description>線上影片筆記</description>
+    </item>
+    
+    <item>
+      <title>OS Basic(依Neso Academy影片筆記) </title>
+      <link>https://littlecube2019.github.io/misc/os_basic/</link>
+      <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/misc/os_basic/</guid>
+      <description>參考OS公開課所做的筆記</description>
     </item>
     
     <item>

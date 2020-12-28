@@ -12,21 +12,21 @@
     
     
     <item>
-      <title>python隨手記</title>
-      <link>https://littlecube2019.github.io/skill/about_python/</link>
-      <pubDate>Sun, 23 Aug 2020 17:15:54 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/skill/about_python/</guid>
-      <description>用python解leetcode時順便練習的技巧</description>
-    </item>
-    
-    <item>
       <title>C/C&#43;&#43;技巧與觀念</title>
       <link>https://littlecube2019.github.io/skill/about_c/</link>
       <pubDate>Sun, 23 Aug 2020 16:51:51 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/skill/about_c/</guid>
       <description>在解題、寫作業、上課時所習得的一些技巧與觀念</description>
+    </item>
+    
+    <item>
+      <title>python隨手記</title>
+      <link>https://littlecube2019.github.io/skill/about_python/</link>
+      <pubDate>Sun, 23 Aug 2020 17:15:54 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/skill/about_python/</guid>
+      <description>用python解leetcode時順便練習的技巧</description>
     </item>
     
   </channel>

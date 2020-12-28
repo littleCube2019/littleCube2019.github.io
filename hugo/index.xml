@@ -12,6 +12,24 @@
     
     
     <item>
+      <title>Hugo網頁實作 - sidebar</title>
+      <link>https://littlecube2019.github.io/hugo/how_to_math_and_html/</link>
+      <pubDate>Thu, 20 Aug 2020 00:10:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/hugo/how_to_math_and_html/</guid>
+      <description>玩Hugo時想實作的功能紀錄 - 關於html與latex數學式</description>
+    </item>
+    
+    <item>
+      <title>簡介如何使用Hugo寫網頁</title>
+      <link>https://littlecube2019.github.io/hugo/how_to_hugo/</link>
+      <pubDate>Tue, 18 Aug 2020 18:02:20 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/hugo/how_to_hugo/</guid>
+      <description>紀錄如何快速產生這個網頁</description>
+    </item>
+    
+    <item>
       <title>Hugo網頁實作 - 文章呈現</title>
       <link>https://littlecube2019.github.io/hugo/show_article/</link>
       <pubDate>Thu, 20 Aug 2020 09:28:30 +0800</pubDate>
@@ -22,29 +40,11 @@
     
     <item>
       <title>Hugo網頁實作 - sidebar</title>
-      <link>https://littlecube2019.github.io/hugo/how_to_math_and_html/</link>
-      <pubDate>Thu, 20 Aug 2020 00:10:15 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/hugo/how_to_math_and_html/</guid>
-      <description>玩Hugo時想實作的功能紀錄 - 關於html與latex數學式</description>
-    </item>
-    
-    <item>
-      <title>Hugo網頁實作 - sidebar</title>
       <link>https://littlecube2019.github.io/hugo/sidebar/</link>
       <pubDate>Thu, 20 Aug 2020 00:10:15 +0800</pubDate>
       
       <guid>https://littlecube2019.github.io/hugo/sidebar/</guid>
       <description>玩Hugo時想實作的功能紀錄 - 關於sidebar</description>
-    </item>
-    
-    <item>
-      <title>簡介如何使用Hugo寫網頁</title>
-      <link>https://littlecube2019.github.io/hugo/how_to_hugo/</link>
-      <pubDate>Tue, 18 Aug 2020 18:02:20 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/hugo/how_to_hugo/</guid>
-      <description>紀錄如何快速產生這個網頁</description>
     </item>
     
   </channel>

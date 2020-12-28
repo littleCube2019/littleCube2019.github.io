@@ -30,15 +30,6 @@
     </item>
     
     <item>
-      <title>GAN 影片筆記系列三</title>
-      <link>https://littlecube2019.github.io/machine_learning/gan_3/</link>
-      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/machine_learning/gan_3/</guid>
-      <description>Basic theory</description>
-    </item>
-    
-    <item>
       <title>GAN 影片筆記系列二</title>
       <link>https://littlecube2019.github.io/machine_learning/gan_2/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
@@ -48,12 +39,12 @@
     </item>
     
     <item>
-      <title>GAN 影片筆記系列五</title>
-      <link>https://littlecube2019.github.io/machine_learning/gan_5/</link>
+      <title>GAN 影片筆記系列三</title>
+      <link>https://littlecube2019.github.io/machine_learning/gan_3/</link>
       <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
       
-      <guid>https://littlecube2019.github.io/machine_learning/gan_5/</guid>
-      <description>GAN改進模型 WGAN、EBGAN</description>
+      <guid>https://littlecube2019.github.io/machine_learning/gan_3/</guid>
+      <description>Basic theory</description>
     </item>
     
     <item>
@@ -63,6 +54,15 @@
       
       <guid>https://littlecube2019.github.io/machine_learning/gan_4/</guid>
       <description>general framework of gan</description>
+    </item>
+    
+    <item>
+      <title>GAN 影片筆記系列五</title>
+      <link>https://littlecube2019.github.io/machine_learning/gan_5/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/machine_learning/gan_5/</guid>
+      <description>GAN改進模型 WGAN、EBGAN</description>
     </item>
     
     <item>

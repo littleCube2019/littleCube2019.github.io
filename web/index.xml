@@ -12,48 +12,12 @@
     
     
     <item>
-      <title>jQuery 基礎</title>
-      <link>https://littlecube2019.github.io/web/jquery/</link>
-      <pubDate>Fri, 21 Aug 2020 13:45:35 +0800</pubDate>
+      <title>關於HTML</title>
+      <link>https://littlecube2019.github.io/web/html/</link>
+      <pubDate>Fri, 21 Aug 2020 13:59:00 +0800</pubDate>
       
-      <guid>https://littlecube2019.github.io/web/jquery/</guid>
-      <description>關於JQuery基本介紹與使用方式</description>
-    </item>
-    
-    <item>
-      <title>Http簡介</title>
-      <link>https://littlecube2019.github.io/web/http/</link>
-      <pubDate>Fri, 21 Aug 2020 23:32:18 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/web/http/</guid>
-      <description>http簡介，網路如何溝通的協定</description>
-    </item>
-    
-    <item>
-      <title>Javascript簡介</title>
-      <link>https://littlecube2019.github.io/web/js/</link>
-      <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/web/js/</guid>
-      <description>javascript簡介，負責網頁動態互動</description>
-    </item>
-    
-    <item>
-      <title>pyquery 簡介</title>
-      <link>https://littlecube2019.github.io/web/pyquery/</link>
-      <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/web/pyquery/</guid>
-      <description>以jquery為概念的網頁剖析器</description>
-    </item>
-    
-    <item>
-      <title>Requests 簡介</title>
-      <link>https://littlecube2019.github.io/web/requests/</link>
-      <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/web/requests/</guid>
-      <description>用python模擬網路請求</description>
+      <guid>https://littlecube2019.github.io/web/html/</guid>
+      <description>簡介html，決定網頁呈現的骨幹與內容</description>
     </item>
     
     <item>
@@ -66,12 +30,39 @@
     </item>
     
     <item>
-      <title>關於HTML</title>
-      <link>https://littlecube2019.github.io/web/html/</link>
-      <pubDate>Fri, 21 Aug 2020 13:59:00 +0800</pubDate>
+      <title>Javascript簡介</title>
+      <link>https://littlecube2019.github.io/web/js/</link>
+      <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
       
-      <guid>https://littlecube2019.github.io/web/html/</guid>
-      <description>簡介html，決定網頁呈現的骨幹與內容</description>
+      <guid>https://littlecube2019.github.io/web/js/</guid>
+      <description>javascript簡介，負責網頁動態互動</description>
+    </item>
+    
+    <item>
+      <title>Http簡介</title>
+      <link>https://littlecube2019.github.io/web/http/</link>
+      <pubDate>Fri, 21 Aug 2020 23:32:18 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/web/http/</guid>
+      <description>http簡介，網路如何溝通的協定</description>
+    </item>
+    
+    <item>
+      <title>jQuery 基礎</title>
+      <link>https://littlecube2019.github.io/web/jquery/</link>
+      <pubDate>Fri, 21 Aug 2020 13:45:35 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/web/jquery/</guid>
+      <description>關於JQuery基本介紹與使用方式</description>
+    </item>
+    
+    <item>
+      <title>pyquery 簡介</title>
+      <link>https://littlecube2019.github.io/web/pyquery/</link>
+      <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/web/pyquery/</guid>
+      <description>以jquery為概念的網頁剖析器</description>
     </item>
     
     <item>
@@ -81,6 +72,15 @@
       
       <guid>https://littlecube2019.github.io/web/vue/</guid>
       <description>關於Vue的基本介紹</description>
+    </item>
+    
+    <item>
+      <title>Requests 簡介</title>
+      <link>https://littlecube2019.github.io/web/requests/</link>
+      <pubDate>Fri, 21 Aug 2020 20:03:49 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/web/requests/</guid>
+      <description>用python模擬網路請求</description>
     </item>
     
   </channel>

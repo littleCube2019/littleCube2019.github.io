@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>vim script實作練習 - 打造html檔IDE為例 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="vim script實作練習 - 打造html檔IDE為例" />
+<meta property="og:description" content="以autocmd、map、filetype、vim function打造適合html編輯的環境" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/unix/vim_script_html/" />
+<meta property="article:published_time" content="2020-12-23T00:40:20+08:00" />
+<meta property="article:modified_time" content="2020-12-23T00:40:20+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="vim script實作練習 - 打造html檔IDE為例"/>
+<meta name="twitter:description" content="以autocmd、map、filetype、vim function打造適合html編輯的環境"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+    </div>
+
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/unix/vim_script_html/">vim script實作練習 - 打造html檔IDE為例</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <h1 id="需求">需求</h1>
+<p>編輯html會有諸多快捷鍵或補全的需求，這裡先列出幾個基本需求來實作 <br>
+1.限定檔案的括號補全 <br>
+如打完<code>&lt;</code>希望能自動補全<code>&gt;</code><br>
+但是希望<b style="color:#DC143C">限定html檔使用</b><br>
+因為其他語言數學式常用到大小於，通常不希望被補全</p>
+<p>2.快速打出tag<br>
+自訂快捷鍵，快速產生tag<br>
+如打出;b 可以快速產生 <code>&lt;b&gt;&lt;/b&gt;</code><br>
+或 ;p 可以快速產生 <code>&lt;p&gt;&lt;/p&gt;</code></p>
+<p>3.設定跳躍點<br>
+希望在打完tag內容後，可以快速跳到下一行<br>
+如</p>
+<pre><code>&lt;p&gt;content&lt;/p&gt;
+
++jump+
+</code></pre><p>打完content內容後，可以快速跳躍到外面</p>
+<p>4.使用說明<br>
+希望在打開html檔後，可以跳出一個說明檔告知如何使用</p>
+<h1 id="實作">實作</h1>
+<p>先看看實作script</p>
+<pre><code>&quot;每當打開html檔，自動執行
+autocmd FileType html call InitHtml()
+
+
+&quot;接收使用者輸入的function
+function InputTag()
+     call inputsave()
+     let g:tag = input(&quot;your tag&quot;)
+     call inputrestore()
+endfunction
+
+&quot;打開html所需執行的設定函數
+function InitHtml()
+	&quot;自動補全角括號
+	inoremap &lt; &lt;&gt;&lt;Left&gt;
+	
+	&quot;&quot;&quot;
+	在normal模式按下; 接續輸入會成為tag與跳點
+	如;p  會生成 &lt;p&gt;&lt;/p&gt;
+				 跳點
+	並將光標移回tag中間，同時切換成insert模式
+	&quot;&quot;&quot;
+	nnoremap ; &lt;ESC&gt;:call InputTag()&lt;CR&gt;i&lt;&lt;C-R&gt;=tag&lt;CR&gt;&gt;OwwOw&lt;/&lt;C-R&gt;=tag&lt;CR&gt;&gt;&lt;Space&gt;&lt;Enter&gt;&lt;++&gt;&lt;Esc&gt;/OwwOw&lt;CR&gt;5xi
+
+	&quot;在插入模式按下;; 會跳至跳點，並切換成normal
+	inoremap ;;  &lt;ESC&gt;/&lt;++&gt;&lt;Enter&gt;4x&lt;ESC&gt;
+endfunction
+
+</code></pre><h1 id="講解">講解</h1>
+<p>以下是依次講解使用到的script</p>
+<h3 id="autocmd">autocmd</h3>
+<p><code>autocmd 事件 匹配 指令</code>
+可以在條件滿足時，自動執行後面的指令</p>
+<p style="text-align: center">1. 事件</p>  
+常見事件有    
+讀寫檔案   
+關閉、離開vim、buffer、window ...  
+<p>並且事件也可以用FileType等指令來依<b style="color:crimson">
+不同種類檔案</b>來執行不同指令</p>
+<p style="text-align: center">2. 匹配</p>  
+匹配特定的檔案，讓autocmd執行在你想要執行的檔案  
+並且可以使用萬用字元，比如*表示任何檔案  
+<ul>
+<li>Note: FileType 後的檔案類型本身就已經囊括匹配了</li>
+</ul>
+<p>以下是一些例子 (參考:http://vimdoc.sourceforge.net/htmldoc/autocmd.html#{event})</p>
+<pre><code>autocmd BufRead * :vs test   #開啟任何檔案時自動打開test
+autocmd BufRead /tmp/*.py	set ts=4   #打開python時自動設定tab長度為4
+
+autocmd BufWrite * :!ls #在儲存檔案時自動ls當前目錄 
+
+
+</code></pre><h3 id="filtype">FilType</h3>
+<p>檢查當前檔案是甚麼，檢查方式是看檔案的<b style="color:crimson">
+副檔名</b>。<br>
+比如.py , .html , .md  &hellip;</p>
+<p>可以使用指令set filetype? 來查看當前filetype</p>
+<p>此外，也可以在<code>~/.vim/after/ftplugin/&lt;FileType&gt;.vim</code>中為不同副檔名分檔設定<br>
+(其中<code>&lt;FileType&gt;</code>要填入對應的副檔名，比如html.vim)</p>
+<p>結合autocmd ，就變成當filetype == 你想要的type才執行後續指令</p>
+<h3 id="vim-function">vim function</h3>
+<p style="text-align: center">1. function 介紹</p>  
+vim 中的function可以同時進行多個設定   
+<p>比如今天想執行三個設定A B C<br>
+autocmd 不需要打三次，直接call function就好</p>
+<p>也就是</p>
+<pre><code>autocmd FileType html A  
+autocmd FileType html B  
+autocmd FileType html C  
+</code></pre><p>可以改寫成</p>
+<pre><code>function setting()
+	A
+	B
+	C
+endfunction  
+
+autocmd FileType html call setting()
+
+</code></pre><ul>
+<li>Note: 使用時要call 函數名稱()</li>
+</ul>
+<p style="text-align: center">2. function 結構</p>  
+結構大概是   
+<pre><code>function 名稱()
+   // your function 
+endfunction
+</code></pre><p>注意function範圍是由function ~ endfunction決定<br>
+不是縮排，也沒有括號<br>
+此外，關於函數參數以後用到會再補上講解</p>
+<h3 id="map">map</h3>
+<p style="text-align: center">1. mapping 介紹</p>  
+可以讓按鍵進行替換，用途非常多(補全、快捷鍵)  
+<p>基本格式為<br>
+<code>[模式][遞迴]map {原按鍵} {替換按鍵}</code></p>
+<p>如將( 替換成 () 就能自然打出括號補全</p>
+<p>補全也可以用於打出指令，也有遞迴的補全，此外也可以模擬任何按鍵，以下為介紹</p>
+<p style="text-align: center">2. mapping 方式</p> 
+mapping方式可以依<b style="color:crimson">  
+模式</b>區分，並且可以選擇不要遞迴mapping<br>    
+(舉例而言 map A B , map B C ，若遞迴map，按下A就會被映射到C)  
+<p>可以將模式加在map前面<br>
+例如imap, nmap</p>
+<p>預設為遞迴，可以將nore加在模式與map之間<br>
+如inoremap, nnoremap</p>
+<p>還有更多進階用法，以後用到也會介紹(參考:https://vim.fandom.com/wiki/Mapping_keys_in_Vim_-_Tutorial_(Part_1))</p>
+<p style="text-align: center">3. 按鍵</p>  
+除了基本英文字母以外，mapping也可以模擬其他按鍵  
+比如方向鍵  
+<p><code>&lt;Left&gt; &lt; Right&gt; &lt;Up&gt; &lt;Down&gt;</code></p>
+<p>Enter 鍵、ESC鍵、 空白鍵<br>
+<code>&lt;CR&gt;(或&lt;Enter&gt;)  &lt;Esc&gt;  &lt;Space&gt;</code></p>
+<ul>
+<li>Note: ESC鍵可以從insert mode 轉換成 normal mode，常用</li>
+</ul>
+<p>Control + x<br>
+<code>&lt;C-r&gt; #Control+r 以此類推</code></p>
+<p style="text-align: center">4. 綜合應用</p>
+1.括號補全  
+<p><code>inoremap {  {}&lt;LEFT&gt; #補全後回到括號中間，方便輸入</code></p>
+<p>此例告訴我們可以map任何按鍵，包括用方向鍵移動光標</p>
+<p>2.跳點</p>
+<p><code>inoremap &lt;Space&gt;  &lt;Esc&gt;/&lt;++&gt;&lt;Enter&gt;4xi </code>
+按下space後<br>
+先利用ESC回到normal <br>
+利用/搜尋跳點<br>
+按下enter找到跳點<br>
+利用4x刪除跳點，完成跳躍 <br>
+最後切換模式回insert</p>
+<p>此例告訴我們甚至可以map normal mode下的指令，以及模式間的切換</p>
+<h3 id="input">input()</h3>
+<p>input()可以回傳使用者的輸入<br>
+例如<br>
+let g:name = input(&ldquo;your name&rdquo;)<br>
+並且裡面的參數可以收字串，告知使用者該輸入甚麼(與python的input用法一樣)</p>
+<p>而在使用input()時，為了防止vim的自動補全，通常會在前後加入<br>
+inputsave(),inputrestore()</p>
+<p>比如</p>
+<pre><code>function inPutPattern()
+call inputsave()
+let g:name = input(&quot;your name&quot;)
+call inputstore()
+endfunction
+</code></pre><p>(g表示全域變數，這樣function外部也可以使用到name)</p>
+<h3 id="打出變數的方法">打出變數的方法</h3>
+<p>用input()紀錄使用者輸入後，可以在<b style="color:crimson">insert mode</b>下用<b style="color:crimson">Ctrl+r</b>再輸入<b style="color:crimson">=變數名</b>打出該變數內容</p>
+<p>(注意，若是在normal模式 <code>&lt;c-r&gt;</code> 是回復)</p>
+<p>舉例如下gif<br>
+<img class="img-zoomable" src="/unix/vim_ide_html.gif" alt="" />
+</p>
+<h1 id="實作講解">實作講解</h1>
+<p><code>autocmd FileType html call InitHtml()</code>
+當開啟.html時，自動呼叫InitHtml()</p>
+<pre><code>function InitHtml()
+...
+endfunction
+</code></pre><p>定義InitHtml()</p>
+<p><code>inoremap &lt; &lt;&gt;&lt;Left&gt;</code><br>
+自動補全角括號</p>
+<p><code>nnoremap ; &lt;ESC&gt;:call InputTag()&lt;CR&gt;i&lt;&lt;C-R&gt; =tag&lt;CR&gt;&gt;OwwOw&lt;/&lt;C-R&gt; =tag&lt;CR&gt;&gt;&lt;Space&gt;&lt;Enter&gt;&lt;++&gt;&lt;Esc&gt;/OwwOw&lt;CR&gt;5xi</code>
+按下;時<br>
+切換成normal<br>
+呼叫InputTag()<br>
+按下確定<br>
+切換成insert<br>
+完成補全並留下記錄點(OwwOw)<br>
+在外面留下跳躍點(<code>&lt;++&gt;</code>)<br>
+切換成normal<br>
+跳回OwwOw，並清空(4x)<br>
+最後切換成insert</p>
+<pre><code>function InputTag()
+     call inputsave()
+     let g:tag = input(&quot;your tag&quot;)
+     call inputrestore()
+endfunction  
+</code></pre><p>接收輸入者輸入tag</p>
+<p><code>inoremap ;;  &lt;ESC&gt;/&lt;++&gt;&lt;Enter&gt;4x</code>
+前面解釋過的跳點</p>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2020 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

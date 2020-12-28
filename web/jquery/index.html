@@ -234,10 +234,13 @@ tag , class ,id ,屬性<br>
 <img class="img-zoomable" src="/web/jquery_1.PNG" alt="" />
 </p>
 <p>可以了解到parent , child 及其child順序在code上是十分直觀的</p>
-<p>而nth-child() 則是可以選擇第n個子代</p>
+<p>而nth-child() 則是先選擇該元素，然後再看該元素是否是第n個子代</p>
 <p>比如<br>
-\$(&ldquo;div:nth-child(1)&quot;) 會選到 p<br>
+\$(&ldquo;div p:nth-child(1)&quot;) 會選到 <code>&lt;p&gt; 水果清單 &lt;/p&gt;</code><br>
 \$(&ldquo;ul li:nth-child(2)&quot;)會選到 含蘋果的 li</p>
+<p>但<br>
+\$(&ldquo;div p:nth-child(2)&quot;) 不會選到任何東西，因為此例中沒有p
+是第2個子代</p>
 <ul>
 <li><b style="color: #A52A2A">Note</b>
 其他位置選擇器還有<br>
@@ -343,7 +346,8 @@ placeholder="input here" ></input>
 <p>如果需要更新網頁排版位置、字體、顏色、大小 &hellip; 等style<br>
 就會自然的想到要用CSS</p>
 <p>而jQuery也提供css修改函式</p>
-<p>\$(&ldquo;selector&rdquo;).css(&ldquo;property:value&rdquo;)</p>
+<p>\$(&ldquo;selector&rdquo;).css(&ldquo;property&rdquo;,
+&ldquo;value&rdquo;)</p>
 <p>而CSS的property可以<a href="https://www.w3schools.com/cssref/" target="_blank">參考這裡</a></p>
 <h3 style="color:black">以下是一個例子</h3>
 ==========   
@@ -366,7 +370,12 @@ placeholder="input here" ></input>
 <h3 id="texthtmlval">text,html,val</h3>
 <p>取用元素最常使用三個函式 <br>
 text() , html() , val()<br>
-分別代表指定元素的文字、html檔、值</p>
+分別代表指定元素的文字、html檔</p>
+<p>val() 是特別用在input等跟使用者互動的tag裡面，去取使用者輸入的值<br>
+(eg: 聊天室 <br>
+val = $(&ldquo;input&rdquo;).val()<br>
+$(&ldquo;input&rdquo;).val(&quot;&quot;)  //也可以用來clean<br>
+)</p>
 <b style="color: #A52A2A">
 若不指定內容(括號內不給變數)，則會回傳其值內容  <br>
 若給變數，則會修改為變數內容
@@ -375,13 +384,13 @@ text() , html() , val()<br>
 <pre><code>&lt;div&gt;
   &lt;p&gt; hello world &lt;/p&gt;
 &lt;/div&gt;
-</code></pre><h3 id="attr">attr()</h3>
-<p>使用規則類似於</p>
-<p>執行<br>
-\$(&ldquo;div&rdquo;).text() 會回傳 hello world<br>
+</code></pre><p>執行<br>
+\$(&ldquo;div&rdquo;).text() 會回傳 hello world    (所有子代的文字)
 \$(&ldquo;div&rdquo;).html() 會回傳 <code>&lt;p&gt; hello world &lt;/p&gt;</code></p>
 <p>而若想要修改<br>
 只需要\$(&ldquo;div&rdquo;).text(&quot;:)&quot;)   就可以將 hello world 變更為笑臉</p>
+<h3 id="attr">attr()</h3>
+<p>使用規則類似於上面</p>
 <h1 id="remove_add_el">加入/刪除 元素</h1>
 <h3 id="加入元素">加入元素</h3>
 <p>加入元素可以使用 append() , prepend()  (在內部插入) 
@@ -439,7 +448,7 @@ $(選擇器).remove() //remove
 </code></pre><p>此外jQuery
 也有AJAX、動畫..等等強大的功能，未來有機會再介紹</p>
 <h1 id="參考資料">參考資料</h1>
-<p><a href="https://www.w3schools.com/jquery/default.asp">https://www.w3schools.com/jquery/default.asp</a></p>
+<p>https://www./3schools.com/jquery/default.asp</p>
 
     </div>
 </article>
