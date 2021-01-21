@@ -83,5 +83,14 @@
       <description>activated function的改變史</description>
     </item>
     
+    <item>
+      <title>pandas套件介紹 - 表格資料處理好工具</title>
+      <link>https://littlecube2019.github.io/machine_learning/pandas/</link>
+      <pubDate>Thu, 20 Aug 2020 00:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/machine_learning/pandas/</guid>
+      <description>pandas套件介紹</description>
+    </item>
+    
   </channel>
 </rss>
