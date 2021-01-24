@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.74.3" />
+
+
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+
+
+<title>cin 使用筆記 - Little Cube`s box</title>
+
+
+
+
+<meta property="og:title" content="cin 使用筆記" />
+<meta property="og:description" content="關於cin 讀寫格式與buffer,Error flag的概念" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/c_lang/cin/" />
+<meta property="article:published_time" content="2020-08-21T13:45:35+08:00" />
+<meta property="article:modified_time" content="2020-08-21T13:45:35+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="cin 使用筆記"/>
+<meta name="twitter:description" content="關於cin 讀寫格式與buffer,Error flag的概念"/>
+
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+<link rel="stylesheet" href="/assets/css/fuji.min.css" />
+
+
+
+
+
+
+</head>
+
+<body data-theme="auto">
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
+            
+            <span class="title-sub">筆記儲物櫃</span>
+            
+        </div>
+        
+    </div>
+    <div align="center" style="height:50%;
+    margin:5px;
+	width: 100%;
+	height:100%"
+	>
+    	目前文章數:
+		49 </div>
+    <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://littlecube2019.github.io/c_lang/cin/">cin 使用筆記</a>
+    </h2>
+    <div class="post-item post-meta">
+        
+
+    </div>
+    
+    
+    <div class="post-content markdown-body">
+        <p>以下將由問題開頭，介紹各個小重點，如果問題能正確答出來，就可以跳過該小節囉0.&lt;</p>
+<div style="background-color:#DCDCDC; width:25%; border-style: solid;">
+目錄  
+<br>
+<a href="#1">寫入單位</a>
+<br>
+<a href="#2">Buffer 與 cin.ignore() </a>
+<br>
+<a href="#3">Error Flag 與 cin.clear() </a>
+<br>
+</div>
+<h1 id="1">1. 寫入單位</h1>
+<div style="text-align:center;">
+<b style="color:red; " >problem 1 </b> 
+</div>  
+<pre><code>string a = &quot;hello&quot; ;
+cin &gt;&gt; a;
+
+輸入為:
+a new world
+</code></pre><p>問 變數a 的內容?</p>
+<ol>
+<li>hello</li>
+<li>world</li>
+<li>a</li>
+<li>a new world</li>
+</ol>
+<p>答案為3</p>
+<p>原因在於<b style="color:crimson">空格、tab、換行</b>都是cin的讀取變數終止條件<br>
+若讀取到這些，cin就會把剛剛讀到的東西放進變數中，以此例而言，碰到a前面的空格就結束一次操作，所以a這個變數的值被改寫成a</p>
+<div style="text-align:center;">
+<b style="color:red; " >problem 2 </b> 
+</div> 
+<pre><code>char a = '1' ;
+char b = '2' ;
+char c = '3' ;
+char d = '4' ;
+char e = '5' ;
+cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; e ;
+cout &lt;&lt; a &lt;&lt; b &lt;&lt; c &lt;&lt; d &lt;&lt;e ;
+輸入為:
+a\tcat\n
+\n
+</code></pre><p>問 執行結果為?  (note \t為tab,\n為換行)</p>
+<ol>
+<li>a cat</li>
+<li>acat\n</li>
+<li>a    cat</li>
+<li>acat5</li>
+<li>12345</li>
+</ol>
+<p>答案為4，由此可知只要使用cin，讀取單位就連char也是會遇到空格就不反應</p>
+<h1 id="2">2. Buffer與cin.ignore()</h1>
+<div style="text-align:center;">
+<b style="color:red; " >problem 3 </b> 
+</div> 
+<pre><code>int Number = 0; 
+string name[2];
+
+while(Number&lt;2){
+	cout&lt;&lt;&quot;what is your name?&quot;&lt;&lt;endl;
+	cin&gt;&gt;name[Number];
+	Number+=1;
+}
+
+輸入:
+Anya Hsiao
+Willy Fang
+Harry Chin
+
+//再繼續執行
+string Test;
+cin&gt;&gt;Test;
+
+</code></pre><p>請問此時Test變數會得到甚麼結果?</p>
+<ol>
+<li>沒有結果，等待使用者輸入</li>
+<li>Harry Chin</li>
+<li>Willy</li>
+<li>Fang</li>
+</ol>
+<p>答案為3</p>
+<p>除了遇到空格就將值輸入變數以外，cin/cout等IO輸入還有Buffer的存在<br>
+會先將輸出/輸入記到一塊暫存記憶體裡，方便後續cin/cout取用，所以前兩次輸入會把Anya與Hsiao吃進去，最後一個變數則會吃到Willy<br>
+如果後續還有cin，則會依序吃入Fang,Harry,Chin</p>
+<h3 id="cinignoremaxdelim">cin.ignore(Max,delim)</h3>
+<p>這是一個清空buffer的函式，如果在string Test;前呼叫此函數<br>
+則會讓buffer清空，那答案就會變成1) 沒有結果，等待使用者輸入</p>
+<p>Max參數，填入最多無視多少字元的buffer殘留內容，為一整數 <br>
+delim參數,填入無視到哪一個字符停止，通常為換行</p>
+<p>cin.ignore(256,'\n&rsquo;)常常與cin.clear()一起用在發生錯誤輸入的時候</p>
+<ul>
+<li>注意: 在unix資料重導時可能ignore會失效，要用另外的方法把cin關掉</li>
+</ul>
+<h1 id="3">3. Error Flag 與 cin.clear()</h1>
+<div style="text-align:center;">
+<b style="color:red; " >problem 4 </b> 
+</div> 
+<pre><code>int a = 1024;
+int b = 2048;
+char c = '-';
+//scanf version  ===========
+scanf(&quot;%d&quot;,&amp;a);
+scanf(&quot;%d&quot;,&amp;b);
+scanf(&quot;%c&quot;,&amp;c);
+// =========================
+
+//cin version  ===========
+cin &gt;&gt; a &gt;&gt; b &gt;&gt; c
+// =========================
+
+//輸入
+314 e 271 
+</code></pre><p>問 scanf 版本 與 cin版本 各變數內容為何(以(a,b,c)表示)?</p>
+<ol>
+<li>scanf:(314,271,e)<br>
+cin:(314,271,e)</li>
+<li>scanf:(314,2048,-)<br>
+cin:(314,2048,-)</li>
+<li>scanf:(314,2048,e)<br>
+cin:(314,2048,e)</li>
+<li>scanf:(314,2048,e)<br>
+cin:(314,0,-)</li>
+</ol>
+<p>答案為4</p>
+<p>首先解釋scanf版本<br>
+a能讀到東西沒有問題<br>
+b因為當下buffer內的東西為e 271<br>
+所以會讀到e,但是e不是整數!,所以b判斷為沒有讀到東西<br>
+因此留到c讀到e,然後結束</p>
+<p>再來解釋cin版本<br>
+a一樣沒有問題<br>
+到b時buffer內容也為e 271<br>
+但此時b讀到e發現不是整數，<b style="color:crimson">觸發cin的error flag ，並且將b的變數值設為0  </b> 
+(因此整數無端在cin收到0,就是個錯誤訊號)</p>
+<p>觸發過error flag的cin後續<b style="color:crimson">將不會再傳送值給變數 </b>，因此即使buffer內還有e，變數c也讀不到了</p>
+<p>會有這個差異，主要也是因為scanf是函式，而std::cin是物件，可以記錄更多狀態</p>
+<p>此外，<code>&gt;&gt;</code> 運算符會將cin運行成功與否作為True/False回傳<br>
+這也是為甚麼可以使用if(cin&raquo;x) 或 while(cin&raquo;x)等技巧</p>
+<h3 id="cinclear">cin.clear()</h3>
+<p>這個函式是用來讓error flag解除，使cin可以繼續工作<br>
+因此也常在error handle與 cin.ignore(max,delim)合作</p>
+<p>如果在b讀取錯誤後加入此行，即可讓c正確的被讀入</p>
+<h1 id="小結">小結</h1>
+<ol>
+<li>cin是一個輸入物件，以空格,換行,tab作為讀取單位</li>
+<li>cin存在buffer,必要時應使用ignore(max,delim)函式清空</li>
+<li>cin會有error flag機制，比如將字串餵給整數變數等錯誤格式發生時會啟動，整個函數會回傳false,並將0餵給整數變數，然後後續操作都會不成功，直到cin.clear()清除這個狀態</li>
+</ol>
+
+    </div>
+</article>
+
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/c_lang">* C/C&#43;&#43;語言筆記</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">* Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">* 課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">* 雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">* 作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">* 機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">* 離散數學</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">* hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+
+    
+    
+    
+    
+    
+    
+</aside>
+        </div>
+        <div class="btn">
+
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            <span>&copy; 2021 <a href="https://littlecube2019.github.io/"></a> |
+                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
+                   target="_blank">Hugo</a> </span>
+        </div>
+    </div>
+</footer>
+    
+<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<script defer src="/assets/js/fuji.min.js"></script>
+
+
+</body>
+
+</html>

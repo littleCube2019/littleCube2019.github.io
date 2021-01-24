@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C_langs on Little Cube`s box</title>
+    <link>https://littlecube2019.github.io/c_lang/</link>
+    <description>Recent content in C_langs on Little Cube`s box</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <lastBuildDate>Fri, 21 Aug 2020 13:45:35 +0800</lastBuildDate>
+    
+	<atom:link href="https://littlecube2019.github.io/c_lang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>cin 使用筆記</title>
+      <link>https://littlecube2019.github.io/c_lang/cin/</link>
+      <pubDate>Fri, 21 Aug 2020 13:45:35 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/c_lang/cin/</guid>
+      <description>關於cin 讀寫格式與buffer,Error flag的概念</description>
+    </item>
+    
+  </channel>
+</rss>
