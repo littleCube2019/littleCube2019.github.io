@@ -3,7 +3,7 @@
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
-    <title>C_langs - Little Cube`s box</title>
+    <title>機率複習(一) : 離散機率(下) - Little Cube`s box</title>
 
     <style type="text/css">
         img.wp-smiley,
@@ -24,15 +24,16 @@
     <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
     <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
     
-    <meta property="og:title" content="C_langs" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://littlecube2019.github.io/c_lang/" />
-<meta property="og:updated_time" content="2020-08-21T13:45:35+08:00" />
+    <meta property="og:title" content="機率複習(一) : 離散機率(下)" />
+<meta property="og:description" content="離散機率複習篇" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/discretemath/probability_2/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="C_langs"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="機率複習(一) : 離散機率(下)"/>
+<meta name="twitter:description" content="離散機率複習篇"/>
 
 </head>
 
@@ -81,50 +82,72 @@
     </div>
 </div>
         <div id="content" class="content">
-<main aria-role="main">
-  <header class="homepage-header">
-    <h1>C_langs</h1>
-    
-  </header>
-  <div class="homepage-content">
-    
-    
-  </div>
-  <div>
-    
-    
-        <article class="list__item post clearfix">
-	<div class="list__content clearfix">
-		<header class="post-header">
-				<h2><a href="/c_lang/cin/" rel="bookmark">cin 使用筆記</a></h2>
-				<div class="post-details">
-				<a rel="bookmark">
-					<time datetime="2020-08-21T13:45:35">2020-08-21</time>
-				</a>
-				</div>
-		</header>
 
-		<div class="post-excerpt"><p>
-			關於cin 讀寫格式與buffer,Error flag的概念
-		</p></div>
-	</div>
-	
-	<footer class="post-footer">
-		
-		
-		
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>機率複習(一) : 離散機率(下)</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2020-08-23T823:751:156">2020-08-23</time>
+                </a>
+				
+            </div>
+        </header>
 
-		
-		
-		
-	</footer>
+        <div class="post-content">
+            <h1 id="重點1-random-variable">重點1: Random Variable</h1>
+<p>將事件本身當作變數，將事件映射的數值,方便我們計算時使用</p>
+<p>比如X=第一顆骰子擲出的點數 , Y=第二顆骰子擲出的點數<br>
+P(X+Y=6)就可以表達兩次骰子點數和為6的機率</p>
+<h3 id="example-1">Example 1</h3>
+<p>有兩個保險人,今天A出事的機率為0.05,B出事的機率為0.1,兩者出事為獨立事件  請討論支付理賠金的機率分布</p>
+<p>令X為支付保險人數<br>
+P(X=0) = P(A沒出事 $\cap$ B沒出事) = 0.95 * 0.9 = 0.855<br>
+P(X=1) = P(A沒出事 $\cap$ B出事) + P(A出事 $\cap$ B沒出事) =
+0.95 * 0.1 + 0.05 * 0.9 = 0.14<br>
+P(X=2) = P(A出事 $\cap$ B出事) = 0.05 * 0.1 = 0.005</p>
+<p>o.w (P(0&gt;X),P(X&gt;3)) = 0</p>
+<h1 id="重點2-機率質量函數-pmf">重點2: 機率質量函數 (p.m.f)</h1>
+<p>如果一個隨機變數發生的可能值皆為countable number，則該隨機變數稱為離散隨機變數</p>
+<p>對於離散隨機變數，可以定義probability mass function</p>
+<h3 id="def-probability-mass-function">Def: probability mass function</h3>
+<p>P(a) = P{ X=a }<br>
+並且有以下性質<br>
+(1) X的可能值編號為 $ x_1 , x_2 &hellip; x_n $<br>
+P(X=$x_i$) &gt; 0 if i $\in$ [1,n]<br>
+P(X)=0    else</p>
+<p>$(2) \sum_{i=0}^{\infty}P(X=x_i)=1 $<br>
+總機率和為1</p>
+<h3 id="example-2">Example 2</h3>
+<p>給定X的pmf為$$P(i) = \frac{c\lambda^i}{i!}$$
+i=0,1,2,3&hellip; , $\lambda$為一正數<br>
+求(1) P{X=0}  (2) P{X&gt;2}<br>
+Sol:<br>
+(1) P{X=0} = $\frac{c\lambda^0}{0!}$ = c</p>
+<p>$\sum_{i=0}^{\infty}P(X=x_i)= ce^{\lambda}=1$<br>
+又依據泰勒展開式，$e^x=  \sum_{i=0}^{\infty}x^i/i!$<br>
+故 c = $e^{-\lambda}$</p>
+<p>故答案為$e^{-\lambda}$</p>
+<p>(2) P{X&gt;2} = 1-P{x=0}-P{x=1}-P{X=2} =<br>
+1-$e^{-\lambda}$-$e^{-\lambda}$*$\lambda$-$\frac{e^{-\lambda}*\lambda^2}{2}$</p>
+<h1 id="reference">Reference</h1>
+<p>A First Course in Probability 9ed</p>
 
-</article>
-    
-  </div>
+        </div>
 
 
 
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
 <table cellspacing="15" style="width:100%; border: none;">
     <tr>
         <td style="text-align: center; border: none; padding: 0px;">
@@ -133,6 +156,11 @@
         </td>
     </tr>
 </table>
+
+        
+    </article>
+
+    
 
 </main>
 

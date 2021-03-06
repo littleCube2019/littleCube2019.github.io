@@ -1,93 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <title>Linux Device Driver系列 1 - Little Cube`s box</title>
 
-<head>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
     
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="HandheldFriendly" content="True" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.74.3" />
-
-
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
-
-
-<title>Linux Device Driver系列 1 - Little Cube`s box</title>
-
-
-
-
-<meta property="og:title" content="Linux Device Driver系列 1" />
+    <meta property="og:title" content="Linux Device Driver系列 1" />
 <meta property="og:description" content="關於linux device driver 簡介" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/misc/linux_driver_1/" />
 <meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
 <meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
 
-<meta name="twitter:card" content="summary"/>
+    <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux Device Driver系列 1"/>
 <meta name="twitter:description" content="關於linux device driver 簡介"/>
 
-
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        body[data-theme='auto'] img {
-            filter: brightness(60%);
-        }
-    }
-
-    body[data-theme='dark'] img {
-        filter: brightness(60%);
-    }
-</style>
-
-
-<link rel="stylesheet" href="/assets/css/fuji.min.css" />
-
-
-
-
-
-
 </head>
 
-<body data-theme="auto">
-    <script data-cfasync="false">
-  
-  var fujiThemeData = localStorage.getItem('fuji_data-theme');
-  
-  if (!fujiThemeData) {
-    localStorage.setItem('fuji_data-theme', 'auto');
-  } else {
+    <body class="two-column">
+        <a href="#content">Skip to content</a>
+<div class="wrapper">
+    <header role="banner" class="banner widgets columns-1">
+        <a href="/" rel="home">
+            <h1 class="site">Little Cube`s box</h1>
+            
+            <p>筆記暫存處</p>
+        </a>
     
-    if (fujiThemeData !== 'auto') {
-      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
-    }
-  }
-</script>
 
-    <header>
-    <div class="container-lg clearfix">
-        <div class="col-12 header">
-            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
-            
-            <span class="title-sub">筆記儲物櫃</span>
-            
-        </div>
-        
-    </div>
-    <div align="center" style="height:50%;
-    margin:5px;
-	width: 100%;
-	height:100%"
-	>
-    	目前文章數:
-		49 </div>
-    <script>
+        <script>
   MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -109,26 +70,33 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</header>
+    </header>
 
-    <main>
-        <div class="container-lg clearfix">
-            
-            <div class="col-12 col-md-9 float-left content">
-                
-<article>
-    
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_1/">Linux Device Driver系列 1</a>
-    </h2>
-    <div class="post-item post-meta">
+    <br>
+    <div style="width: 100%; max-height: 100px; text-align: center;">
+       
+</div>
+
+    <div class="breadcrumbs">
         
-
     </div>
-    
-    
-    <div class="post-content markdown-body">
-        <h1 id="引言">引言</h1>
+</div>
+        <div id="content" class="content">
+
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>Linux Device Driver系列 1</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2020-08-20T820:122:136">2020-08-20</time>
+                </a>
+				
+            </div>
+        </header>
+
+        <div class="post-content">
+            <h1 id="引言">引言</h1>
 <p>自由的作業系統中，例如linux，公開他們的內部是此類作業系統的優點之一，這讓原本只有一部分程式設計師了解的OS，能被公開的檢驗、了解、修改</p>
 <p>其中，Device Driver是複雜OS系統中很好的入門磚</p>
 <p>Device Driver可以是一個個不同的&quot;黑盒子&rdquo;，作為硬體、軟體之間的介面，並且抽象化地隱藏複雜的硬體實作，讓使用者可以統一呼叫、利用硬體資源</p>
@@ -193,8 +161,7 @@ Unix也提供不同的檔案系統類型，比如Linux-standard ext3 、 FAT</p>
 這些<strong>可被加入的程式碼片段被稱為module</strong>，而device driver也是其中之一</p>
 <p>這些module可以分別使用insmod與rmmod程式來加進、移出kernel</p>
 <p>下圖是個不同功能module的例子<br>
-<img class="img-zoomable" src="/misc/DD_1-1.PNG" alt="" />
-</p>
+<img src="/misc/DD_1-1.PNG" alt=""></p>
 <h1 id="classes-of-devices-and-modules">Classes of Devices and Modules</h1>
 <p>linux的module基本上可以分為三類</p>
 <ul>
@@ -207,7 +174,7 @@ Unix也提供不同的檔案系統類型，比如Linux-standard ext3 、 FAT</p>
 <p>可以取用stream of bytes (比如檔案)<br>
 應用於至少有open,close,read,write的system call<br>
 應用例子有 text console (/dev/console)  以及 serial port</p>
-<p>大多數character device只是資料流，所以無法往回 (printf buffer為例)  (以序列為主，主要用於滑鼠、鍵盤、終端機&hellip; <a href="https://bluelove1968.pixnet.net/blog/post/222283825" target="_blank">參考這裡</a>)</p>
+<p>大多數character device只是資料流，所以無法往回 (printf buffer為例)  (以序列為主，主要用於滑鼠、鍵盤、終端機&hellip; <a href="https://bluelove1968.pixnet.net/blog/post/222283825">參考這裡</a>)</p>
 <h5 id="block-devices">Block devices</h5>
 <p>block device通常可以建立檔案系統 (比如disk)
 unix系統中block devices會以block為單位 (通常是512bytes)處理資料讀寫</p>
@@ -218,7 +185,7 @@ unix系統中block devices會以block為單位 (通常是512bytes)處理資料�
 通常這個interface是硬體，但也有軟體的例子，比如loopback interface</p>
 <blockquote>
 <p>補充 loopback interface<br>
-<a href="https://www.itread01.com/content/1546063053.html#:~:text=Linu%E6%94%AF%E6%8F%B4%E7%92%B0%E5%9B%9E%E4%BB%8B%E9%9D%A2,%E4%BB%8B%E9%9D%A2%EF%BC%8C%E4%B8%A6%E5%91%BD%E5%90%8D%E7%82%BAlocalhost%E3%80%82" target="_blank">參考這裡</a>
+<a href="https://www.itread01.com/content/1546063053.html#:~:text=Linu%E6%94%AF%E6%8F%B4%E7%92%B0%E5%9B%9E%E4%BB%8B%E9%9D%A2,%E4%BB%8B%E9%9D%A2%EF%BC%8C%E4%B8%A6%E5%91%BD%E5%90%8D%E7%82%BAlocalhost%E3%80%82">參考這裡</a>
 簡單來說就是常見的localhost，也就是IP 127.x.x.x (A類網路) 的部分都會使用此介面
 以允許執行在<strong>同一臺主機</strong>上的客戶程式和伺服器程式通TCP/IP進行通訊</p>
 </blockquote>
@@ -256,14 +223,38 @@ network : usb Ethernet interface</p>
 <p><a href="https://lwn.net/Kernel/LDD3/">https://lwn.net/Kernel/LDD3/</a>
 chapter 1 : An Introdution to Device Drivers</p>
 
-    </div>
-</article>
+        </div>
 
 
 
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
+<table cellspacing="15" style="width:100%; border: none;">
+    <tr>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+    </tr>
+</table>
 
-            </div>
-            <aside class="col-12 col-md-3 float-left sidebar">
+        
+    </article>
+
+    
+
+</main>
+
+
+        <div class="sidebar1 widgets columns-1">
     
     <div class="sidebar-item sidebar-pages">
         <h3>連結</h3>
@@ -281,67 +272,67 @@ chapter 1 : An Introdution to Device Drivers</p>
         <ul>
             
             <li>
-                <a href="/index/c_lang">* C/C&#43;&#43;語言筆記</a>
+                <a href="/index/c_lang">C/C&#43;&#43;語言筆記</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/device_driver">* Device Driver系列</a>
+                <a href="/index/device_driver">Device Driver系列</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <a href="/index/web">網頁與爬蟲相關區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/course">* 課程筆記備份區</a>
+                <a href="/index/course">課程筆記備份區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/misc">* 雜記區</a>
+                <a href="/index/misc">雜記區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <a href="/index/unix">Unix/Vim/bash區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/os">* 作業系統區</a>
+                <a href="/index/os">作業系統區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/machine_learning">* 機器學習區</a>
+                <a href="/index/machine_learning">機器學習區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <a href="/index/algorithm">演算法X資料結構區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/discretemath">* 離散數學</a>
+                <a href="/index/discretemath">離散數學</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/hugo">* hugo相關區</a>
+                <a href="/index/hugo">hugo相關區</a>
                 <br> ============= <br>
                      
             </li>
@@ -351,41 +342,19 @@ chapter 1 : An Introdution to Device Drivers</p>
         </ul>
     </div>
 
-
     
-    
-    
-    
-    
-    
-</aside>
-        </div>
-        <div class="btn">
-
-    <div class="btn-scroll-top">
-        <i class="iconfont icon-chevron-up-circle-sharp"></i>
-    </div>
 </div>
-    </main>
-
-    <footer>
-    <div class="container-lg clearfix">
-        <div class="col-12 footer">
-            <span>&copy; 2021 <a href="https://littlecube2019.github.io/"></a> |
-                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
-                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
-                   target="_blank">Hugo</a> </span>
         </div>
-    </div>
+        </div>
+<footer role="contentinfo" class="document-footer contentinfo widgets columns-1">
+
+    <aside class="widget widget_text">
+        <div class="textwidget">
+            <p>© Little Cube`s box / Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/tosi29/inkblotty" target="_blank">Inkblotty</a></p>
+        </div>
+    </aside>
 </footer>
-    
-<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</div>
 
-<script defer src="/assets/js/fuji.min.js"></script>
-
-
-</body>
-
+    </body>
 </html>

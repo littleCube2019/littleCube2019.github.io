@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <title>機率複習(一) : 離散機率(上) - Little Cube`s box</title>
+
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
+    
+    <meta property="og:title" content="機率複習(一) : 離散機率(上)" />
+<meta property="og:description" content="離散機率複習篇" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/discretemath/probability_1/" />
+<meta property="article:published_time" content="2020-08-23T19:51:15+08:00" />
+<meta property="article:modified_time" content="2020-08-23T19:51:15+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="機率複習(一) : 離散機率(上)"/>
+<meta name="twitter:description" content="離散機率複習篇"/>
+
+</head>
+
+    <body class="two-column">
+        <a href="#content">Skip to content</a>
+<div class="wrapper">
+    <header role="banner" class="banner widgets columns-1">
+        <a href="/" rel="home">
+            <h1 class="site">Little Cube`s box</h1>
+            
+            <p>筆記暫存處</p>
+        </a>
+    
+
+        <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </header>
+
+    <br>
+    <div style="width: 100%; max-height: 100px; text-align: center;">
+       
+</div>
+
+    <div class="breadcrumbs">
+        
+    </div>
+</div>
+        <div id="content" class="content">
+
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>機率複習(一) : 離散機率(上)</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2020-08-23T823:751:156">2020-08-23</time>
+                </a>
+				
+            </div>
+        </header>
+
+        <div class="post-content">
+            <p>機率是用來表達不確定的事件發生的情況<br>
+比如:投一枚公平的硬幣，出現head的機率為1/2</p>
+<p>機率可以用於預測未來，並讓你當下做出最大化利益的選擇<br>
+比如:賭博、預測天氣 &hellip;</p>
+<h1 id="重點1-機率函數的數學定義">重點1: 機率函數的數學定義</h1>
+<p>機率在數學上為一個函數<br>
+將<b style="color:crimson">事件</b>投影到<b style="color:crimson">實數域</b></p>
+<h3 id="def-事件">Def 事件</h3>
+<p>可能發生的一組結果所成的<b style="color:crimson">多重集</b><br>
+比如:硬幣投擲到Head的事件可以記為{H}</p>
+<p>投擲兩枚相同面硬幣的所有結果的事件為  {(H,H),(T,T),(H,T),(T,H)}</p>
+<p>投擲一顆3面為1，2面為2,1面為6的骰子的所有結果所成的事件為 
+{1,1,1,2,2,6}</p>
+<p>兩枚公平硬幣投出相同的結果的事件為 {(H,H),(T,T)}</p>
+<p>順帶一提，所有結果所成的集合為<b style="color:crimson">sample space</b><br>
+比如:<br>
+投擲兩枚公平硬幣的sample space為 {(H,H),(T,T),(H,T),(T,H)}<br>
+投擲一顆公平6面骰子的sample space 
+為{1,2,3,4,5,6}</p>
+<p>而<b style="color:crimson">所有event是sample space的子集合</b><br></p>
+<h3 id="def-機率函數">Def 機率函數</h3>
+<p>只要符合以下三大公理，並可以將Event投影到實數的函數都可視為機率函數</p>
+<p>三大公理:<br>
+Axiom1</p>
+<p style="text-align:center"> $0 <= P(Event) <= 1$ </p>
+意義:<br>  
+事件的機率要介於0 (不發生) 到 1 (發生)
+之間  
+<p>Axiom2</p>
+<p style="text-align:center"> $P(Sample Space) = 1$ </p>
+意義:<br>    
+所有可能性一定會發生一種  
+<p>Axiom3</p>
+<p style="text-align:center"> 如果A、B 互斥 $\Rightarrow P(A\cup B) = P(A) + P(B)$ </p> 意義:<br>    
+A、B兩個事件不會有相同的結果  
+=> 兩個事件所有結果發生的機率 等於 兩個事件的結果發生的機率個別相加  
+<p>舉例:<br>
+公平骰子<br>
+A = {1}<br>
+B = {2,3}<br>
+P(A) 為 1/6 ，P(B) = 1/3<br>
+$A\cup B$  = {1,2,3}<br>
+則 $P(A\cup B )$ = 1/2 = 1/6 + 1/3</p>
+<h3 id="example-1">Example 1</h3>
+<p>證明 P({}) = 0 在任何sample space 之下</p>
+<p>PF:<br>
+由公理2得知P(Sample Space) = 1</p>
+<p>由公理1知道$ 0 &lt;= P(\phi\cup Sample Space ) &lt;= 1 $</p>
+<p>由公理3知道$P(\phi\cup Sample Space ) = P(\phi) + P(Sample Space) = P(\phi) + 1$</p>
+<p>所以 $  0 &lt;= P(\phi) + 1 &lt;= 1$
+所以 $ P(\phi) = 0$</p>
+<h1 id="重點2-離散機率">重點2: 離散機率</h1>
+<p>當發生結果是有限時，就可以使用離散機率，相對需要積分連續機率較為簡單</p>
+<p>$ P(Event) = \frac{Event的基數}{Sample space的基數} = \frac{該事件的結果數}{所有的結果數}$<br>
+Note:因為是多重集，比如袋子裡有三顆綠色球，則抽中綠色球的結果數要算3</p>
+<h3 id="example-2">Example 2</h3>
+<p>一副正常的52張撲克牌要分給4位玩家 <br>
+則問:  <br>
+(a) 一位抽到13張黑桃的機率<br>
+Sol:<br>
+E = {某人抽到13張黑桃}
+$ P(E) = \frac{n(E)}{n(S)} = \frac{\binom{4}{1}*\binom{13}{13}*\binom{39}{13,13,13}}{\binom{52}{13,13,13,13}} = \frac{1}{\binom{52}{13}}$</p>
+<p>意義:<br>
+4個人 每個人取到13張特定牌(黑桃1~K)，剩下3人隨便取的結果數/ 所有結果數  (上帝視角)<br>
+等於<br>
+4個人 自己抽到13張特定牌的機率(個人視角)</p>
+<ul>
+<li>Note: 問題a告訴我們機率可以從不同角度去計算，得到結果會是一樣的，但常常某些角度可以節省大量計算</li>
+</ul>
+<p>(b) 四位都取到Ace的機率<br>
+E = {四位都取到Ace}</p>
+<p>$ P(E) = \frac{n(E)}{n(S)} = \frac{4!*\binom{48}{12,12,12,12}}{\binom{52}{13,13,13,13}}$</p>
+<h1 id="重點3-條件機率">重點3: 條件機率</h1>
+<p>在已知一個事件發生的情況下去討論另一個事件的機率</p>
+<p>例如:<br>
+在已採集到A的指紋情況下，A是犯人的機率 與 
+甚麼都不知道的情況下，A是犯人的機率 不一樣</p>
+<ul>
+<li>Note:條件機率告訴我們，新資訊的發生通常可以縮小Sample space，讓我們預測更貼近真實的分布</li>
+</ul>
+<h3 id="def-條件機率">Def 條件機率</h3>
+<p>&ldquo;已知B發生的情況下，A發生的機率&rdquo;
+記作 P(A|B)<br>
+其中P(B)必須&gt;0</p>
+<p>並定義為:<br>
+$P(A|B) = P(A \cap B)/P(B)  $</p>
+<p>其意義為<br>
+如下圖</p>
+<div style="text-align:center; ">
+<img class="img-container" src="/discrete_math/prob_1-1.PNG" width="200px" >
+</div>
+<p>今天已知B發生了，所以Sample space已縮減成B(黃色部分)，依據離散機率算法，綠色部分/黃色部分 就是A的新發生機率</p>
+<h3 id="example-3">Example 3</h3>
+<p>小明覺得有80%的機率不見得鑰匙在外套口袋裡，並且有40%的機率在左邊口袋，有40%的機率在右邊口袋，小明在檢查過左邊口袋沒有鑰匙後，請問在右邊口袋的機率是多少?<br>
+Sol:<br>
+$ L $= {在左邊口袋}  <br>
+$ L^c$ = {不在左邊口袋}<br>
+$ P(L^c) =P(S)-P(L) = 1 - P(L) = 0.6 $<br>
+首先 在左邊口袋 跟 在右邊口袋 是互斥事件<br>
+所以{不在左邊口袋} $\cap$
+{在右邊口袋} = {在右邊口袋}</p>
+<p>故 $\frac{P(L^c  \cap R)}{P(L^c)} =\frac{P(R)}{P(L^c)}=\frac{0.4}{1-0.4} = \frac{2}{3}$</p>
+<h3 id="example-4">Example 4</h3>
+<p>證明 $P(\cap_{i=1}^{n} E_i ) = P(E_1)P(E_2|E_1)P(E_3|\cap_{i=1}^{2} E_i)&hellip;P(E_n|\cap_{i=1}^{n-1} E_i)$</p>
+<p>當k=1時<br>
+$P(E_1) = P(E_1)$</p>
+<p>假設n=k時成立，即<br>
+$P(E_1 \cap E_2 &hellip; E_k) = P(E_1)P(E_2|E_1)P(E_3|\cap_{i=1}^{2} E_i)&hellip;P(E_k|\cap_{i=1}^{k-1} E_i)$</p>
+<p>當k=n+1時<br>
+$P(E_{k+1}| E_1\cap E_2 &hellip; E_k )= \frac{P(E_1 \cap E_2 &hellip; E_k \cap E_{k+1})}{P(E_1 \cap E_2 &hellip; E_k)}  $<br>
+移項得</p>
+<p>$P(E_1 \cap E_2 &hellip; E_k \cap E_{k+1}) 
+= P(E_{k+1}| E_1\cap E_2 &hellip; E_k ) * P(E_1 \cap E_2 &hellip; E_k)$<br>
+$
+=P(E_{k+1}| E_1\cap E_2 &hellip; E_k )
+*
+P(E_1)P(E_2|E_1)P(E_3|\cap_{i=1}^{2} E_i)&hellip;P(E_k|\cap_{i=1}^{k-1} E_i) $</p>
+<p>故依數學歸納法，此式恆成立</p>
+<h1 id="重點4-貝式定理">重點4: 貝式定理</h1>
+<p>$$P(A|B) = \frac{P(A)P(B|A)}{P(B)}$$</p>
+<p>這也是機器學習常使用的公式，(但可能只是參數更新的一種估計方法而已)</p>
+<p>有時可以簡化計算複雜度</p>
+<h3 id="example-5">Example 5</h3>
+<p>有三張紙，其中一張兩面皆紅，一張兩面皆黑、一張一面紅一面黑<br>
+則現在桌上有一張朝上的紅紙，問該紙背面是黑的機率</p>
+<p>題目欲求 P( 一紅一黑 | 紅朝上)</p>
+<p>法I 依條件機率定義:<br>
+$\frac{P(一紅一黑 \cap 紅朝上)}{P(紅朝上)} =\frac{\frac{1}{2*3}}{\frac{3}{6}} = \frac{1}{3} $</p>
+<p>法II 依貝氏定理算:<br>
+$\frac{P(紅朝上|一紅一黑)*P(一紅一黑)}{P(紅朝上)}
+= \frac{1/2 * 1/3}{1/2} = 1/3 $</p>
+<p>可以發現貝式定理中的 一紅一黑發生下，紅朝上的機率為1/2 、 P(一黑一紅)為1/3 都是比較直觀的<br>
+相比之下，法I的P(一紅一黑 $\cap$ 紅朝上) 就需要比較繁瑣的計算!</p>
+<h1 id="重點5-獨立">重點5: 獨立</h1>
+<p>&ldquo;獨立&quot;表達兩個事件之間完全不會互相影響，舉例而言: 同時擲出兩個骰子，兩個骰出點數的機率是獨立的</p>
+<p>以下是數學定義</p>
+<h3 id="def-獨立">Def 獨立</h3>
+<p>$$A事件 與 B事件獨立  \rightarrow  P(A \cap B)=P(A)*P(B) $$</p>
+<p>說明:<br>
+由 條件機率 知 $$P(A|B) = \frac{P(A \cap B)}{P(B)}$$
+又因為A、B獨立所以先後發生不影響各自發生的機率,所以$$P(A|B) = P(A)$$<br>
+兩個條件可以得到 $$P(A|B) = P(A) = \frac{P(A \cap B)}{P(B)} =&gt; P(A \cap B)=P(A)P(B) $$</p>
+<h3 id="小應用">小應用</h3>
+<p>小明丟硬幣連續丟出5次Tail,判斷他有沒有作弊?<br>
+依照獨立性,每次擲出Tail的機率皆為0.5<br>
+擲出五次Tail的機率為$0.5^5 = 0.03125$   <br>
+以常態分佈而言，在3個標準差,所以可以接受</p>
+<h1 id="reference">Reference</h1>
+<p>A First Course in Probability 9ed</p>
+
+        </div>
+
+
+
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
+<table cellspacing="15" style="width:100%; border: none;">
+    <tr>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+    </tr>
+</table>
+
+        
+    </article>
+
+    
+
+</main>
+
+
+        <div class="sidebar1 widgets columns-1">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/c_lang">C/C&#43;&#43;語言筆記</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">離散數學</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+    
+</div>
+        </div>
+        </div>
+<footer role="contentinfo" class="document-footer contentinfo widgets columns-1">
+
+    <aside class="widget widget_text">
+        <div class="textwidget">
+            <p>© Little Cube`s box / Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/tosi29/inkblotty" target="_blank">Inkblotty</a></p>
+        </div>
+    </aside>
+</footer>
+</div>
+
+    </body>
+</html>

@@ -1,93 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <title>jQuery 基礎 - Little Cube`s box</title>
 
-<head>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
     
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="HandheldFriendly" content="True" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.74.3" />
-
-
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
-
-
-<title>jQuery 基礎 - Little Cube`s box</title>
-
-
-
-
-<meta property="og:title" content="jQuery 基礎" />
+    <meta property="og:title" content="jQuery 基礎" />
 <meta property="og:description" content="關於JQuery基本介紹與使用方式" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/web/jquery/" />
 <meta property="article:published_time" content="2020-08-21T13:45:35+08:00" />
 <meta property="article:modified_time" content="2020-08-21T13:45:35+08:00" />
 
-<meta name="twitter:card" content="summary"/>
+    <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="jQuery 基礎"/>
 <meta name="twitter:description" content="關於JQuery基本介紹與使用方式"/>
 
-
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        body[data-theme='auto'] img {
-            filter: brightness(60%);
-        }
-    }
-
-    body[data-theme='dark'] img {
-        filter: brightness(60%);
-    }
-</style>
-
-
-<link rel="stylesheet" href="/assets/css/fuji.min.css" />
-
-
-
-
-
-
 </head>
 
-<body data-theme="auto">
-    <script data-cfasync="false">
-  
-  var fujiThemeData = localStorage.getItem('fuji_data-theme');
-  
-  if (!fujiThemeData) {
-    localStorage.setItem('fuji_data-theme', 'auto');
-  } else {
+    <body class="two-column">
+        <a href="#content">Skip to content</a>
+<div class="wrapper">
+    <header role="banner" class="banner widgets columns-1">
+        <a href="/" rel="home">
+            <h1 class="site">Little Cube`s box</h1>
+            
+            <p>筆記暫存處</p>
+        </a>
     
-    if (fujiThemeData !== 'auto') {
-      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
-    }
-  }
-</script>
 
-    <header>
-    <div class="container-lg clearfix">
-        <div class="col-12 header">
-            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
-            
-            <span class="title-sub">筆記儲物櫃</span>
-            
-        </div>
-        
-    </div>
-    <div align="center" style="height:50%;
-    margin:5px;
-	width: 100%;
-	height:100%"
-	>
-    	目前文章數:
-		49 </div>
-    <script>
+        <script>
   MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -109,26 +70,33 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</header>
+    </header>
 
-    <main>
-        <div class="container-lg clearfix">
-            
-            <div class="col-12 col-md-9 float-left content">
-                
-<article>
-    
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/jquery/">jQuery 基礎</a>
-    </h2>
-    <div class="post-item post-meta">
+    <br>
+    <div style="width: 100%; max-height: 100px; text-align: center;">
+       
+</div>
+
+    <div class="breadcrumbs">
         
-
     </div>
-    
-    
-    <div class="post-content markdown-body">
-        <head>
+</div>
+        <div id="content" class="content">
+
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>jQuery 基礎</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2020-08-21T821:145:356">2020-08-21</time>
+                </a>
+				
+            </div>
+        </header>
+
+        <div class="post-content">
+            <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <div style="background-color:#DCDCDC; width:25%; border-style: solid;">
@@ -238,8 +206,7 @@ tag , class ,id ,屬性<br>
   &lt;/ul&gt;
 &lt;/div&gt;   
 </code></pre><p>單以這段code來說，可以轉換成以下的樹狀結構<br>
-<img class="img-zoomable" src="/web/jquery_1.PNG" alt="" />
-</p>
+<img src="web/jquery_1.PNG" alt=""></p>
 <p>可以了解到parent , child 及其child順序在code上是十分直觀的</p>
 <p>而nth-child() 則是先選擇該元素，然後再看該元素是否是第n個子代</p>
 <p>比如<br>
@@ -259,7 +226,7 @@ tag , class ,id ,屬性<br>
 <p>只是行為的參數通常是<b style="color: #A52A2A">回應事件的函數</b><br>
 也就是 $(選擇器).監聽事件(function(){回應函數})<br>
 上一節的click()就是一個例子</p>
-<p>以下舉例幾個特別的event function，更多event function可以<a href="https://www.w3schools.com/jquery/jquery_ref_events.asp" target="_blank">參考這裡</a></p>
+<p>以下舉例幾個特別的event function，更多event function可以<a href="https://www.w3schools.com/jquery/jquery_ref_events.asp">參考這裡</a></p>
 <h3 id="hover">hover()</h3>
 <p>在滑鼠於元素上與元素外的事件，可以說是mouseenter(), mouseleave()
 的結合<br>
@@ -310,9 +277,9 @@ Event Object</p>
 <p><em>注意目前可能只能綁定input這個tag</em></p>
 <h1 id="event_obj">Event Object</h1>
 <p>Event Object是一個可作為event handler反應函數<b style="color:#A52A2A">輸入參數</b>的物件，會記錄該發生事件的詳細資料，也會提供method供使用者與事件互動(如 preventDefault()可以取消該事件預設反應)<br>
-<a href="https://www.w3schools.com/jsref/obj_event.asp" target="_blank">參考這裡</a></p>
+<a href="https://www.w3schools.com/jsref/obj_event.asp">參考這裡</a></p>
 <p>而keyboard、mouse ..等各類型的事件基本上就是繼承Event Object而成的各類型event object，會額外紀錄各種特殊資訊</p>
-<p>比如<a href="https://www.w3schools.com/jsref/obj_mouseevent.asp" target="_blank">MouseEvent</a>內會有當前滑鼠的位置座標(ClientX,ClientY)、<a href="https://www.w3schools.com/jsref/obj_keyboardevent.asp" target="_blank">KeyBoardEvent</a>內會有哪一個按鍵被壓下(key)  &hellip; 等等</p>
+<p>比如<a href="https://www.w3schools.com/jsref/obj_mouseevent.asp">MouseEvent</a>內會有當前滑鼠的位置座標(ClientX,ClientY)、<a href="https://www.w3schools.com/jsref/obj_keyboardevent.asp">KeyBoardEvent</a>內會有哪一個按鍵被壓下(key)  &hellip; 等等</p>
 <h4 style="color:black"> 使用方法</h4>  <br>
 作為回應函數的參數使用  
 \\$(選擇器).監聽事件(function(event){回應函數})
@@ -355,7 +322,7 @@ placeholder="input here" ></input>
 <p>而jQuery也提供css修改函式</p>
 <p>\$(&ldquo;selector&rdquo;).css(&ldquo;property&rdquo;,
 &ldquo;value&rdquo;)</p>
-<p>而CSS的property可以<a href="https://www.w3schools.com/cssref/" target="_blank">參考這裡</a></p>
+<p>而CSS的property可以<a href="https://www.w3schools.com/cssref/">參考這裡</a></p>
 <h3 style="color:black">以下是一個例子</h3>
 ==========   
 <script type="text/javascript">
@@ -435,13 +402,13 @@ after則是單純在mango之後加上一個element</p>
 <pre><code>$(選擇器).事件(function(event){
   //do something  
 })
-</code></pre><p><a href="https://www.w3schools.com/jquery/jquery_ref_events.asp" target="_blank">事件清單</a><br>
-<a href="https://www.w3schools.com/jsref/obj_event.asp" target="_blank">事件物件</a></p>
+</code></pre><p><a href="https://www.w3schools.com/jquery/jquery_ref_events.asp">事件清單</a><br>
+<a href="https://www.w3schools.com/jsref/obj_event.asp">事件物件</a></p>
 <ul>
 <li>CSS 選擇器</li>
 </ul>
 <pre><code>$(選擇器).css(&quot;property:value&quot;)
-</code></pre><p><a href="https://www.w3schools.com/cssref" target="_blank">CSS列表</a></p>
+</code></pre><p><a href="https://www.w3schools.com/cssref">CSS列表</a></p>
 <ul>
 <li>取值/設值 (以text為例)</li>
 </ul>
@@ -457,14 +424,38 @@ $(選擇器).remove() //remove
 <h1 id="參考資料">參考資料</h1>
 <p>https://www./3schools.com/jquery/default.asp</p>
 
-    </div>
-</article>
+        </div>
 
 
 
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
+<table cellspacing="15" style="width:100%; border: none;">
+    <tr>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+    </tr>
+</table>
 
-            </div>
-            <aside class="col-12 col-md-3 float-left sidebar">
+        
+    </article>
+
+    
+
+</main>
+
+
+        <div class="sidebar1 widgets columns-1">
     
     <div class="sidebar-item sidebar-pages">
         <h3>連結</h3>
@@ -482,67 +473,67 @@ $(選擇器).remove() //remove
         <ul>
             
             <li>
-                <a href="/index/c_lang">* C/C&#43;&#43;語言筆記</a>
+                <a href="/index/c_lang">C/C&#43;&#43;語言筆記</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/device_driver">* Device Driver系列</a>
+                <a href="/index/device_driver">Device Driver系列</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <a href="/index/web">網頁與爬蟲相關區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/course">* 課程筆記備份區</a>
+                <a href="/index/course">課程筆記備份區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/misc">* 雜記區</a>
+                <a href="/index/misc">雜記區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <a href="/index/unix">Unix/Vim/bash區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/os">* 作業系統區</a>
+                <a href="/index/os">作業系統區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/machine_learning">* 機器學習區</a>
+                <a href="/index/machine_learning">機器學習區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <a href="/index/algorithm">演算法X資料結構區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/discretemath">* 離散數學</a>
+                <a href="/index/discretemath">離散數學</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/hugo">* hugo相關區</a>
+                <a href="/index/hugo">hugo相關區</a>
                 <br> ============= <br>
                      
             </li>
@@ -552,41 +543,19 @@ $(選擇器).remove() //remove
         </ul>
     </div>
 
-
     
-    
-    
-    
-    
-    
-</aside>
-        </div>
-        <div class="btn">
-
-    <div class="btn-scroll-top">
-        <i class="iconfont icon-chevron-up-circle-sharp"></i>
-    </div>
 </div>
-    </main>
-
-    <footer>
-    <div class="container-lg clearfix">
-        <div class="col-12 footer">
-            <span>&copy; 2021 <a href="https://littlecube2019.github.io/"></a> |
-                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
-                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
-                   target="_blank">Hugo</a> </span>
         </div>
-    </div>
+        </div>
+<footer role="contentinfo" class="document-footer contentinfo widgets columns-1">
+
+    <aside class="widget widget_text">
+        <div class="textwidget">
+            <p>© Little Cube`s box / Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/tosi29/inkblotty" target="_blank">Inkblotty</a></p>
+        </div>
+    </aside>
 </footer>
-    
-<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</div>
 
-<script defer src="/assets/js/fuji.min.js"></script>
-
-
-</body>
-
+    </body>
 </html>

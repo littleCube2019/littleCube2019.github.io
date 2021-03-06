@@ -1,93 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <title>Javascript簡介 - Little Cube`s box</title>
 
-<head>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
     
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="HandheldFriendly" content="True" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.74.3" />
-
-
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
-
-
-<title>Javascript簡介 - Little Cube`s box</title>
-
-
-
-
-<meta property="og:title" content="Javascript簡介" />
+    <meta property="og:title" content="Javascript簡介" />
 <meta property="og:description" content="javascript簡介，負責網頁動態互動" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/web/js/" />
 <meta property="article:published_time" content="2020-08-21T20:03:49+08:00" />
 <meta property="article:modified_time" content="2020-08-21T20:03:49+08:00" />
 
-<meta name="twitter:card" content="summary"/>
+    <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Javascript簡介"/>
 <meta name="twitter:description" content="javascript簡介，負責網頁動態互動"/>
 
-
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        body[data-theme='auto'] img {
-            filter: brightness(60%);
-        }
-    }
-
-    body[data-theme='dark'] img {
-        filter: brightness(60%);
-    }
-</style>
-
-
-<link rel="stylesheet" href="/assets/css/fuji.min.css" />
-
-
-
-
-
-
 </head>
 
-<body data-theme="auto">
-    <script data-cfasync="false">
-  
-  var fujiThemeData = localStorage.getItem('fuji_data-theme');
-  
-  if (!fujiThemeData) {
-    localStorage.setItem('fuji_data-theme', 'auto');
-  } else {
+    <body class="two-column">
+        <a href="#content">Skip to content</a>
+<div class="wrapper">
+    <header role="banner" class="banner widgets columns-1">
+        <a href="/" rel="home">
+            <h1 class="site">Little Cube`s box</h1>
+            
+            <p>筆記暫存處</p>
+        </a>
     
-    if (fujiThemeData !== 'auto') {
-      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
-    }
-  }
-</script>
 
-    <header>
-    <div class="container-lg clearfix">
-        <div class="col-12 header">
-            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
-            
-            <span class="title-sub">筆記儲物櫃</span>
-            
-        </div>
-        
-    </div>
-    <div align="center" style="height:50%;
-    margin:5px;
-	width: 100%;
-	height:100%"
-	>
-    	目前文章數:
-		49 </div>
-    <script>
+        <script>
   MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -109,26 +70,33 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</header>
+    </header>
 
-    <main>
-        <div class="container-lg clearfix">
-            
-            <div class="col-12 col-md-9 float-left content">
-                
-<article>
-    
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/web/js/">Javascript簡介</a>
-    </h2>
-    <div class="post-item post-meta">
+    <br>
+    <div style="width: 100%; max-height: 100px; text-align: center;">
+       
+</div>
+
+    <div class="breadcrumbs">
         
-
     </div>
-    
-    
-    <div class="post-content markdown-body">
-        <h3 id="簡介">簡介</h3>
+</div>
+        <div id="content" class="content">
+
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>Javascript簡介</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2020-08-21T821:83:496">2020-08-21</time>
+                </a>
+				
+            </div>
+        </header>
+
+        <div class="post-content">
+            <h3 id="簡介">簡介</h3>
 <p>Js 1995年被創造用於寫網頁、隔年被改良為 scripting language<br>
 ECMA-262  規範了JS的語法規則<br>
 ES6是整個規範最大的改動 ，例如加入OOP的概念 <br>
@@ -206,20 +174,16 @@ complex  data</li>
 <p>7.method:<br>
 類似性質，data type可使用的函式<br>
 console.log()的log()就是如此<br>
-<img class="img-zoomable" src="/web/JS_1.PNG" alt="" />
-</p>
+<img src="/web/JS_1.PNG" alt=""></p>
 <p>8.內建object<br>
 善用此網站查詢所要涵式<br>
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects</a><br>
 比如使用Math物件中的random()<br>
-<img class="img-zoomable" src="/web/JS_2.PNG" alt="" />
-<br>
+<img src="/web/JS_2.PNG" alt=""><br>
 應用:隨機取0-50<br>
-<img class="img-zoomable" src="/web/JS_3.PNG" alt="" />
-<br>
+<img src="/web/JS_3.PNG" alt=""><br>
 注意: 使用方式<br>
-<img class="img-zoomable" src="/web/JS_4.PNG" alt="" />
-</p>
+<img src="/web/JS_4.PNG" alt=""></p>
 <blockquote>
 <p>coding skill in JS<br>
 (1)建議加 ;<br>
@@ -238,8 +202,7 @@ console.log()的log()就是如此<br>
 recall:JS 是<strong>直譯、動態(runtime才檢查)、弱型別(隱轉)語言</strong><br>
 var、let、const來創造變數<br>
 1.var例子:(ES6以前的版本)<br>
-<img class="img-zoomable" src="/web/JS_5.PNG" alt="" />
-<br>
+<img src="/web/JS_5.PNG" alt=""><br>
 //變數採 camel casing 命名法(thisIsAnApple)<br>
 2.let 例子:<br>
 用法跟var一樣</p>
@@ -255,8 +218,7 @@ var、let、const來創造變數<br>
 template literals: 用``(反斜線刮住的字串)<br>
 可以使用${變數}來代值 (類似於bash 或 python的.format)<br>
 eg:<br>
-<img class="img-zoomable" src="/web/JS_6.PNG" alt="" />
-</p>
+<img src="/web/JS_6.PNG" alt=""></p>
 <p>優點:易讀<br>
 4. typeof variable  :回傳variable 型態<br>
 eg:</p>
@@ -264,31 +226,25 @@ eg:</p>
 typeof my      //retrun number
 </code></pre><p>C.條件判斷<br>
 (a)跟C++類似 (if-else if -else)<br>
-<img class="img-zoomable" src="/web/JS_7.PNG" alt="" />
-<br>
+<img src="/web/JS_7.PNG" alt=""><br>
 (b)比較運算子<br>
-<img class="img-zoomable" src="/web/JS_8.PNG" alt="" />
-</p>
+<img src="/web/JS_8.PNG" alt=""></p>
 <ul>
 <li>note: 字串採用字典比較</li>
 <li>note: null、undefined(NaN)在大小於比較一定會return false，故應特例處理</li>
 </ul>
 <p>(c)邏輯運算子<br>
-<img class="img-zoomable" src="/web/JS_9.PNG" alt="" />
-<br>
+<img src="/web/JS_9.PNG" alt=""><br>
 (d)資料型態真假值<br>
 以下恆假<br>
-<img class="img-zoomable" src="/web/JS_10.PNG" alt="" />
-<br>
+<img src="/web/JS_10.PNG" alt=""><br>
 除此之外都為真</p>
 <p>*補充:優雅程式寫法:  (類似於bash)<br>
-<img class="img-zoomable" src="/web/JS_11.PNG" alt="" />
-</p>
+<img src="/web/JS_11.PNG" alt=""></p>
 <p>D.函式<br>
 函式本質是一段可重複利用的程式碼<br>
 (a)宣告<br>
-<img class="img-zoomable" src="/web/JS_12.PNG" alt="" />
-</p>
+<img src="/web/JS_12.PNG" alt=""></p>
 <ul>
 <li>
 <p>注意function 關鍵字</p>
@@ -298,21 +254,18 @@ typeof my      //retrun number
 </li>
 <li>
 <p>Hoisting (提升) JS可以允許先使用再定義函式!
-<img class="img-zoomable" src="/web/JS_13.PNG" alt="" />
-</p>
+<img src="/web/JS_13.PNG" alt=""></p>
 </li>
 </ul>
 <p>使用上幾乎與C++概念相同，唯一需要注意的是在JS，<strong>function也可以作為參數</strong></p>
 <p>(b) anonymous function 與 arrow function<br>
 本質上是一種<strong>語法糖</strong>，可以簡化寫法<br>
 anonymous funciton<br>
-<img class="img-zoomable" src="/web/JS_16.PNG" alt="" />
-<br>
+<img src="/web/JS_16.PNG" alt=""><br>
 以上例子中可以看到兩個無名的funciton被作為函式傳入<br>
 並且分別代表no()與yes()</p>
 <p>arrow function<br>
-<img class="img-zoomable" src="/web/JS_17.PNG" alt="" />
-<br>
+<img src="/web/JS_17.PNG" alt=""><br>
 甚至function關鍵字也可以省略</p>
 <p>E Scope:<br>
 基本同C++<br>
@@ -375,16 +328,14 @@ Object會收集相關Data與function，就像字典一樣，也因為其方便�
 (a)建立javascript object<br>
 let variable =｛｝<br>
 object是用key-value pair的形式製造<br>
-<img class="img-zoomable" src="/web/JS_18.PNG" alt="" />
-</p>
+<img src="/web/JS_18.PNG" alt=""></p>
 <ul>
 <li>注意，key一定是字串，但JS允許omit(省略) 引號‘ ‘</li>
 <li>注意，鍵值中間是用 : 隔開(同python 字典)</li>
 <li>注意，分隔是使用逗號，而且結束不用加分號</li>
 <li>注意，鍵就像變數名，而值一樣可以是任意型態(even 陣列、函式)<br>
 (b)取用<br>
-<img class="img-zoomable" src="/web/JS_19.PNG" alt="" />
-</li>
+<img src="/web/JS_19.PNG" alt=""></li>
 </ul>
 <p>(c)修改object property<br>
 類似於python<br>
@@ -397,14 +348,38 @@ object是用key-value pair的形式製造<br>
 <h1 id="參考資料">參考資料</h1>
 <p><a href="https://www.codecademy.com/learn/introduction-to-javascript">https://www.codecademy.com/learn/introduction-to-javascript</a></p>
 
-    </div>
-</article>
+        </div>
 
 
 
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
+<table cellspacing="15" style="width:100%; border: none;">
+    <tr>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+    </tr>
+</table>
 
-            </div>
-            <aside class="col-12 col-md-3 float-left sidebar">
+        
+    </article>
+
+    
+
+</main>
+
+
+        <div class="sidebar1 widgets columns-1">
     
     <div class="sidebar-item sidebar-pages">
         <h3>連結</h3>
@@ -422,67 +397,67 @@ object是用key-value pair的形式製造<br>
         <ul>
             
             <li>
-                <a href="/index/c_lang">* C/C&#43;&#43;語言筆記</a>
+                <a href="/index/c_lang">C/C&#43;&#43;語言筆記</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/device_driver">* Device Driver系列</a>
+                <a href="/index/device_driver">Device Driver系列</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <a href="/index/web">網頁與爬蟲相關區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/course">* 課程筆記備份區</a>
+                <a href="/index/course">課程筆記備份區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/misc">* 雜記區</a>
+                <a href="/index/misc">雜記區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <a href="/index/unix">Unix/Vim/bash區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/os">* 作業系統區</a>
+                <a href="/index/os">作業系統區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/machine_learning">* 機器學習區</a>
+                <a href="/index/machine_learning">機器學習區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <a href="/index/algorithm">演算法X資料結構區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/discretemath">* 離散數學</a>
+                <a href="/index/discretemath">離散數學</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/hugo">* hugo相關區</a>
+                <a href="/index/hugo">hugo相關區</a>
                 <br> ============= <br>
                      
             </li>
@@ -492,41 +467,19 @@ object是用key-value pair的形式製造<br>
         </ul>
     </div>
 
-
     
-    
-    
-    
-    
-    
-</aside>
-        </div>
-        <div class="btn">
-
-    <div class="btn-scroll-top">
-        <i class="iconfont icon-chevron-up-circle-sharp"></i>
-    </div>
 </div>
-    </main>
-
-    <footer>
-    <div class="container-lg clearfix">
-        <div class="col-12 footer">
-            <span>&copy; 2021 <a href="https://littlecube2019.github.io/"></a> |
-                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
-                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
-                   target="_blank">Hugo</a> </span>
         </div>
-    </div>
+        </div>
+<footer role="contentinfo" class="document-footer contentinfo widgets columns-1">
+
+    <aside class="widget widget_text">
+        <div class="textwidget">
+            <p>© Little Cube`s box / Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/tosi29/inkblotty" target="_blank">Inkblotty</a></p>
+        </div>
+    </aside>
 </footer>
-    
-<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</div>
 
-<script defer src="/assets/js/fuji.min.js"></script>
-
-
-</body>
-
+    </body>
 </html>

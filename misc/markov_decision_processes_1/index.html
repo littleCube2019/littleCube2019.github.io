@@ -1,93 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <title>Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上) - Little Cube`s box</title>
 
-<head>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
     
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="HandheldFriendly" content="True" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.74.3" />
-
-
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
-
-
-<title>Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上) - Little Cube`s box</title>
-
-
-
-
-<meta property="og:title" content="Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)" />
+    <meta property="og:title" content="Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)" />
 <meta property="og:description" content="線上影片筆記" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/misc/markov_decision_processes_1/" />
 <meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
 <meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
 
-<meta name="twitter:card" content="summary"/>
+    <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)"/>
 <meta name="twitter:description" content="線上影片筆記"/>
 
-
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        body[data-theme='auto'] img {
-            filter: brightness(60%);
-        }
-    }
-
-    body[data-theme='dark'] img {
-        filter: brightness(60%);
-    }
-</style>
-
-
-<link rel="stylesheet" href="/assets/css/fuji.min.css" />
-
-
-
-
-
-
 </head>
 
-<body data-theme="auto">
-    <script data-cfasync="false">
-  
-  var fujiThemeData = localStorage.getItem('fuji_data-theme');
-  
-  if (!fujiThemeData) {
-    localStorage.setItem('fuji_data-theme', 'auto');
-  } else {
+    <body class="two-column">
+        <a href="#content">Skip to content</a>
+<div class="wrapper">
+    <header role="banner" class="banner widgets columns-1">
+        <a href="/" rel="home">
+            <h1 class="site">Little Cube`s box</h1>
+            
+            <p>筆記暫存處</p>
+        </a>
     
-    if (fujiThemeData !== 'auto') {
-      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
-    }
-  }
-</script>
 
-    <header>
-    <div class="container-lg clearfix">
-        <div class="col-12 header">
-            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
-            
-            <span class="title-sub">筆記儲物櫃</span>
-            
-        </div>
-        
-    </div>
-    <div align="center" style="height:50%;
-    margin:5px;
-	width: 100%;
-	height:100%"
-	>
-    	目前文章數:
-		49 </div>
-    <script>
+        <script>
   MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -109,26 +70,33 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</header>
+    </header>
 
-    <main>
-        <div class="container-lg clearfix">
-            
-            <div class="col-12 col-md-9 float-left content">
-                
-<article>
-    
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/markov_decision_processes_1/">Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)</a>
-    </h2>
-    <div class="post-item post-meta">
+    <br>
+    <div style="width: 100%; max-height: 100px; text-align: center;">
+       
+</div>
+
+    <div class="breadcrumbs">
         
-
     </div>
-    
-    
-    <div class="post-content markdown-body">
-        <p>以一個決策問題開場</p>
+</div>
+        <div id="content" class="content">
+
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>Markov Decision Process (馬可夫列決策過程)  線上影片筆記 (上)</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2020-08-20T820:122:136">2020-08-20</time>
+                </a>
+				
+            </div>
+        </header>
+
+        <div class="post-content">
+            <p>以一個決策問題開場</p>
 <p>Q: 如何用最少的時間到達山景城?</p>
 <ol>
 <li>腳踏車</li>
@@ -152,8 +120,7 @@
 離開可以得到10塊，並結束遊戲 <br>
 留下可以獲得4塊，並且投一次六面骰子<br>
 如果骰出1、2，則結束遊戲，反之進入下一回合<br>
-<img class="img-zoomable" src="/misc/markov_1_1.PNG" alt="" />
-<br>
+<img src="/misc/markov_1_1.PNG" alt=""><br>
 其中虛紅線被稱為<strong>chance node</strong>， 即轉移後的狀態是有機率性的<br>
 以此例而言，進入遊戲有可能輸，也有可能贏 <br>
 並且就算結果存在100%也可以當chance node</p>
@@ -165,8 +132,7 @@
 <li>T(s,a,s&rsquo;)  移動發生的機率<br>
 從s採取a行為後，到達s&rsquo;的機率<br>
 以上例而言<br>
-<img class="img-zoomable" src="/misc/markov_1_2.PNG" alt="" />
-</li>
+<img src="/misc/markov_1_2.PNG" alt=""></li>
 </ul>
 <p>很明顯的 固定s,a 對s&rsquo;求和必為1</p>
 <ul>
@@ -196,8 +162,7 @@ IsEnd(s): 判定s是否為終點狀態</p>
 utility會將這條路徑上的reward加總 (取discount) <br>
 utility會是隨機的   <br>
 以骰子例子而言<br>
-<img class="img-zoomable" src="/misc/markov_1_3.PNG" alt="" />
-</p>
+<img src="/misc/markov_1_3.PNG" alt=""></p>
 <p>path會應用上折抵率<br>
 u = r1 + <sub>γ*r2 + <sub>γ^2 * r3 + &hellip;</p>
 <p><sub>γ
@@ -213,18 +178,15 @@ E[u]</p>
 <h3 id="定義-q-value-of-policy">定義: Q-value of policy</h3>
 <p>chance node的utility<br>
 可以Recursive的定義 <br>
-<img class="img-zoomable" src="/misc/markov_1_5.PNG" alt="" />
- <br>
-<img class="img-zoomable" src="/misc/markov_1_4.PNG" alt="" />
-  <br>
+<img src="/misc/markov_1_5.PNG" alt=""> <br>
+<img src="/misc/markov_1_4.PNG" alt="">  <br>
 文字來說就是 <br>
 [某點期待值]為<br>
 對於所有可能採取行為與他們的結果， 將(行為,結果)的發生機率乘上 [總獎勵]  (獎勵期待值)<br>
 [總獎勵] 為 行為=&gt;結果 的獎勵 與 [未來會發生的獎勵]  (當下獎勵+未來獎勵)</p>
 <p>[未來會發生的獎勵]則是 [該可能結果的點期待值]  &lt;= 此處為遞迴定義  (未來獎勵相當於用這套方法套用至未來點)</p>
 <h3 id="dice-game-的例子">Dice Game 的例子</h3>
-<p><img class="img-zoomable" src="/misc/markov_1_6.PNG" alt="" />
-</p>
+<p><img src="/misc/markov_1_6.PNG" alt=""></p>
 <h1 id="求-policy-value值得演算法--iterative-algorithm">求 policy value值得演算法 : iterative algorithm</h1>
 <p>概念: 一開始隨機給值 (通常給0)，然後重複求值，直到收斂</p>
 <p>演算法</p>
@@ -240,8 +202,7 @@ for iter = 1 ~ t_pe :
 		V_pi_t (s) = sum (T(s,a,s') [R(s,a,s') + gamma * V_pi_(t-1)(s') ] )
 # 本回合的s ，由&quot;上一回合&quot; &quot;周圍點&quot; 決定  
 </code></pre><h3 id="一個求值的例子">一個求值的例子</h3>
-<p><img class="img-zoomable" src="/misc/markov_1_7.PNG" alt="" />
-<br>
+<p><img src="/misc/markov_1_7.PNG" alt=""><br>
 如圖，可以看出收斂至4</p>
 <h3 id="問題--何時該停止-確定收斂">問題 : 何時該停止 (確定收斂)?</h3>
 <p>答案: 可以效法求小數精度 ==&gt; 設誤差值<br>
@@ -266,8 +227,7 @@ for iter = 1 ~ t_pe :
 <p>很直覺的，要找到最佳值，就是要找到最佳策略opt<br>
 pi_opt(s) =  argmax Q_opt (s,a)</p>
 <p>一樣可以由iteration value 求法
-<img class="img-zoomable" src="/misc/markov_1_8.PNG" alt="" />
-<br>
+<img src="/misc/markov_1_8.PNG" alt=""><br>
 只是這次需要每次都尋找最大值</p>
 <h3 id="時間複雜度-1">時間複雜度</h3>
 <p>O (遞迴次數 * #狀態數 * 狀態可採取的行為 * #每個狀態可能的結果狀態)   (想想演算法)</p>
@@ -280,13 +240,10 @@ pi_opt(s) =  argmax Q_opt (s,a)</p>
 <p>概念:  解除一些限制，得到近似解、或更簡單的問題<br>
 再用以有的(經驗的 heuristics)方法去解決</p>
 <p>比如 把障礙物去掉就可以用曼哈頓距離解決<br>
-<img class="img-zoomable" src="/misc/markov_1_9.PNG" alt="" />
-</p>
+<img src="/misc/markov_1_9.PNG" alt=""></p>
 <p>以及走路題  去掉條件，可以使用DP解<br>
-<img class="img-zoomable" src="/misc/markov_1_10.PNG" alt="" />
-</p>
-<p><img class="img-zoomable" src="/misc/markov_1_11.PNG" alt="" />
- 
+<img src="/misc/markov_1_10.PNG" alt=""></p>
+<p><img src="/misc/markov_1_11.PNG" alt=""> 
 讓經驗解 h(s) 趨近 FutureCost(s)<br>
 如果差太多則不能使用</p>
 <p>課程結束</p>
@@ -301,14 +258,38 @@ Q-learning 剛好跟Q_policy很像</p>
 <p>Lecture 7: Markov Decision Processes - Value Iteration | Stanford CS221: AI (Autumn 2019)<br>
 <a href="https://www.youtube.com/watch?v=9g32v7bK3Co&amp;t=181s&amp;ab_channel=stanfordonline">https://www.youtube.com/watch?v=9g32v7bK3Co&amp;t=181s&amp;ab_channel=stanfordonline</a></p>
 
-    </div>
-</article>
+        </div>
 
 
 
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
+<table cellspacing="15" style="width:100%; border: none;">
+    <tr>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+    </tr>
+</table>
 
-            </div>
-            <aside class="col-12 col-md-3 float-left sidebar">
+        
+    </article>
+
+    
+
+</main>
+
+
+        <div class="sidebar1 widgets columns-1">
     
     <div class="sidebar-item sidebar-pages">
         <h3>連結</h3>
@@ -326,67 +307,67 @@ Q-learning 剛好跟Q_policy很像</p>
         <ul>
             
             <li>
-                <a href="/index/c_lang">* C/C&#43;&#43;語言筆記</a>
+                <a href="/index/c_lang">C/C&#43;&#43;語言筆記</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/device_driver">* Device Driver系列</a>
+                <a href="/index/device_driver">Device Driver系列</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <a href="/index/web">網頁與爬蟲相關區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/course">* 課程筆記備份區</a>
+                <a href="/index/course">課程筆記備份區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/misc">* 雜記區</a>
+                <a href="/index/misc">雜記區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <a href="/index/unix">Unix/Vim/bash區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/os">* 作業系統區</a>
+                <a href="/index/os">作業系統區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/machine_learning">* 機器學習區</a>
+                <a href="/index/machine_learning">機器學習區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <a href="/index/algorithm">演算法X資料結構區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/discretemath">* 離散數學</a>
+                <a href="/index/discretemath">離散數學</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/hugo">* hugo相關區</a>
+                <a href="/index/hugo">hugo相關區</a>
                 <br> ============= <br>
                      
             </li>
@@ -396,41 +377,19 @@ Q-learning 剛好跟Q_policy很像</p>
         </ul>
     </div>
 
-
     
-    
-    
-    
-    
-    
-</aside>
-        </div>
-        <div class="btn">
-
-    <div class="btn-scroll-top">
-        <i class="iconfont icon-chevron-up-circle-sharp"></i>
-    </div>
 </div>
-    </main>
-
-    <footer>
-    <div class="container-lg clearfix">
-        <div class="col-12 footer">
-            <span>&copy; 2021 <a href="https://littlecube2019.github.io/"></a> |
-                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
-                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
-                   target="_blank">Hugo</a> </span>
         </div>
-    </div>
+        </div>
+<footer role="contentinfo" class="document-footer contentinfo widgets columns-1">
+
+    <aside class="widget widget_text">
+        <div class="textwidget">
+            <p>© Little Cube`s box / Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/tosi29/inkblotty" target="_blank">Inkblotty</a></p>
+        </div>
+    </aside>
 </footer>
-    
-<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</div>
 
-<script defer src="/assets/js/fuji.min.js"></script>
-
-
-</body>
-
+    </body>
 </html>

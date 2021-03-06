@@ -1,93 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <title>Linux Device Driver系列 2 (上) - Little Cube`s box</title>
 
-<head>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
     
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="HandheldFriendly" content="True" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.74.3" />
-
-
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
-
-
-<title>Linux Device Driver系列 2 (上) - Little Cube`s box</title>
-
-
-
-
-<meta property="og:title" content="Linux Device Driver系列 2 (上)" />
+    <meta property="og:title" content="Linux Device Driver系列 2 (上)" />
 <meta property="og:description" content="建置與使用modules" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/misc/linux_driver_2/" />
 <meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
 <meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
 
-<meta name="twitter:card" content="summary"/>
+    <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Linux Device Driver系列 2 (上)"/>
 <meta name="twitter:description" content="建置與使用modules"/>
 
-
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        body[data-theme='auto'] img {
-            filter: brightness(60%);
-        }
-    }
-
-    body[data-theme='dark'] img {
-        filter: brightness(60%);
-    }
-</style>
-
-
-<link rel="stylesheet" href="/assets/css/fuji.min.css" />
-
-
-
-
-
-
 </head>
 
-<body data-theme="auto">
-    <script data-cfasync="false">
-  
-  var fujiThemeData = localStorage.getItem('fuji_data-theme');
-  
-  if (!fujiThemeData) {
-    localStorage.setItem('fuji_data-theme', 'auto');
-  } else {
+    <body class="two-column">
+        <a href="#content">Skip to content</a>
+<div class="wrapper">
+    <header role="banner" class="banner widgets columns-1">
+        <a href="/" rel="home">
+            <h1 class="site">Little Cube`s box</h1>
+            
+            <p>筆記暫存處</p>
+        </a>
     
-    if (fujiThemeData !== 'auto') {
-      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
-    }
-  }
-</script>
 
-    <header>
-    <div class="container-lg clearfix">
-        <div class="col-12 header">
-            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
-            
-            <span class="title-sub">筆記儲物櫃</span>
-            
-        </div>
-        
-    </div>
-    <div align="center" style="height:50%;
-    margin:5px;
-	width: 100%;
-	height:100%"
-	>
-    	目前文章數:
-		49 </div>
-    <script>
+        <script>
   MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -109,31 +70,38 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</header>
+    </header>
 
-    <main>
-        <div class="container-lg clearfix">
-            
-            <div class="col-12 col-md-9 float-left content">
-                
-<article>
-    
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/misc/linux_driver_2/">Linux Device Driver系列 2 (上)</a>
-    </h2>
-    <div class="post-item post-meta">
+    <br>
+    <div style="width: 100%; max-height: 100px; text-align: center;">
+       
+</div>
+
+    <div class="breadcrumbs">
         
-
     </div>
-    
-    
-    <div class="post-content markdown-body">
-        <h1 id="前置">前置</h1>
+</div>
+        <div id="content" class="content">
+
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>Linux Device Driver系列 2 (上)</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2020-08-20T820:122:136">2020-08-20</time>
+                </a>
+				
+            </div>
+        </header>
+
+        <div class="post-content">
+            <h1 id="前置">前置</h1>
 <h3 id="設定kernel版本至26">設定kernel版本至2.6</h3>
 <p>可以使用kernel source tree<br>
 一個資料夾存放所有kernel相關資源，可以在此建立新kenrel 、安裝、並且重啟新的kernel</p>
 <h3 id="ubuntu-實例">Ubuntu 實例</h3>
-<p>參照這裡<a href="https://askubuntu.com/questions/700214/how-do-i-install-an-old-kernel" target="_blank">How to install an old kernel</a> <br>
+<p>參照這裡<a href="https://askubuntu.com/questions/700214/how-do-i-install-an-old-kernel">How to install an old kernel</a> <br>
 <strong>Ubuntu版本要舊到可以兼容kernel 2.6</strong></p>
 <ul>
 <li>下載對應版本三檔</li>
@@ -232,7 +200,7 @@ Kernel code 的system call會執行於原呼叫程式(caller)，並且能調用�
 並且linux適用於多核心與支持interrupt,preempt 因此 Concurrency是很重要的議題 (效率 與 確保資訊正確 )</p>
 <p>linux 的kernel 包含 driver 需要有可重入(reentrancy)的考量</p>
 <blockquote>
-<p>關於 <a href="https://magicjackting.pixnet.net/blog/post/113860339" target="_blank">可重入介紹</a><br>
+<p>關於 <a href="https://magicjackting.pixnet.net/blog/post/113860339">可重入介紹</a><br>
 簡單來說就是要考慮到共用的問題</p>
 </blockquote>
 <h3 id="current-process">Current Process</h3>
@@ -252,11 +220,10 @@ current 會回傳一個process的 struct task_struct 指標 (struct task_struct 
 <li>kernel分配到的記憶體stack非常小，通常只有一張4096-byte page<br>
 所以需要龐大變數時，最好動態的創造(heap)<br>
 Review: 記憶體規劃架構<br>
-<img class="img-zoomable" src="/misc/DD_2-1.PNG" alt="" />
-</li>
+<img src="/misc/DD_2-1.PNG" alt=""></li>
 <li>kernel API 有一部分 double underscore (__)的函式<br>
 這些函式非常底層，使用時需要額外注意</li>
-<li>kernel 不(輕易)做浮點數運算   <a href="https://stackoverflow.com/questions/13886338/use-of-floating-point-in-the-linux-kernel#:~:text=Unlike%20user%2Dspace%2C%20the%20kernel,it%20cannot%20easily%20trap%20itself.&amp;text=The%20short%20answer%20is%3A%20Don,operations%20are%20in%20the%20kernel." target="_blank">參考這裡的討論</a><br>
+<li>kernel 不(輕易)做浮點數運算   <a href="https://stackoverflow.com/questions/13886338/use-of-floating-point-in-the-linux-kernel#:~:text=Unlike%20user%2Dspace%2C%20the%20kernel,it%20cannot%20easily%20trap%20itself.&amp;text=The%20short%20answer%20is%3A%20Don,operations%20are%20in%20the%20kernel.">參考這裡的討論</a><br>
 簡而言之是為了效率問題，管理FPU(float point unit)太花時間</li>
 </ol>
 <h1 id="編譯與載入-module">編譯與載入 module</h1>
@@ -296,8 +263,7 @@ modprobe會在其他現有的module中尋找欲插入module中未定義的kernel
 lsmod其實就是去讀取/proc/modules這個虛擬檔案<br>
 (也可以從/sys/module得到看到一樣的資訊)
 如下例<br>
-<img class="img-zoomable" src="/misc/DD_2-2.PNG" alt="" />
-</p>
+<img src="/misc/DD_2-2.PNG" alt=""></p>
 <h3 id="kernel-symbol-table">Kernel Symbol Table</h3>
 <p>insmod會透過public kernel symbols table 來對應undfined symbol<br>
 (比如 printk , KERN_INFO)<br>
@@ -313,11 +279,9 @@ EXPORT_SYMBOL_GPL(name);<br>
 <h1 id="開始撰寫device-driver">開始撰寫Device Driver</h1>
 <h3 id="必備標頭檔">必備標頭檔</h3>
 <p>&lt;linux/module&gt;有眾多定義好的kernel symbol可以調用<br>
-<img class="img-zoomable" src="/misc/DD_2-4.PNG" alt="" />
-
+<img src="/misc/DD_2-4.PNG" alt="">
 &lt;linux/init&gt; 則有module_init()  module_exit() 的定義<br>
-<img class="img-zoomable" src="/misc/DD_2-3.PNG" alt="" />
-</p>
+<img src="/misc/DD_2-3.PNG" alt=""></p>
 <p>以上資訊在ubuntu中可以於 /lib/modules/$( uname -r )/build/include/linux 中找到</p>
 <p>習慣上會將 MODULE_ 開頭的變數至於檔案最後</p>
 <h3 id="init--exit-function">init , exit function</h3>
@@ -349,14 +313,38 @@ __exit關鍵字表達此函數只能在卸載時被呼叫</p>
 <p>Ch2: Building and Running Modules<br>
 <a href="https://lwn.net/Kernel/LDD3/">https://lwn.net/Kernel/LDD3/</a></p>
 
-    </div>
-</article>
+        </div>
 
 
 
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
+<table cellspacing="15" style="width:100%; border: none;">
+    <tr>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+    </tr>
+</table>
 
-            </div>
-            <aside class="col-12 col-md-3 float-left sidebar">
+        
+    </article>
+
+    
+
+</main>
+
+
+        <div class="sidebar1 widgets columns-1">
     
     <div class="sidebar-item sidebar-pages">
         <h3>連結</h3>
@@ -374,67 +362,67 @@ __exit關鍵字表達此函數只能在卸載時被呼叫</p>
         <ul>
             
             <li>
-                <a href="/index/c_lang">* C/C&#43;&#43;語言筆記</a>
+                <a href="/index/c_lang">C/C&#43;&#43;語言筆記</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/device_driver">* Device Driver系列</a>
+                <a href="/index/device_driver">Device Driver系列</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <a href="/index/web">網頁與爬蟲相關區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/course">* 課程筆記備份區</a>
+                <a href="/index/course">課程筆記備份區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/misc">* 雜記區</a>
+                <a href="/index/misc">雜記區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <a href="/index/unix">Unix/Vim/bash區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/os">* 作業系統區</a>
+                <a href="/index/os">作業系統區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/machine_learning">* 機器學習區</a>
+                <a href="/index/machine_learning">機器學習區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <a href="/index/algorithm">演算法X資料結構區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/discretemath">* 離散數學</a>
+                <a href="/index/discretemath">離散數學</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/hugo">* hugo相關區</a>
+                <a href="/index/hugo">hugo相關區</a>
                 <br> ============= <br>
                      
             </li>
@@ -444,41 +432,19 @@ __exit關鍵字表達此函數只能在卸載時被呼叫</p>
         </ul>
     </div>
 
-
     
-    
-    
-    
-    
-    
-</aside>
-        </div>
-        <div class="btn">
-
-    <div class="btn-scroll-top">
-        <i class="iconfont icon-chevron-up-circle-sharp"></i>
-    </div>
 </div>
-    </main>
-
-    <footer>
-    <div class="container-lg clearfix">
-        <div class="col-12 footer">
-            <span>&copy; 2021 <a href="https://littlecube2019.github.io/"></a> |
-                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
-                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
-                   target="_blank">Hugo</a> </span>
         </div>
-    </div>
+        </div>
+<footer role="contentinfo" class="document-footer contentinfo widgets columns-1">
+
+    <aside class="widget widget_text">
+        <div class="textwidget">
+            <p>© Little Cube`s box / Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/tosi29/inkblotty" target="_blank">Inkblotty</a></p>
+        </div>
+    </aside>
 </footer>
-    
-<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</div>
 
-<script defer src="/assets/js/fuji.min.js"></script>
-
-
-</body>
-
+    </body>
 </html>

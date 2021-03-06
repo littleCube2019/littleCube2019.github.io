@@ -1,93 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <title>GAN 影片筆記系列一 - Little Cube`s box</title>
 
-<head>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
     
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="HandheldFriendly" content="True" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.74.3" />
-
-
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
-
-
-<title>GAN 影片筆記系列一 - Little Cube`s box</title>
-
-
-
-
-<meta property="og:title" content="GAN 影片筆記系列一" />
+    <meta property="og:title" content="GAN 影片筆記系列一" />
 <meta property="og:description" content="GAN 基本介紹" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/machine_learning/gan_1/" />
 <meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
 <meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
 
-<meta name="twitter:card" content="summary"/>
+    <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="GAN 影片筆記系列一"/>
 <meta name="twitter:description" content="GAN 基本介紹"/>
 
-
-
-<style>
-    @media (prefers-color-scheme: dark) {
-        body[data-theme='auto'] img {
-            filter: brightness(60%);
-        }
-    }
-
-    body[data-theme='dark'] img {
-        filter: brightness(60%);
-    }
-</style>
-
-
-<link rel="stylesheet" href="/assets/css/fuji.min.css" />
-
-
-
-
-
-
 </head>
 
-<body data-theme="auto">
-    <script data-cfasync="false">
-  
-  var fujiThemeData = localStorage.getItem('fuji_data-theme');
-  
-  if (!fujiThemeData) {
-    localStorage.setItem('fuji_data-theme', 'auto');
-  } else {
+    <body class="two-column">
+        <a href="#content">Skip to content</a>
+<div class="wrapper">
+    <header role="banner" class="banner widgets columns-1">
+        <a href="/" rel="home">
+            <h1 class="site">Little Cube`s box</h1>
+            
+            <p>筆記暫存處</p>
+        </a>
     
-    if (fujiThemeData !== 'auto') {
-      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
-    }
-  }
-</script>
 
-    <header>
-    <div class="container-lg clearfix">
-        <div class="col-12 header">
-            <a class="title-main" href="https://littlecube2019.github.io/">Little Cube`s box</a>
-            
-            <span class="title-sub">筆記儲物櫃</span>
-            
-        </div>
-        
-    </div>
-    <div align="center" style="height:50%;
-    margin:5px;
-	width: 100%;
-	height:100%"
-	>
-    	目前文章數:
-		49 </div>
-    <script>
+        <script>
   MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -109,41 +70,46 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</header>
+    </header>
 
-    <main>
-        <div class="container-lg clearfix">
-            
-            <div class="col-12 col-md-9 float-left content">
-                
-<article>
-    
-    <h2 class="post-item post-title">
-        <a href="https://littlecube2019.github.io/machine_learning/gan_1/">GAN 影片筆記系列一</a>
-    </h2>
-    <div class="post-item post-meta">
+    <br>
+    <div style="width: 100%; max-height: 100px; text-align: center;">
+       
+</div>
+
+    <div class="breadcrumbs">
         
-
     </div>
-    
-    
-    <div class="post-content markdown-body">
-        <h1 id="開場">開場</h1>
+</div>
+        <div id="content" class="content">
+
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>GAN 影片筆記系列一</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2020-08-20T820:122:136">2020-08-20</time>
+                </a>
+				
+            </div>
+        </header>
+
+        <div class="post-content">
+            <h1 id="開場">開場</h1>
 <p>Yann LeCun 認為GAN技術與其變體非常有趣</p>
 <p>而GAN截止2018年已有高達300多種的變體</p>
 <p>GAN的論文數在近幾年也暴增</p>
 <h1 id="基本概念">基本概念</h1>
 <h3 id="generation">Generation</h3>
 <p>目的在<strong>生成</strong>東西 (比如圖像、句子、詩文)<br>
-<img class="img-zoomable" src="/GAN/GAN_1_1.PNG" alt="" />
-<br>
+<img src="/GAN/GAN_1_1.PNG" alt=""><br>
 如上圖所示，給定random的向量輸入，輸出不同圖片、句子。</p>
 <p>目標就是<strong>訓練出NN Generator</strong>，並且還希望Generatro是<strong>有條件式</strong>的生成，輸入有意義、可控制的輸入，得到想要的輸出。</p>
 <h3 id="generator-是甚麼">Generator 是甚麼</h3>
 <p>Generator本質上就是一個Neural network<br>
 而輸入vecotr會與輸出的高維度向量(目標物)有某種程度的關聯，如下圖<br>
-<img class="img-zoomable" src="/GAN/GAN_1_2.PNG" alt="" />
-</p>
+<img src="/GAN/GAN_1_2.PNG" alt=""></p>
 <h3 id="discriminator">Discriminator</h3>
 <p>本質上也是一個NN<br>
 輸入是一個生成的目標物(比如圖片)<br>
@@ -159,8 +125,7 @@
 </ol>
 <p>這就是Adversarial(對抗)的命名概念<br>
 下圖是一個例子<br>
-<img class="img-zoomable" src="/GAN/GAN_1_3.PNG" alt="" />
-</p>
+<img src="/GAN/GAN_1_3.PNG" alt=""></p>
 <h3 id="訓練流程演算法-概念">訓練流程演算法 (概念)</h3>
 <pre><code>Random initialize G and D
 for i in iter :
@@ -173,8 +138,7 @@ for i in iter :
 就可以運用分類/回歸問題的loss function更新方法update D</p>
 <h4 id="如何更新g">如何更新G?</h4>
 <p>** 將G和上一步更新好的D視作一個大NN網路調整**
-<img class="img-zoomable" src="/GAN/GAN_1_4.PNG" alt="" />
-<br>
+<img src="/GAN/GAN_1_4.PNG" alt=""><br>
 some fact:</p>
 <ul>
 <li>若G、D各有五層，則這個大網路會有十層</li>
@@ -182,16 +146,14 @@ some fact:</p>
 <li>必須要固定D的layer，否則網路單純的調D最後一層就好</li>
 </ul>
 <h3 id="訓練流程演算法-虛擬碼">訓練流程演算法 (虛擬碼)</h3>
-<p><img class="img-zoomable" src="/GAN/GAN_1_5.PNG" alt="" />
-</p>
+<p><img src="/GAN/GAN_1_5.PNG" alt=""></p>
 <h1 id="gan是一種structed-learning">GAN是一種structed learning</h1>
 <p>Machine learning 目標在找到一個function <br>
 Regression 是輸出一個scalar<br>
 Classification是輸出一個class<br>
 Structed learning/prediction 是輸出一個序列、矩陣、圖、樹&hellip;<br>
 如下圖<br>
-<img class="img-zoomable" src="/GAN/GAN_1_6.PNG" alt="" />
-<br>
+<img src="/GAN/GAN_1_6.PNG" alt=""><br>
 structed learning 挑戰:</p>
 <ol>
 <li>
@@ -200,8 +162,7 @@ structed learning 挑戰:</p>
 </li>
 <li>
 <p>機器必須學會規劃(planning)，意即體會到元件之間的關系<br>
-<img class="img-zoomable" src="/GAN/GAN_1_7.PNG" alt="" />
-<br>
+<img src="/GAN/GAN_1_7.PNG" alt=""><br>
 上圖是一個例子，一個點、第一句話都只是一個元件，結果如何取決於元件間的關係</p>
 </li>
 </ol>
@@ -209,21 +170,18 @@ structed learning 挑戰:</p>
 <h1 id="為甚麼generator不自己學習">為甚麼Generator不自己學習?</h1>
 <h3 id="第一層--單純訓練">第一層:  單純訓練</h3>
 <p>首先這一定是可以做到的，如下圖<br>
-<img class="img-zoomable" src="/GAN/GAN_1_8.PNG" alt="" />
-<br>
+<img src="/GAN/GAN_1_8.PNG" alt=""><br>
 問題是<strong>輸入怎麼來</strong>，如果隨機生成可能造成混亂<br>
 比如兩個1的vector長的很不一樣，與我們預期相反</p>
 <p><strong>小結: 輸入的隨機性會破壞vector數值的意義</strong></p>
 <h3 id="第二層-auto-encoder">第二層: auto-encoder</h3>
 <p>更進一步，輸入可以用encoder來解決 <br>
-<img class="img-zoomable" src="/GAN/GAN_1_9.PNG" alt="" />
-</p>
+<img src="/GAN/GAN_1_9.PNG" alt=""></p>
 <p>而<strong>訓練encoder時就是需要一個decoder(Auto-encoder)</strong>，這時decoder就類似Generator的角色，encoder就類似Discriminator的角色。</p>
 <p>但是auto-encoder並不是線性的，比如頭朝左右，我們會預期0是左，1是右，0.5可能是朝中間這種概念，auto-encoder無法做到</p>
 <p><strong>小結: 非線性會讓Vector數值的內插沒有意義</strong></p>
 <h3 id="第三層-variational-auto-encoder-vae">第三層 variational auto-encoder (VAE)</h3>
-<p><img class="img-zoomable" src="/GAN/GAN_1_10.PNG" alt="" />
-<br>
+<p><img src="/GAN/GAN_1_10.PNG" alt=""><br>
 這種作法可以讓加入位移也會生成有意義的東西</p>
 <p>Some Fact:</p>
 <ul>
@@ -232,11 +190,9 @@ structed learning 挑戰:</p>
 </ul>
 <p><strong>但是 ，單純追求loss的縮小(與目標越像越好)，會在主觀方面出問題</strong>
 如下圖<br>
-<img class="img-zoomable" src="/GAN/GAN_1_11.PNG" alt="" />
-</p>
+<img src="/GAN/GAN_1_11.PNG" alt=""></p>
 <p>再以下圖舉例<br>
-<img class="img-zoomable" src="/GAN/GAN_1_12.PNG" alt="" />
-<br>
+<img src="/GAN/GAN_1_12.PNG" alt=""><br>
 基本上VAE只會學到答案中間的值，並且不會了解到中間某些值可能是不好的。</p>
 <p><strong>小結: 單純追求loss減小，會忽略元件之間的關係</strong></p>
 <h3 id="總結-只使用g會容易變成單純模仿而忽略大局觀">總結: 只使用G，會容易變成單純模仿、而忽略大局觀</h3>
@@ -248,12 +204,10 @@ structed learning 挑戰:</p>
 <h3 id="第二層-產生好的negative-example">第二層 產生好的negative example</h3>
 <p>可以用隨機的方式<br>
 然後類似GAN的方式更新D自己</p>
-<p><img class="img-zoomable" src="/GAN/GAN_1_13.PNG" alt="" />
-<br>
+<p><img src="/GAN/GAN_1_13.PNG" alt=""><br>
 如上圖，這是把高維資料mapping到一維<br>
 D(X)紅線是D的判斷給分函數</p>
-<p><img class="img-zoomable" src="/GAN/GAN_1_14.PNG" alt="" />
-<br>
+<p><img src="/GAN/GAN_1_14.PNG" alt=""><br>
 給分=&gt; 窮舉最高點 =&gt; 壓低D(X)對fake的地方 &hellip;</p>
 <p>最終D(x)會與Real data重疊</p>
 <h3 id="總結">總結</h3>
@@ -264,20 +218,43 @@ D(X)紅線是D的判斷給分函數</p>
 </ol>
 <p>G 正好可以克服這兩個問題(也可以把G當成argmax的解法)</p>
 <p>因此GAN是既具有大局觀，又克服生成成本與negative example的方法!</p>
-<p><img class="img-zoomable" src="/GAN/GAN_1_15.PNG" alt="" />
-<br>
+<p><img src="/GAN/GAN_1_15.PNG" alt=""><br>
 如上圖，GAN不會單純的認為內插值也一定是好的!</p>
 <h1 id="參考資料">參考資料</h1>
 <p><a href="https://www.youtube.com/watch?v=DQNNMiAP5lw&amp;list=PLJV_el3uVTsMq6JEFPW35BCiOQTsoqwNw&amp;ab_channel=Hung-yiLee">https://www.youtube.com/watch?v=DQNNMiAP5lw&amp;list=PLJV_el3uVTsMq6JEFPW35BCiOQTsoqwNw&amp;ab_channel=Hung-yiLee</a></p>
 
-    </div>
-</article>
+        </div>
 
 
 
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
+<table cellspacing="15" style="width:100%; border: none;">
+    <tr>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+    </tr>
+</table>
 
-            </div>
-            <aside class="col-12 col-md-3 float-left sidebar">
+        
+    </article>
+
+    
+
+</main>
+
+
+        <div class="sidebar1 widgets columns-1">
     
     <div class="sidebar-item sidebar-pages">
         <h3>連結</h3>
@@ -295,67 +272,67 @@ D(X)紅線是D的判斷給分函數</p>
         <ul>
             
             <li>
-                <a href="/index/c_lang">* C/C&#43;&#43;語言筆記</a>
+                <a href="/index/c_lang">C/C&#43;&#43;語言筆記</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/device_driver">* Device Driver系列</a>
+                <a href="/index/device_driver">Device Driver系列</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/web">* 網頁與爬蟲相關區</a>
+                <a href="/index/web">網頁與爬蟲相關區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/course">* 課程筆記備份區</a>
+                <a href="/index/course">課程筆記備份區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/misc">* 雜記區</a>
+                <a href="/index/misc">雜記區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/unix">* Unix/Vim/bash區</a>
+                <a href="/index/unix">Unix/Vim/bash區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/os">* 作業系統區</a>
+                <a href="/index/os">作業系統區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/machine_learning">* 機器學習區</a>
+                <a href="/index/machine_learning">機器學習區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/algorithm">* 演算法X資料結構區</a>
+                <a href="/index/algorithm">演算法X資料結構區</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/discretemath">* 離散數學</a>
+                <a href="/index/discretemath">離散數學</a>
                 <br> ============= <br>
                      
             </li>
             
             <li>
-                <a href="/index/hugo">* hugo相關區</a>
+                <a href="/index/hugo">hugo相關區</a>
                 <br> ============= <br>
                      
             </li>
@@ -365,41 +342,19 @@ D(X)紅線是D的判斷給分函數</p>
         </ul>
     </div>
 
-
     
-    
-    
-    
-    
-    
-</aside>
-        </div>
-        <div class="btn">
-
-    <div class="btn-scroll-top">
-        <i class="iconfont icon-chevron-up-circle-sharp"></i>
-    </div>
 </div>
-    </main>
-
-    <footer>
-    <div class="container-lg clearfix">
-        <div class="col-12 footer">
-            <span>&copy; 2021 <a href="https://littlecube2019.github.io/"></a> |
-                Powered by <a href="https://github.com/amzrk2/hugo-theme-fuji/"
-                   target="_blank">Fuji-v2</a> & <a href="https://gohugo.io/"
-                   target="_blank">Hugo</a> </span>
         </div>
-    </div>
+        </div>
+<footer role="contentinfo" class="document-footer contentinfo widgets columns-1">
+
+    <aside class="widget widget_text">
+        <div class="textwidget">
+            <p>© Little Cube`s box / Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/tosi29/inkblotty" target="_blank">Inkblotty</a></p>
+        </div>
+    </aside>
 </footer>
-    
-<script defer src="https://cdn.jsdelivr.net/combine/npm/medium-zoom@1.0.5,npm/lazysizes@5.2.2"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/components/prism-core.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.20.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</div>
 
-<script defer src="/assets/js/fuji.min.js"></script>
-
-
-</body>
-
+    </body>
 </html>
