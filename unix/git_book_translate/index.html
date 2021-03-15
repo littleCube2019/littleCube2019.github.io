@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <title>git基礎功能研究 - Little Cube`s box</title>
+
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/custom.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
+    
+    <meta property="og:title" content="git基礎功能研究" />
+<meta property="og:description" content="參考教學書，了解git基本概念、使用與底層" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://littlecube2019.github.io/unix/git_book_translate/" />
+<meta property="article:published_time" content="2021-03-15T11:02:13+08:00" />
+<meta property="article:modified_time" content="2021-03-15T11:02:13+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="git基礎功能研究"/>
+<meta name="twitter:description" content="參考教學書，了解git基本概念、使用與底層"/>
+
+</head>
+
+    <body class="two-column">
+        <a href="#content">Skip to content</a>
+<div class="wrapper">
+    <header role="banner" class="banner widgets columns-1">
+        <a href="/" rel="home">
+            <h1 class="site">Little Cube`s box</h1>
+            
+            <p>筆記暫存處</p>
+
+             
+                <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        </a>
+    
+
+        <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </header>
+
+    <br>
+    <div style="width: 100%; max-height: 100px; text-align: center;">
+       
+</div>
+
+    <div class="breadcrumbs">
+        
+    </div>
+</div>
+        <div id="content" class="content">
+
+<main role="main">
+    <article role="article" class="post type-post format-standard hentry">
+        <header class="post-header">
+            <h1>git基礎功能研究</h1>
+            <div class="post-details">
+                <a rel="bookmark">
+                    <time datetime="2021-03-15T315:112:136">2021-03-15</time>
+                </a>
+				
+            </div>
+        </header>
+
+        <div class="post-content">
+            <h1 id="前言">前言</h1>
+<p>這是一篇關於git工具的<a href="https://git-scm.com/book/en/v2">教學書</a>翻譯與整理<br>
+只會挑部分重點翻譯與整理，並且附上該章節的連結</p>
+<p>此篇只專注在基本使用與基本底層探討，也就是涵蓋教學書的第1、2、3、10章</p>
+<div style="background-color:#DCDCDC; width:40%; border-style: solid;">
+目錄  
+<br>
+<a href="#1">第一章:基礎介紹</a>
+<br>
+<a href="#1-1" style="padding-left: 8%;">1-1:版本控制系統</a>
+<br>
+<a href="#1-2" style="padding-left: 8%;">1-2:關於Git</a>
+<br>
+<a href="#1-3" style="padding-left: 8%;">1-3:Git設定檔簡介</a>
+<br>
+<a href="#2">第二章:基本使用</a>
+<br>
+<a href="#2-1" style="padding-left: 8%;">2-1:git記錄變動</a>
+<br>
+<a href="#2-2" style="padding-left: 8%;">2-2:查看commit記錄</a>
+<br>
+<a href="#2-3" style="padding-left: 8%;">2-3:利用git復原備份</a>
+<br>
+<a href="#2-4" style="padding-left: 8%;">2-4:git遠端管理</a>
+<br>
+<a href="#2-5" style="padding-left: 8%;">2-5 git tag:幫commit貼標籤</a>
+<br>
+<a href="#3">第三章:分支介紹</a>
+<br>
+<a href="#3-1" style="padding-left: 8%;">3-1基礎介紹</a>
+<br>
+<a href="#3-2" style="padding-left: 8%;">3-2分支合併</a>
+<br>
+<a href="#3-3" style="padding-left: 8%;">3-3雜項知識</a>
+<br>
+<a href="#4">第四章:git底層</a>
+<br>
+<a href="#4-1" style="padding-left: 8%;">4-1 SHA-1演算法 與 git物件</a>
+<br>
+<a href="#4-2" style="padding-left: 8%;">4-2 git REF: 節點的名字</a>
+<br>
+</div>
+<h1 id="1">1. 基礎介紹</h1>
+<p>本章介紹git的特性與本質</p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="1-1"> 1-1 版本控制系統 </h2>
+<p><a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control">原文</a><br>
+Git是一種版本控制系統，所謂版本控制系統(以下簡稱VCS Version control system)，即為用一個系統去紀錄&quot;檔案&quot;隨時間的變化，以供未來需要回到特定的版本。<br>
+&ldquo;檔案&quot;可以是任何型態的，在此書是指程式原始碼。</p>
+<p>使用VCS，可以以少量額外成本(overhead)紀錄所有版本，使我們可以比較各版本差異找到問題、優化方向，並且在出問題、丟失檔案時回復上一狀態。</p>
+<h3 id="本地端版本控制local-version-control">本地端版本控制(Local Version Control)</h3>
+<p>一般人常使用<b style="color:red; " >複製檔案於不同資料夾</b> (如果夠聰明的話甚至會用時間戳記(time stamp)進行資料夾命名)的方式進行本地端版本控制，但是這非常容易導致錯誤，比如<b style="color:red; " >開錯資料夾導致寫入錯誤的檔案、覆蓋掉錯的檔案&hellip;</b>。</p>
+<p>程式設計師為了解決此問題，設計了版本資料庫(version database)<br>
+(如下圖，使用者每次只會看到一個版本的檔案，並且可以在各版本間切換、修改版本&hellip;)</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_1.PNG" style="width:400px;height:350px">
+</div>
+<p>通常程式碼版本控制會記錄各個版本間的差異(稱為patch sets)，而非整個版本，並且這些紀錄會以特殊格式記在硬碟裡，可以藉由加入或刪除這些差異達到版本切換。<br>
+(Note:在下一小節會介紹git的實作方式與此方法略有不同)</p>
+<p>此類型工具如: Revision Control System</p>
+<h3 id="中心化版本控制系統-centralized-version-control-systems">中心化版本控制系統 (Centralized Version Control Systems)</h3>
+<p>在版本控制的發展路上，下一個遇到的問題就是<b style="color:red; " >多人合作</b>，於是如下圖的中心化版本控制架構應運而生。</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_2.PNG" style="width:400px;height:350px">
+</div>  
+<p>這個架構優缺點類似於任何有中央伺服器的架構，優點為管理方便，甚至可以由管理者(Administrators)以權限進行分工，缺點即為當中央伺服器出問題，維修期間造成工作無法進行下去，甚至有檔案丟失的風險。</p>
+<p>此類型工具如:  CVS, Subversion, and Perforce</p>
+<h3 id="分散式版本控制系統-distributed-version-control-systems">分散式版本控制系統 (Distributed Version Control Systems)</h3>
+<p>單一紀錄的缺點能被DVCS解決，我們的主角Git也是此類型的一員<br>
+下圖為其架構</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_3.PNG" style="width:400px;height:350px">
+</div>
+<p>這個類型的版本控制在給予各個端點檔案時，不會只給一個版本的狀態，而是複製整個版本的歷史，這讓每個端點都是一個完整的備份，並且合作也能更有效率。</p>
+<p>此類型工具如:  Git,Mercurial,Bazaar,Darcs</p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="1-2"> 1-2 關於Git </h2>
+<p><a href="https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F">原文</a><br>
+儘管Git與其他VCS相似，但很多概念是創新且獨有的，以下各別介紹</p>
+<h3 id="一-儲存快照snapshot而非差異">一, 儲存快照(snapshot)、而非差異</h3>
+<p>在上一小節的概述中，提到其他Local VCS會使用紀錄&quot;檔案差異&quot;的方式實作，但Git則是紀錄<b style="color:red; " >&quot;檔案快照&quot;</b>，意即每一個版本都是紀錄所有檔案在那一刻的樣子，並且當<b style="color:red; " >Git發現檔案沒有改變時，會使用指向原始檔</b>，也因此git類似於mini filesystem。</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_4.PNG" >
+</div>
+<h3 id="二-資料完整性integrity">二, 資料完整性(Integrity)</h3>
+<p>Git在儲存時，都會進行驗證，任何改動都不會被Git忽略，這保證只要Git有紀錄，就不會出現資料丟失、不一致。</p>
+<p>Git會使用SHA-1的方式對<b style="color:red; " >檔案內容進行hash</b>，會得到一個40長度的16進位碼<br>
+比如:<br>
+<code>24b9da6552252987aa493b52f8696cd6d3b00373</code><br>
+<b style="color:red; " >而Git儲存所有東西都是以SHA-1的格式。</b></p>
+<h3 id="三-採用三階段架構">三, 採用三階段架構</h3>
+<p>對檔案而言，在Git中會經歷三個階段</p>
+<ol>
+<li>modified: 修改過但還未commit進git database裡</li>
+<li>staged: 已將檔案標記為下一次commit的版本，但還未commit</li>
+<li>commited: commit完成，已確實被git紀錄</li>
+</ol>
+<p>這三個階段也就是git工作的一個循環，如下圖</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_5.PNG" >
+</div>
+<ul>
+<li>Working Directory就是你看到的特定版本，是從git database中抓下供修改、查看的。</li>
+<li>Staging Area是一個<b style="color:red; " >放於.git資料夾中的檔案</b>，負責記錄接下來哪些file會被commit，專業名詞也叫index。</li>
+<li>.git資料夾是最重要的部分，<b style="color:red; " >存放所有額外資訊(metadata)、檔案紀錄在這裡，同時當你clone專案時，實際上就是複製這個資料夾下來!</b></li>
+</ul>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="1-3"> 1-3 Git設定檔 </h2>
+<p><a href="https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup">原文</a><br>
+設定git的環境會使用<code>git config</code>這個指令，而這個指令其實就是<b style="color:red; " >將設定值變數儲存至git的config檔案中。</b></p>
+<p>git設定檔案會在三個地方，分別代表系統層級、user層級、專案層級<br>
+可以由&ndash;system, &ndash;global ,&ndash;local(default) 參數來指定位置</p>
+<table>
+<thead>
+<tr>
+<th>檔案位置(以unix-like舉例)</th>
+<th>層級</th>
+<th>git config參數</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[path]/etc/gitconfig</td>
+<td>系統</td>
+<td>&ndash;system</td>
+</tr>
+<tr>
+<td>~/.gitconfig</td>
+<td>使用者</td>
+<td>&ndash;global</td>
+</tr>
+<tr>
+<td>[project]/.git/config</td>
+<td>專案</td>
+<td>&ndash;local(或不加)</td>
+</tr>
+</tbody>
+</table>
+<p>當然通常初次設定會設在&ndash;global層級</p>
+<p>接下來就可以設定個人資料、編輯器、預設分支名 &hellip;<br>
+比如設定個人資料</p>
+<pre><code>git config --global user.name &quot;hello&quot;  
+git config --global user.email test123@gmail.com 
+</code></pre><p>資料會以類似toml格式被記在設定檔中</p>
+<pre><code>[user]
+	email = test123@gmail.com              
+	name = hello                            
+</code></pre><p>(熟知格式後也可以直接到.gitconfig檔案查看與修改)</p>
+<p>最後如果加上&ndash;list參數就會顯示所有設定(<code>git config --list</code>)<br>
+也可以不指定值，就會變成查看該值的內容(如:<code>git config user.name</code>)</p>
+<p><a href="https://git-scm.com/docs/git-config/2.1.4/#_variables">眾多設定變數參考這裡</a><br>
+比如從中可以知道，user系列是用於commit呈現作者資料。</p>
+<h1 id="2">2. 基本使用</h1>
+<p>本章是git指令的基本使用教學</p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="2-1"> 2-1:git記錄變動 </h2>
+<p><a href="https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository">原文</a></p>
+<h3 id="創立一個git-repository">創立一個git repository</h3>
+<p>在開始使用git前，必須要告知git這個資料夾內所有內容需要被監控(track)<br>
+如果是要開始新的專案，可以cd到目標資料夾，然後輸入<code>git init</code><br>
+這個指令會創建.git資料夾，並內含所有git所需檔案。</p>
+<p>如果是要使用其他人的專案，則可以使用<code>git clone &lt;目標URL&gt;</code><br>
+會將他人當下版本的檔案與.git資料夾複製下來。</p>
+<h3 id="記錄變動">記錄變動</h3>
+<p>在git監控下，會有四個狀態來表達一個檔案被監控的狀態<br>
+即 Untracked , Unmodified , Modefied , Stagged</p>
+<p>Untracked 是還未被監控的檔案,<code>git add</code> 後進入stagged
+Modified 是已被記錄的檔案被修改，但改變還未被記錄,<code>git add</code> 後進入stagged
+Stagged 是已被告知下次會被commit的檔案
+Unmodifed 是已被記錄的檔案</p>
+<p>其關係與狀態轉移參考下圖</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_6.PNG" >
+</div>
+<p>可以使用<code>git status</code>查看各檔案當前的狀態</p>
+<p>以下用一個實際例子講解<br>
+當使用<code>git init</code>監控一個新資料夾(或是下載別人的專案)後，輸入<code>git status</code><br>
+會得到以下訊息</p>
+<pre><code>On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+</code></pre><p><code>On branch master</code>表示當前顯示是在master這個分支，關於分支會在後續講解<br>
+剩下訊息表明目前所有檔案都是被記錄的(也就是Unmodified狀態)</p>
+<p>接著建立一個名叫README的純文字檔案，再輸入<code>git status</code></p>
+<pre><code>On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+
+    README
+
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)
+</code></pre><p>可以發現新增的README被git發現，並告知你它是Untracked狀態</p>
+<p>再來輸入<code>git add README</code>讓此檔案被監控，再輸入<code>git status</code></p>
+<pre><code>On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+
+    new file:   README
+</code></pre><p>此時可以說README已進入staged狀態，也就是準備被commit了</p>
+<p>這時假如資料夾內還有另一個檔案CONTRIBUTING.md，我們先對他修改後，再
+<code>git add CONTRIBUTING.md</code>，再輸入<code>git status</code></p>
+<pre><code>On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+
+    new file:   README
+    modified:   CONTRIBUTING.md
+</code></pre><p>git也會幫你發現被修改的檔案，並且告訴你是modified狀態</p>
+<p>最後有個有趣的現象，當這時再對CONTRIBUTING.md進行修改時，會發現</p>
+<pre><code>On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+
+    new file:   README
+    modified:   CONTRIBUTING.md
+
+Changes not staged for commit:
+  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+
+    modified:   CONTRIBUTING.md
+</code></pre><p>這份檔案同時出現在stagged與not staged區，原因在於stagged是在最後修改前的版本，修改後的則出現在not staged區，很顯然此時commit，則最後修改的部分不會被記錄!</p>
+<p>最後可以使用<code>git status -s</code>來查看縮短版本的訊息
+會得到以下格式的結果</p>
+<pre><code> M README
+MM Rakefile
+A  lib/git.rb
+M  lib/simplegit.rb
+?? LICENSE.txt
+</code></pre><p>其中各符號代表意義可以<a href="https://git-scm.com/docs/git-status#_short_format">參考這裡</a><br>
+比如 ??表示untracked ,M表示modified &hellip;</p>
+<h3 id="忽略檔案">忽略檔案</h3>
+<p>很多時候，會有不想要git追蹤的檔案，比如C/C++編譯過程的中間檔、非正式記錄檔&hellip;<br>
+這時可以將他們的<b style="color:red; " >檔名格式記錄在.gitignore裡</b>
+比如</p>
+<pre><code>*.[oa]
+</code></pre><p>這個.gitignore檔告訴git不要監控結尾是.o 或 .a的檔案<br>
+而這種檔案匹配語法，叫做glob，教學可以<a href="https://linuxhint.com/bash_globbing_tutorial/">參考這裡</a><br>
+比如<br>
+*代表一個或多個任意字<br>
+[]內會選擇一個字</p>
+<p>此外還有一些特殊符號</p>
+<ol>
+<li>字符 # 代表註解</li>
+<li>字符 !xxx 代表不准忽略xxx檔案，通常用於不想記錄的檔案類型中，某些需要記錄的檔案</li>
+<li>開頭加上/ 表示僅限於當前目錄(不遞迴執行忽略)</li>
+<li>結尾加上/ 表示指定的是一個資料夾</li>
+</ol>
+<p>以下是一個例子:</p>
+<pre><code># ignore all .a files
+*.a
+
+# but do track lib.a, even though you're ignoring .a files above
+!lib.a
+
+# only ignore the TODO file in the current directory, not subdir/TODO
+/TODO
+
+# ignore all files in any directory named build
+build/
+</code></pre><h3 id="git-commit">git commit</h3>
+<p>git commit可以讓staged中的狀態被記錄成snapshot<br>
+關於git commit:</p>
+<ol>
+<li>
+<p>如果只打git commit，會開啟預設編輯器，並要求你輸入message<br>
+預設訊息為git status的訊息，預設編輯器可以於config的<code>core.editor</code>指定</p>
+</li>
+<li>
+<p><code>git commit -m &quot;訊息&quot;</code> 是最常用的commit指令</p>
+</li>
+<li>
+<p>git commit 的 -a 參數會跳過staged階段，將所有modified file記錄起來<br>
+(即:不需要打git add)</p>
+</li>
+<li>
+<p>git commit 的 &ndash;amend 參數可以修改上一次的commit</p>
+</li>
+</ol>
+<h3 id="刪除與移動">刪除與移動</h3>
+<p><code>git rm &lt;檔案&gt;</code>可以幫你刪除檔案並且讓git不再監控它<br>
+<code>-f</code>參數在檔案已被staged時強制使用<br>
+<code>--cache</code>可以解除git監控並不刪除該檔案 (用於忘記加入.gitignore時)<br>
+<code>git mv</code>則可以移動檔案(或改名)</p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="2-2"> 2-2:查看commit記錄 </h2>
+<p><a href="https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History">原文</a> 
+每一次的commit都會由git幫你記錄資訊<br>
+可以使用<code>git log</code>來查看</p>
+<p>下面是一個<code>git log</code>結果的例子</p>
+<pre><code>commit ca82a6dff817ec66f44342007202690a93763949
+Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
+Date:   Mon Mar 17 21:52:11 2008 -0700
+
+    Change version number
+
+commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7
+Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
+Date:   Sat Mar 15 16:40:33 2008 -0700
+
+    Remove unnecessary test
+
+commit a11bef06a3f659402fe7563abf99ad00de2209e6
+Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
+Date:   Sat Mar 15 10:31:28 2008 -0700
+
+    Initial commit
+</code></pre><p>可以發現每一個訊息由SHA-1碼、作者、時間、commit訊息組成<br>
+並且由上至下表示從最新到最舊的commit</p>
+<h3 id="眾多選擇">眾多選擇</h3>
+<p><code>git log</code>有非常多的參數，這些參數可以為你呈現不同的log資訊<br>
+以下介紹一些常用的參數</p>
+<h4 id="-p---patch">-p (&ndash;patch)</h4>
+<p>可以看各次git commit修改了甚麼部分(列出實際修改部分)<br>
+如:</p>
+<pre><code>commit ca82a6dff817ec66f44342007202690a93763949
+Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
+Date:   Mon Mar 17 21:52:11 2008 -0700
+
+    Change version number
+
+diff --git a/Rakefile b/Rakefile
+index a874b73..8f94139 100644
+--- a/Rakefile
++++ b/Rakefile
+@@ -5,7 +5,7 @@ require 'rake/gempackagetask'
+ spec = Gem::Specification.new do |s|
+     s.platform  =   Gem::Platform::RUBY
+     s.name      =   &quot;simplegit&quot;
+-    s.version   =   &quot;0.1.0&quot;
++    s.version   =   &quot;0.1.1&quot;
+     s.author    =   &quot;Scott Chacon&quot;
+     s.email     =   &quot;schacon@gee-mail.com&quot;
+     s.summary   =   &quot;A simple gem for using Git in Ruby code.&quot;
+</code></pre><h4 id="--stat">&ndash;stat</h4>
+<p>可以看各次git commit修改了哪些檔案(只列出檔名與增修量)<br>
+如:</p>
+<pre><code>commit a11bef06a3f659402fe7563abf99ad00de2209e6
+Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
+Date:   Sat Mar 15 10:31:28 2008 -0700
+
+    Initial commit
+
+ README           |  6 ++++++
+ Rakefile         | 23 +++++++++++++++++++++++
+ lib/simplegit.rb | 25 +++++++++++++++++++++++++
+ 3 files changed, 54 insertions(+)
+</code></pre><h4 id="搜尋commit-log">搜尋commit log</h4>
+<p>&ndash;since 與 &ndash;before 參數可以指定特定時間範圍內的訊息<br>
+&ndash;author則可以指定特定作者的commit<br>
+對Code reviewer而言很有用</p>
+<p>其他還有指定輸出格式、以文字畫出樹狀結構&hellip;<br>
+<a href="https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History/#log_options">參考這裡</a><br>
+<a href="https://stackoverflow.com/questions/1057564/pretty-git-branch-graphs">設定alias加上log的整合應用</a></p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="2-3"> 2-3:利用git復原備份 </h2>
+<p>首先參考書此章內容有些陳舊(2014出版)，比如使用checkout回復舊版本，使用reset移除staged狀態，而在2019年後更新了<code>git switch</code>與<code>git restore</code>來部分代替兩個指令。
+參考:<br>
+<a href="https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things">原文</a>
+<a href="https://stackoverflow.com/questions/24384951/confused-by-git-checkout/57066202#57066202">git checkout被拆分為git switch 與 git restore</a><br>
+<a href="https://stackoverflow.com/questions/58003030/what-is-the-git-restore-command-and-what-is-the-difference-between-git-restor">git reset VS git restore</a></p>
+<h3 id="回復版本">回復版本</h3>
+<p>當在commit前要確認當前各檔案狀態時，會輸入<code>git status</code><br>
+此時其實就會告訴你該怎麼回復上一版本的狀態!</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_7.PNG" style="width:1000px;height:250px">
+</div>
+<p>可以知道要使用<code>git restore &lt;file&gt;</code> <br>
+(稍舊版本會使用<code>git reset</code> 或是 <code>git checkout</code> 在現版本也是可行的)</p>
+<ul>
+<li>如果要解除staged狀態，可以加上<code>--staged</code>參數</li>
+<li>如果要回復到更之前的版本，可以加上<code>--source &lt;ref&gt;</code><br>
+<code>&lt;ref&gt;</code>可以是tag或是commit hash，並且預設是HEAD (上一次commit)</li>
+</ul>
+<p>舉例如下:</p>
+<pre><code># 回到上一版本的cat.txt  
+git restore cat.txt  
+
+# 回到a09942d版本的dog.txt  
+git restore --source a09942d dog.txt
+</code></pre><h3 id="git-reset-vs-git-restore">git reset VS git restore</h3>
+<p>參考上面的文章，簡單來說git reset 與 git restore都是可以回復檔案的危險指令,<br>
+但是git reset 會修改commit history , git restore不會,<br>
+並且git reset 會全面復原working directory , git restore則需要指定檔案。</p>
+<h3 id="git-checkout-vs-git-restore--git-switch">git checkout VS git restore , git switch</h3>
+<p>2019後的git版本將git checkout指令切換為 git restore 與 git switch<br>
+原因是社群認為git checkout承擔太多任務導致令人難以區分<br>
+所以<b style="color:red; " >將針對檔案的切換交給restore , 將對分支的切換交給switch。 </b></p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="2-4"> 2-4 git遠端管理 </h2>
+<p><a href="https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes">原文</a>
+git身為分散式版本管理系統，很重要的工作是管理遠端專案，以利與他人協作</p>
+<h4 id="git-remote-管理遠端url">git remote 管理遠端URL</h4>
+<p>因為協作或異地備分的需求，git能幫你以變數名記住遠端的server URL</p>
+<p>可以使用<code>git remote -v</code>查看<br>
+以下是一個例子</p>
+<pre><code># 輸入 git remote -v
+bakkdoor  https://github.com/bakkdoor/grit (fetch)
+bakkdoor  https://github.com/bakkdoor/grit (push)
+cho45     https://github.com/cho45/grit (fetch)
+cho45     https://github.com/cho45/grit (push)
+origin    git@github.com:mojombo/grit.git (fetch)
+origin    git@github.com:mojombo/grit.git (push)
+</code></pre><p>可以看出例子中以協作者名字做為url的小名<br>
+這樣以後使用pull 或 push 都不用記整串url</p>
+<p>每一次clone別人的專案，都會有預設的origin代表原專案url<br>
+當然也可以自己加入新的，使用<code>git remote add &lt;shortname&gt; &lt;url&gt;</code><br>
+以下也是一個例子</p>
+<pre><code>$ git remote
+origin
+$ git remote add pb https://github.com/paulboone/ticgit
+$ git remote -v
+origin	https://github.com/schacon/ticgit (fetch)
+origin	https://github.com/schacon/ticgit (push)
+pb	https://github.com/paulboone/ticgit (fetch)
+pb	https://github.com/paulboone/ticgit (push)
+</code></pre><p>可以看出運用指令加入了新的url小名</p>
+<p>未來可以使用<code>git remote remove &lt;url shortcut&gt;</code> 移除
+或是 <code>git remote rename &lt;old shortcut&gt; &lt;new shortcut&gt;</code>改名</p>
+<p>此外，若想深入察看一個shortcut，可以使用<code>git remote show &lt;url shortcut&gt;</code></p>
+<h4 id="git-clone--git-fetch--git-pull-從遠端得到專案">git clone / git fetch / git pull 從遠端得到專案</h4>
+<p><code>git clone &lt;url&gt;</code>用於第一次複製遠端的專案，git會幫你複製專案的所有history跟branch，並且自動幫你將master branch 與遠端同步</p>
+<p><code>git fetch &lt;url&gt;</code>則可以將遠端資料抓回來，<b style="color:red; " >但不進行合併(merge) </b> ，通常用於同步本地端與遠端資料，url通常會用remote記錄好的小名<br>
+如下圖所示</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_15.PNG" style="width:500px;height:350px">
+</div>  
+<p><code>git pull &lt;url&gt;</code>則可以視為 git fetch + git merge</p>
+<h4 id="git-push-將本地專案傳回遠端">git push 將本地專案傳回遠端</h4>
+<p>指令格式為 <code>git push &lt;url&gt; &lt;branch&gt;</code><br>
+如最常見的 <code>git push origin master</code> (這兩個shortcut都是在clone時自動設定好的)</p>
+<p>另外，使用這個指令必須要在你有該專案的寫入權才能使用，並且當版本被其他人更新過後，得先pull下來、解決conflict，才能再push上去。</p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="2-5"> 2-5 git tag: 幫commit貼標籤 </h2> 
+<p><a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">原文</a>
+某些commit通常是重要的，比如release版本、完成階段性工作 &hellip; 因此通常會使用標籤，除了未來可以<b style="color:red; " >直接用標籤名而非SHA-1碼找到該commit</b>之外，也可以<b style="color:red; " >添加一些註解</b>。</p>
+<p>通常會使用v1.0 , v1.1 等等版本號來為標籤命名</p>
+<h3 id="標籤種類">標籤種類</h3>
+<p>在git，標籤有分為兩種，一種是註解用的Annotated Tags，另一種則是單純命名的Lightweight Tags(通常版本號命名，結尾會加上-lw, 比如v1.2-lw)</p>
+<p>Annotated Tags會有與commit類似的資訊，包含tag作者、email、時間與message<br>
+以下是一個範例</p>
+<pre><code>tag v1.4
+Tagger: Ben Straub &lt;ben@straub.cc&gt;
+Date:   Sat May 3 20:19:12 2014 -0700
+
+my version 1.4
+
+commit ca82a6dff817ec66f44342007202690a93763949
+Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
+Date:   Mon Mar 17 21:52:11 2008 -0700
+
+    Change version number
+</code></pre><p>說明:</p>
+<ul>
+<li>可以看見上半部是tag訊息、下半部會呈現指向的commit的資訊</li>
+<li>若是查看lightweight tag的內容，則會只有指向的commit，也就是只有下半部</li>
+</ul>
+<h3 id="標籤操作">標籤操作</h3>
+<h4 id="查看標籤">*查看標籤</h4>
+<p>使用<code>git tag</code>查看所有標籤，或是使用<code>git tag -l &quot;&lt;pattern&gt;&quot;</code>去搜尋標籤<br>
+以下是一個例子</p>
+<pre><code>$ git tag -l &quot;v1.8.5*&quot;
+v1.8.5
+v1.8.5-rc0
+v1.8.5-rc1
+</code></pre><h4 id="創立標籤">*創立標籤</h4>
+<p>若要在此版本建立Annotated Tags
+使用 <code>git tag -a 標籤名 -m &quot;訊息&quot;</code> 來完成<br>
+而要建立Lightweight Tags<br>
+則使用 <code>git tag 標籤名</code> 即可</p>
+<p>另外，如果要指定之前版本的tag，只需要在標籤名之後加上該版本的SHA-1碼即可<br>
+如<code>git tag -a v1.2 9fceb02</code></p>
+<h4 id="查看標籤訊息">*查看標籤訊息</h4>
+<p>使用 <code>git show &lt;標籤名&gt;</code>即可，前面的例子就是由此指令得到的結果</p>
+<h4 id="刪除標籤">*刪除標籤</h4>
+<p>使用 <code>git tag -d &lt;標籤名&gt;</code>即可</p>
+<h4 id="上傳至遠端">*上傳至遠端</h4>
+<p>對git來說，<b style="color:red; " >tag也算一個分支，只是他必定指向一個commit而已</b>，因此當上傳沒有指定他時，並不會自動上傳，需要輸入<code>git push origin &lt;tagname&gt;</code></p>
+<h1 id="3">3. 分支介紹</h1>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="3-1"> 3-1 基礎介紹</h2> 
+<p><a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell">原文</a>
+分支(branching)功能通常存在於每個VCS中，他可以讓你避免搞砸主要開發線的同時開發其他測試功能。</p>
+<p>但是git有別於其他系統，git擁有快速、低成本的branching功能，這也是他能在其他VCS中脫穎而出的關鍵功能(killer feature)，接下來讓我們從git底層去了解git的分支功能。</p>
+<h3 id="三種物件-與-儲存架構">三種物件 與 儲存架構</h3>
+<p>git 在儲存檔案上，會使用到三種物件，亦即commit , tree 與 blob<br>
+每個物件都會由SHA-1賦予獨特的一個40字元的編碼。</p>
+<div style="padding-left: 45%;" >commit物件</div>  
+<p>除了會記錄作者、時間、commit訊息&hellip;等基本資料，也會記錄<b style="color:red; " >專案根目錄的tree物件指標</b>，也就是抽象的snapshot</p>
+<p>同時，commit會再用一個指標指向它們的parent，<b style="color:red; " >也就是前一狀態的commit物件</b>，有趣的是，commit物件通常只有一個parent，但還是有其他可能<br>
+當commit是第一個時，會有0個parent<br>
+當commit是被合併後的結果時，會有多個parent</p>
+<div style="padding-left: 45%;" >blob物件</div>  
+<p>記錄檔案內容的物件，是這個物件儲存樹架構的末端節點</p>
+<div style="padding-left: 45%;" >tree物件</div>  
+<p>每個資料夾都會被記錄成tree物件，會紀錄多個指標，指向其內容物</p>
+<p>因為資料夾內往往還會有資料夾，所以tree物件可以內含blob與tree物件</p>
+<p>用表達式可以寫成   <code>tree := tree | blob </code></p>
+<p>這三種物件可以構成一個專案的儲存架構<br>
+下圖是一個例子</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_8.PNG" style="width:400px;height:350px">
+</div>
+<h3 id="談談甚麼是branch">談談甚麼是branch</h3>
+<p>所有的branch在git裡都只是<b style="color:red; " >指向某個commit的指標</b>而已! 事實上，tag也是指向commit的指標，所以在上傳遠端時才也需要指定tag，它可以視為只有一個commit的branch。</p>
+<p>如下圖</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_9.PNG" style="width:500px;height:350px">
+</div>
+<p>說明:</p>
+<ul>
+<li>snapshot就是tree物件、blob物件組成的樹狀結構</li>
+<li>master是一個特別的分支，因為在git init時就會預設好，由於通常大家不怎麼會去改名它，所以通常專案都會用master作為主分支</li>
+<li>HEAD pointer會指向<b style="color:red; " >當前版本的分支pointer</b>作為識別</li>
+<li>master等分支pointer與HEAD pointer在新的commit物件產生後，會<b style="color:red; " >自動移動</b>指向新的commit物件</li>
+</ul>
+<p>(重點概念: 分支、tag是指向commit的pointer ， HEAD是指向commit pointer 的pointer )</p>
+<h3 id="branch創造的流程">branch創造的流程</h3>
+<p>以下用一個例子來解說實際上造成分支版本差異的流程<br>
+第一步:  創造另一個分支，也就是創造一個指向當前commit的pointer<br>
+此時兩個版本未有任何差異。</p>
+<p>第二步:  切換到另一個分支，也就是移動HEAD指向新分支pointer。</p>
+<p>第三步:  在新的分支進行commit，也就是創建一個新的commit物件，並將它指回原版本，然後也將其資料夾、檔案用tree,blob物件記錄(並且SHA-1 hash過)<br>
+此時 兩分支差異 與 一般上下版本 差異是相同的。</p>
+<p>第四步:  切換回原分支，再進行一次commit，此時就能發現兩分支會出現差異了!</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_10.PNG" style="width:500px;height:350px">
+</div>  
+<h3 id="實際指令">實際指令</h3>
+<ul>
+<li>
+<p>創造新分支使用<code>git branch &lt;branch_name&gt;</code></p>
+</li>
+<li>
+<p>查看所有分支使用<code>git branch</code><br>
+此外還可以加上<code>-v</code>參數查看branch最近的commit 
+加上<code>--merged</code>或<code>--no-merged</code>列出有被merge過或沒被merge過的分支 (方便刪除)</p>
+</li>
+<li>
+<p>切換分支使用<code>git switch &lt;branch_name&gt;</code>
+(舊版本用 <code>git checkout &lt;branch_name&gt;</code>)</p>
+</li>
+<li>
+<p>刪除分支<code>git branch -d &lt;branch_name&gt;</code></p>
+</li>
+<li>
+<p>改分支名<code>git branch --move &lt;old_branch&gt; &lt;new_branch&gt;</code></p>
+</li>
+</ul>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="3-2"> 3-2 分支合併</h2>
+<p><a href="https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging">原文</a></p>
+<p>接下來將探討如何將分支合併，比如解決一個bug,或完成開發版本 需要與原版本結合時 
+可以使用</p>
+<p>能用<code>git merge &lt;branch_name&gt;</code>完成這項工作<br>
+並且使用這個指令的分支為合併主線，將會移動合併主線的pointer到commit結果</p>
+<p>用以下例子說明</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_11.PNG" style="width:1000px;height:350px">
+</div>  
+<h3 id="fast-forward">Fast-Forward</h3>
+<p>若想要將master與hotfix合併，會先切換到master，然後輸入<code>git merge hotfix</code><br>
+得到以下結果</p>
+<pre><code>Updating f42c576..3a0874c
+Fast-forward
+ index.html | 2 ++
+ 1 file changed, 2 insertions(+)
+</code></pre><p>就會看到一種merge類型:Fast Forward<br>
+這表示git合併的方式<b style="color:red; " >不會創造新的snapshot，單純的將master往下移動到hotfix的位置</b>，如下圖</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_12.PNG" style="width:1000px;height:350px">
+</div>  
+這會發生在合併的兩個分支有<b style="color:red; " >上下關係</b>的時候。  
+<p>完成合併後，可以將hotfix這個分支(再次強調，分支只是一個指標)移除。</p>
+<h3 id="three-way-merge">Three-way merge</h3>
+<p>若想要將上圖的iss53與master合併，則一樣先切換到master，再輸入<code>git merge iss53</code><br>
+得到以下結果</p>
+<pre><code>Merge made by the 'recursive' strategy.
+index.html |    1 +
+1 file changed, 1 insertion(+)
+</code></pre><p>此時commit history會變更為以下情形</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_13.PNG" style="width:1000px;height:350px">
+</div>  
+git 因為發現iss53與master指向的commit並不是上下關係(祖孫關係)，因此會採用"雙方的共同祖先"(C2) 與 master(C4)、iss53(C3) <b style="color:red; " >進行三方合併，並且將新的結果紀錄為新的commit</b>  
+<h3 id="merge-conflict">merge conflict</h3>
+<p>多數情況git會自動的完成merge，但當兩個分支修改了相同的地方，(比如修改了同一行、或刪除了另一個分支的檔案)，這時git會提醒你需要手動解決merge conflict</p>
+<p>首先，會收到類似以下的訊息，告知你自動merge失敗了，然後git會 <b style="color:red; " >暫停整個過程，留下部分merge結果與衝突的檔案等待修正</b></p>
+<pre><code>Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.
+</code></pre><p>此時可以輸入<code>git status</code>查看狀況，比如以下結果</p>
+<pre><code>On branch master
+You have unmerged paths.
+  (fix conflicts and run &quot;git commit&quot;)
+
+Unmerged paths:
+  (use &quot;git add &lt;file&gt;...&quot; to mark resolution)
+
+    both modified:      index.html
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre><p>就可以發現在哪個檔案、又為甚麼發生conflict</p>
+<p>接著打開發生問題的檔案，找到conflict處，會看到以下內容</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:index.html
+&lt;div id=&quot;footer&quot;&gt;contact : email.support@github.com&lt;/div&gt;
+=======
+&lt;div id=&quot;footer&quot;&gt;
+ please contact us at support@github.com
+&lt;/div&gt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; iss53:index.htm
+</code></pre><p>conflict記錄的格式都會是如此，以=======區分兩個分支的內容 <br>
+在此例子中，HEAD內容在上半部，iss53內容在下半部<br>
+這時就可以讓你進行手動選擇要留下哪些內容</p>
+<p>(記得改完也要刪除 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> <code>=======</code> 部分)</p>
+<p>最後再記得進行<code>git add </code>  <code>git commit</code> 即可完成merge</p>
+<h3 id="merge-conflict-進階技巧">merge conflict 進階技巧</h3>
+<p>1.放棄merge<br>
+當merge發生衝突，又想晚一點再處理<br>
+可以使用 <code>git merge --abort</code></p>
+<p>2.忽略空白<br>
+很常發生merge衝突原因出在沒意義的空白上，因此git提供兩種指令<br>
+<code>-X ignore-all-space</code><br>
+忽略所有的空白差異</p>
+<p><code>-X ignore-space-change</code>
+則是將一個空白與多個空白視為相同</p>
+<p>3.選擇一邊<br>
+如果發生二進位檔案，或是已經確定整個檔案該使用哪一邊<br>
+可以在merge conflict發生後<br>
+使用 <code>git checkout --ours &lt;file&gt;</code> 來選擇合併主線的檔案<br>
+或是 <code>git checkout --theirs &lt;file&gt;</code>來選擇合併對象的檔案</p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="3-3"> 3-3 雜項知識 - 遠端分支、rebase </h2>
+<p><a href="https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches">原文</a></p>
+<h3 id="遠端分支">遠端分支</h3>
+<p>當從遠端拉下一個被git監控的專案，git會自動幫你建立遠端分支(remote-tracking branch)，格式為<code>&lt;remote&gt;/&lt;branch&gt;</code>，比如常見的<code>origin/master</code>，並且也會幫你建立預設的master分支</p>
+<p>如下圖</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_14.PNG" style="width:1000px;height:350px">
+</div>  
+<p>可以觀察到在遠端看到的只會是該專案的master<br>
+但拉回本地端後，則會自動建立遠端的master(origin/master)與本地端的master</p>
+<p>遠端的分支(Again,一個commit pointer)在本地端是<b style="color:red; " >無法主動移動的</b>，其功能類似tag，告訴使用者(上一次更新後)遠端的進度在哪裡，只有在下一次遠端pull回來更新後，遠端分支才會移動到他的位置</p>
+<p>至於同步遠端的方法與指令，在2-4遠端管理已說明過</p>
+<h3 id="rebase">rebase</h3>
+<p>rebase基本上作用與merge是相同的，也就是結合兩個分支</p>
+<p>但是使用rebase可以得到更乾淨的歷史紀錄<br>
+如下圖</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_16.PNG" style="width:1000px;height:200px">
+</div>  
+<p>原本experiment分支指向C4，接著輸入<code>git rebase master</code><br>
+會與<code>git merge master</code>一樣得到一個新的commit，並將合併主體的ref移至新的commit<br>
+但不一樣的是<b style="color:red; " >合併主體的歷史紀錄會消失</b>，留下更乾淨的線性歷史紀錄</p>
+<p>但是當分支存重要的commit紀錄、或是分支有重要的意義(比如開發新功能時)，非常不建議使用rebase，這會讓那些紀錄消失</p>
+<p>所以，merge還是rebase?
+這個問題答案端看你怎麼理解當前的git history<br>
+這裡提供一個看法<br>
+<b style="color:red; " >以備份角度，應當使用merge以留下紀錄,而以作品角度，應當使用rebase以保持整潔。</b></p>
+<h1 id="4">4. git 底層</h1>
+<p>學習git底層，除了可以更加瞭解git運作原理以外，也有機會能自己寫script個人化甚至最佳化git的使用。</p>
+<p>git會創建.git資料夾紀錄專案的所有歷史、以及輔助用的資料(比如 stage中的檔案)<br>
+因此要探究git底層就必須了解.git資料夾</p>
+<p>以下是一個新的專案，在輸入<code>git init</code>開始監控後，.git資料夾預設的內容</p>
+<pre><code>config
+description
+HEAD
+hooks/
+info/
+objects/
+refs/
+</code></pre><p>*<code>config檔案</code>在<a href="#1-3" >1-3:Git設定檔簡介</a>已介紹過<br>
+會記錄<code>git config</code>所輸入的設定，並以toml格式儲存在此</p>
+<p>*<code>description檔案</code>會記錄這個專案的簡介</p>
+<p>*<code>hooks資料夾</code>會放置個人化設定的小程式，<a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">參考原文書</a></p>
+<p>*<code>HEAD檔案</code>如其名、會寫入HEAD指向的commit的檢查碼</p>
+<p>*<code>info資料夾</code>內會有exclude資料夾，放置<code>.gitignore檔案</code>中不想被記錄的檔案pattern</p>
+<p>*<code>objects資料夾</code>則是database的核心，存放儲存的三種物件的內容</p>
+<p>*<code>refs資料夾</code>則會記錄各個tag , branch , remote &hellip; 等參考點</p>
+<p>*此外等有一些內容後，也會有 <code>index檔案</code> 紀錄 staging area的資訊</p>
+<p>以下將著重介紹比較重要的底層概念</p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="4-1"> 4-1 .SHA-1演算法 與 git物件</h2>
+<p><a href="http://www.tsnien.idv.tw/Security_WebBook/security.htm">參考資料 - 資訊與網路安全技術：第四章 雜湊與亂數演算法</a>
+<a href="https://crypto.stackexchange.com/questions/2144/does-the-sha-hash-function-always-generate-a-fixed-length-hash">參考資料 - SHA演算法結果一定是固定長度嗎</a></p>
+<h3 id="為甚麼要使用sha-1">為甚麼要使用SHA-1</h3>
+<p>複習:</p>
+<ol>
+<li>git會用blob物件紀錄檔案內容、tree物件紀錄資料夾、commit物件紀錄每一次snapshot</li>
+<li>git物件都會有一個檢查碼(checksum)，由40個16進位數字組成</li>
+</ol>
+<p>SHA 為 Secure Hash Algorithm 的縮寫，簡單來說是一個加密演算法，而git在此則把它當作一個壓縮函數，用來節省紀錄成本與檢查碼</p>
+<p>SHA-1可以輸入<b style="color:red; " >不限長度的訊息，並得到固定160bit長度的輸出</b>，(此輸出也被稱為訊息摘要)，這訊息摘要也就是<b style="color:red; " >git的檢查碼</b>，檢查碼是由40個16進位組成，也SHA-1加密後的160bit信息摘要</p>
+<p>SHA-1具有一個好的hash function應有的特性，不同內容的明文擁有相同輸出的機率很低，所以適合作檢查碼 &mdash; <b style="color:red; " >40長度的檢查碼相同 =&gt; 基本確認檔案內容相同 </b>，不用一一核對內容</p>
+<h3 id="sha-1概念上怎麼做的">SHA-1概念上怎麼做的</h3>
+<p>首先將 以bit表示的明文(內容) + 64bit的長度資訊 + 調整長度至512倍數的部分 
+每512bit切成一個<b style="color:red; ">區塊</b></p>
+<p>附註:</p>
+<ol>
+<li>
+<p>調整長度是為了讓整個值變成512的倍數，比如今天有136bit的明文、64bit長度資訊，
+則需有 512 - (136+64) = 312 位元的調整長度</p>
+</li>
+<li>
+<p>長度資訊讓我們知道，演算法加密最長明文可以到 $2^{64}$ bit大小</p>
+</li>
+</ol>
+<p>接著將輸出結果(訊息摘要)設一個初始值，然後透過<b style="color:red; ">迭代的使用函數，輸入區塊與訊息摘要，將訊息摘要不斷更新，直到所有區塊完成，最後結果就是160bit的訊息摘要</b></p>
+<p>以下虛擬碼解釋</p>
+<pre><code>Output = 67452301EFCDAB8998BADCFE10325476C3D2E1F0  #初始的160bit值
+for block in all512LenthBlock:  #對不定長度的明文切割好的每一區塊
+    Output = HashFunction(Output , block)
+</code></pre><p>以下圖解</p>
+<div style="text-align:center">
+<img src= "/unix/git_book_17.png" style="width:900px;height:250px">
+</div>  
+<p>因此可以看出，就算長度不定，檢查碼也仍會是160bit</p>
+<p>更深入說一點</p>
+<ol>
+<li>160bit會被拆成5個32bit的輸入，並各自有計算方式</li>
+<li>每一個block其實還會被擴充成80份32bit，並且17~80份會以前16份(512bit原始區塊資料)製造出來 (這個步驟被稱為訊息擴充，是為了增加保密性)</li>
+<li>事實上每一次HashFunction的計算就會吃入6個暫存器的資料，即5個160bit訊息摘要字串與1份小block</li>
+<li>HashFucntion會加入常數(鹽值 salt value)、做shift、以及使用4個邏輯函數去進行雜湊</li>
+</ol>
+<h3 id="sha-1-碰撞">SHA-1 碰撞</h3>
+<p>這個小節來探討SHA-1發生碰撞的概率 &mdash; 意即不同物件產生同一個160bits的機率</p>
+<p>先分析一個特定物件與另一個特定物件碰撞的機率，為 $1/2^{160}$<br>
+接著，所有物件都有可能是那兩個&quot;特定物件&rdquo;，因此要探討n個物件裡，任選兩個，然後碰撞<br>
+因此發生在n個物件中，至少發生一次碰撞的機率為${n \choose 2} * 1/2^{160}$</p>
+<p>令機率為50%，可以求出n大約等於$2^{80}$</p>
+<p>用個例子來說，地球上每個人類，在每秒commit Linux Kernel的檔案(上百萬行程式)，也需要花兩年時間才有50%的機率發生一次碰撞</p>
+<p>因此基本上可以不用擔心碰撞問題</p>
+<p>然而若真的發生碰撞，git會誤以為新的檔案已在資料庫裡，而不更新新的程式</p>
+<h3 id="git-底層如何儲存物件">git 底層如何儲存物件</h3>
+<p>git是以 key-value的資料庫方式去儲存物件的內容，key就是經過SHA-1過後的160bit檢查碼，value就是物件內容</p>
+<p>而這個資料庫被放在<code>.git/objects</code>資料夾中</p>
+<p><code>.git/objects</code>會以40個16進位檢查碼的前兩個分資料夾，裡面再放剩下的38個16進位碼長度命名的檔案，檔案內容就是物件的2進位碼</p>
+<p>底層指令<code>git hash-object</code>可以讓你將任意內容的檔案紀錄進objects資料庫(資料夾)<br>
+也是<code>git commit</code>後的pipe部件之一</p>
+<p>以下是一個例子
+Example</p>
+<pre><code>$ echo 'test content' | git hash-object -w --stdin
+d670460b4b4aece5915caf5c68d12f560a9fe3e4
+</code></pre><p>其中 -w 會將結果放入objects資料夾中， &ndash;stdin則會將結果輸出在畫面上</p>
+<p>底層指令<code>git cat-file</code>可以將檢查碼去<b style="color:red; " >資料庫內查詢</b>(注意，不是將檢查碼還原，沒那麼厲害XD，也不是給定任意hash都可以有結果，需要紀錄在資料庫內才行)，得到物件的binary紀錄，然後顯示出來</p>
+<p>以下是一個例子
+Example</p>
+<pre><code>$ git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4
+test content
+</code></pre><p>註:
+-p 參數可以查看物件內容<br>
+-t 參數可以查看物件type ( tree , blob , commit)</p>
+<h3 id="git-清理機制">git 清理機制</h3>
+<p>git 有提供 <code>git gc</code> 與 config中有<code>gc.auto</code>、<code>gc.autopacklimit</code>等參數設定<br>
+可以在檔案太大時將重疊的檔案(如上下版本關係)合併(package)，以節省空間</p>
+<p>正常情況下git會記錄各版本檔案所有內容(即使只加一行，也會重新再記一份)，頂多再壓縮一次，這種紀錄方式稱為loose object</p>
+<p>當loose object超過7000個，或是你主動使用git gc 指令，git就會幫你將類似的檔案package，讓上下版本只記錄其差異</p>
+<p>git實作這套方法的概念為: 尋找上下版本間檔案大小類似、檔名相同者 (所以不宜隨意更改檔名)</p>
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="4-2"> 4-2 git REF: 節點的名字</h2>
+<p>複習</p>
+<ol>
+<li>git 是一個key-value的資料庫系統</li>
+<li>git的key是由SHA-1依物件內容的二進位檔進行加密，value則是二進位檔本身</li>
+<li>每個commit都是一個物件</li>
+</ol>
+<p>所以，可以用40長度的檢查碼唯一定位到一個commit，也就是一個版本<br>
+branch , tag 也是此原理<br>
+(當然，git也允許用縮短版的檢查碼去定位，只要縮短版沒有ambiguous，通常用前7碼)</p>
+<p>而git可以幫檢查碼取人類比較好記的代號(就像DNS一樣)，比如branch會有master , developed，HEAD代表當前commit&hellip;)</p>
+<p>這些代號以檔名儲存在<code>.git/refs</code>中，並且這些檔案裡面即紀錄40長度的檢查碼</p>
+<p>git 也提供<code>git update-ref</code>指令讓你修改ref內容</p>
+<pre><code>git update-ref refs/heads/master 1a410efbd13591db07496601ebc7a059dd55cfe9
+</code></pre><!--   
+圖片置中
+
+<div style="text-align:center">
+<img src= "git_book_1.PNG" style="width:400px;height:350px">
+</div>
+  
+小節大標題
+<h2 style="text-align:center; font-weight:bold; color:crimson" id="2-4"> 2-4 git遠端管理 </h2> 
+
+
+紅字重點
+
+<b style="color:red; " >problem 1 </b> 
+
+
+
+        </div>
+
+
+
+        <footer class="post-footer">
+                
+                
+                
+        
+                
+                
+                
+        </footer>
+        
+<table cellspacing="15" style="width:100%; border: none;">
+    <tr>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+        <td style="text-align: center; border: none; padding: 0px;">
+        </td>
+    </tr>
+</table>
+
+        
+    </article>
+
+    
+
+</main>
+
+
+        <div class="sidebar1 widgets columns-1">
+    
+    
+    <div class="sidebar-item sidebar-pages">
+    <p align="center" style="height:50%;
+                margin:5px;
+                width: 100%;
+                height:100%"
+                >
+                    存放文章數:
+                    51 </p>
+     </div>
+
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>連結</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-category">
+        <h3>分類</h3>
+        <ul>
+            
+            <li>
+                <a href="/index/c_lang">C/C&#43;&#43;語言筆記</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/device_driver">Device Driver系列</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/web">網頁與爬蟲相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/course">課程筆記備份區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/misc">雜記區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/unix">Unix/Vim/bash區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/os">作業系統區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/machine_learning">機器學習區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/algorithm">演算法X資料結構區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/discretemath">離散數學</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+            <li>
+                <a href="/index/hugo">hugo相關區</a>
+                <br> ============= <br>
+                     
+            </li>
+            
+                   
+                   
+        </ul>
+    </div>
+
+    
+</div>
+        </div>
+        </div>
+<footer role="contentinfo" class="document-footer contentinfo widgets columns-1">
+
+    <aside class="widget widget_text">
+        <div class="textwidget">
+            <p>© Little Cube`s box / Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with theme <a href="https://github.com/tosi29/inkblotty" target="_blank">Inkblotty</a></p>
+        </div>
+    </aside>
+</footer>
+</div>
+
+    </body>
+</html>

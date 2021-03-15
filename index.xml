@@ -6,7 +6,7 @@
     <description>Recent content on Little Cube`s box</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
-    <lastBuildDate>Wed, 23 Dec 2020 00:40:20 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 15 Mar 2021 11:02:13 +0800</lastBuildDate>
     
 	<atom:link href="https://littlecube2019.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -495,6 +495,15 @@
       
       <guid>https://littlecube2019.github.io/discretemath/probability_2/</guid>
       <description>離散機率複習篇</description>
+    </item>
+    
+    <item>
+      <title>git基礎功能研究</title>
+      <link>https://littlecube2019.github.io/unix/git_book_translate/</link>
+      <pubDate>Mon, 15 Mar 2021 11:02:13 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/unix/git_book_translate/</guid>
+      <description>參考教學書，了解git基本概念、使用與底層</description>
     </item>
     
     <item>
