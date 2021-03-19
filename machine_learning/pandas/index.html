@@ -3,7 +3,7 @@
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
-    <title>pandas套件介紹 - 表格資料處理好工具 - Little Cube`s box</title>
+    <title>pandas使用手冊 - 表格資料處理好工具 - Little Cube`s box</title>
 
     <style type="text/css">
         img.wp-smiley,
@@ -24,16 +24,16 @@
     <link rel='stylesheet' href='/css/syntax.css' type='text/css' media='all' />
     <link rel='stylesheet' href='/css/toc.css' type='text/css' media='all' />
     
-    <meta property="og:title" content="pandas套件介紹 - 表格資料處理好工具" />
-<meta property="og:description" content="pandas套件介紹" />
+    <meta property="og:title" content="pandas使用手冊 - 表格資料處理好工具" />
+<meta property="og:description" content="pandas基礎使用介紹" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://littlecube2019.github.io/machine_learning/pandas/" />
 <meta property="article:published_time" content="2020-08-20T00:02:13+08:00" />
 <meta property="article:modified_time" content="2020-08-20T00:02:13+08:00" />
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="pandas套件介紹 - 表格資料處理好工具"/>
-<meta name="twitter:description" content="pandas套件介紹"/>
+<meta name="twitter:title" content="pandas使用手冊 - 表格資料處理好工具"/>
+<meta name="twitter:description" content="pandas基礎使用介紹"/>
 
 </head>
 
@@ -110,7 +110,7 @@
 <main role="main">
     <article role="article" class="post type-post format-standard hentry">
         <header class="post-header">
-            <h1>pandas套件介紹 - 表格資料處理好工具</h1>
+            <h1>pandas使用手冊 - 表格資料處理好工具</h1>
             <div class="post-details">
                 <a rel="bookmark">
                     <time datetime="2020-08-20T820:122:136">2020-08-20</time>
@@ -120,63 +120,305 @@
         </header>
 
         <div class="post-content">
-            <p>python中的pandas是專門為矩陣型的表格式資料設計的套件<br>
+            <h1 id="前言">前言</h1>
+<p>python的pandas是專門為矩陣型的表格式資料設計的套件 
 可以由pip install 安裝</p>
-<h1 id="series-和-dataframe-物件">Series 和 DataFrame 物件</h1>
-<p>這是兩大最常使用的pandas物件，其中又以DataFrame為主要使用物件</p>
-<h3 style="color:crimson">Series</h3>
-就是一種python的dictionary，但不指定key(index)的情況下跟list表現類似<br> <br>    
-<p align="center">*預設類似list*</p>
+<p>此文希望紀錄我實作時比較常用到的功能</p>
+<div style="background-color:#DCDCDC; width:30%; border-style: solid;">
+目錄 
+<br>
+<a href="#1" style="padding-left: 8%;">1. 讀寫檔案 與 基本操作 </a>
+<br>
+<a href="#2" style="padding-left: 8%;">2. 依條件選取資料</a>
+<br>
+<a href="#3" style="padding-left: 8%;">3. pandas繪圖</a>
+<br>
+<a href="#4" style="padding-left: 8%;">4. 前處理 與 資料清洗</a>
+<br>
+<br>
+<a href="#summary" style="padding-left: 8%;">重點統整</a>
+<br>
+</div>
+<h1 id="1">一.讀寫檔案與基本操作</h1>
+<h3 id="讀取檔案">讀取檔案</h3>
+<p>pandas可讀取常見的檔案，並自動轉換為pandas內的DataFrame物件<br>
+例如提供 <code>read_csv(&lt;file_name&gt;)</code>,<code>read_json(&lt;file_name&gt;)</code>,<code>read_html(&lt;file_name&gt;)</code>,等函式</p>
+<p>以下使用kaggle的<a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data?select=train.csv">經典房價預測</a>問題的資料集進行測試</p>
 <pre><code>import pandas as pd
-s1 = pd.Series([1,2,3,4])
-print(s1)
-</code></pre><p>會有以下結果</p>
-<pre><code>0    1
-1    2
-2    3
-3    4
-4    5
-dtype: int64
-</code></pre><p>其中第一排是s1的index<br>
-第二排則是資料本身</p>
-<p>所以可以使用0-4 去取用這五筆資料，在此情況下可以用跟list slice相同的方式去取用這些資料</p>
-<p>如: [1:3],[:3],[1:5:2]</p>
-<p>但是無法使用-1 等負數作為key</p>
-<p align="center">*指定index類似dictionary*</p>
-<pre><code>import pandas as pd
-s2 = pd.Series([10,20,30,40],index=[&quot;今天&quot;,&quot;明天&quot;,&quot;後天&quot;,&quot;大後天&quot;])
-print(s2)
-</code></pre><p>會有以下結果</p>
-<pre><code>今天     10
-明天     20
-後天     30
-大後天    40
-dtype: int64
-</code></pre><p>可以使用s2[&ldquo;今天&rdquo;],s1[&ldquo;後天&rdquo;] 等方法去取用</p>
-<p>當然也可以直接丟入dictionary作為參數，即可直接得到一樣的結果</p>
-<h3 style="color:crimson">DataFrame</h3>
-用來處理多維的table型資料，也是此套件中在大機器學習時代中最常被使用到的物件
-<p>以下是各操作簡易介紹</p>
-<p align="center">*初始化  -- 使用dictionary*</p>
-<pre><code>dic = {&quot;x1&quot;:[1,2,3,4,5],&quot;x2&quot;:[1,3,5,7,9],&quot;y&quot;:[2,4,6,8,10]}
-
-df = pd.DataFrame(dic)
-df
-</code></pre><p>結果如下圖:</p>
-<div style="text-align:center"><img src="/machine_learning/pandas_1.PNG" ></div>
-<p align="center">*改表格表頭 -- 使用class中的rename*</p>
-<pre><code>df = df.rename({&quot;x1&quot;:&quot;test&quot;,&quot;x2&quot;:&quot;testtest&quot;},axis=1)
-df
-</code></pre><p>結果如下圖:</p>
-<div style="text-align:center"><img src="/machine_learning/pandas_2.PNG" ></div>
-<p>說明:<br>
-1.第一個參數是吃一個{替代前:替代後}的dictionary，會在指定axis中尋找符合&quot;替代前&quot;的名字並進行替換，若找不到則不執行</p>
-<p>2.第二個參數指定要改的表頭，axis=0為row , axis=1為column<br>
-(但注意改column看起來會像把第一個row改掉)</p>
-<p>所以當然也可以用 df = df.rename({0:5,1:6},axis=0) 去改動index的表頭  (注意index預設是整數型態，因此&quot;0&quot;改不到任何東西)</p>
-<ol start="3">
-<li></li>
+df = pd.read_csv(&quot;train.csv&quot;)  #下載並放在同個資料夾的測試集
+</code></pre><p>df就會得到整個表格的DataFrame</p>
+<p>當前處理完畢，如果想要重新輸出一份檔案<br>
+也有 <code>df.to_csv(&lt;file_name&gt;)</code>,<code>df.to_json(&lt;file_name&gt;)</code>,<code>df.to_html(&lt;file_name&gt;)</code> 可供使用</p>
+<h3 id="初步了解data">初步了解Data</h3>
+<p>接著pandas也提供幾個函式初步查看表格資料<br>
+比如<br>
+<code>df.info()</code>會輸出<b style="color:red; " >各個coloumn的名稱、type、多少個非null值，以及有多少column等資料</b>，方便綜覽整個表格在紀錄甚麼</p>
+<p><code>df.describe()</code>則會輸出數值型資料的個數、最大、最小、平均、標準差、四分位數 等<b style="color:red; " >基本統計數值</b>，方便了解整個數值分佈</p>
+<p>以上函式也是回傳DataFrame，因此想查看特定行也是能直接取用的，
+以kaggle資料集為例，想看看土地面積的統計量，可以使用
+<code>df.describe()[&quot;LotArea&quot;]</code></p>
+<p>了解基本資訊後，也提供<code>df.head()</code> 與 <code>df.tail()</code> 取出前後幾列看看幾個例子，括號內可以放整數參數決定取幾列</p>
+<h3 id="取用data的部分">取用Data的部分</h3>
+<h4 style="text-align:center; font-weight:bold" > 1. 直觀方法 </h4> 
+<p>接下來可能需要分析特定幾筆數據、幾個特徵，因此需要了解怎麼選取行列</p>
+<p>基本上可以把DataFrame看作是一個<b style="color:red; " >key對應到numpy array 的dictionary </b><br>
+比如:<br>
+<code>{&quot;姓名&quot;:[&quot;小明&quot;,&quot;小美&quot;],&quot;成績&quot;:[&quot;100&quot;,&quot;60&quot;],&quot;性別&quot;:[&quot;男&quot;,&quot;女&quot;]}</code></p>
+<p>因此想要看任一行的資料，只需要 <code>df[&quot;標籤名&quot;]</code><br>
+其中又要看第n列的資校，只需要<code>df[&quot;標籤名&quot;][n]</code>，當然也可以用list slice選取多列</p>
+<p>比較特別的是</p>
+<ol>
+<li>
+<p>如果要看不指定行的第n列，需要使用list slice(如<code>df[n:n+1]</code>)，否則pandas會以為你要找標籤名==n的行而回報錯誤(key error)</p>
+</li>
+<li>
+<p>如果要選取多行，則可以傳一個標籤名的list，比如 <code>df[ [&quot;姓名&quot;,&quot;成績&quot;] ]</code></p>
+</li>
 </ol>
+<p>以kaggle資料為例，若要查看第51到100筆的 MSZoning 與 LotFrontage 可以使用</p>
+<pre><code>df[[&quot;MSZoning&quot;,&quot;LotFrontage&quot;]][50:100]
+</code></pre><h4 style="text-align:center; font-weight:bold" id="loc"> 2. 使用內建屬性 </h4> 
+<p>pandas也內建屬性供選擇行列，即為<code>loc</code>與<code>iloc</code><br>
+<code>loc</code>代表location，可以使用df.loc[起始列數:終止列數 , 起始標籤名:終止標籤名]<br>
+比如kaggle資料集例子</p>
+<pre><code>df.loc[5:10, &quot;MSZoning&quot;:&quot;LotShape&quot;]  
+</code></pre><p>就能取出第2行(&ldquo;MSZoning&rdquo;)到第8行(&ldquo;LotShape&rdquo;)，的第5列到第10列資料，共36個欄
+位<br>
+而<code>iloc</code>代表interger location, 也就是將loc行標籤名換成行號的版本，使用格式為
+<code>df.loc[起始列數:終止列數 , 起始行數:終止行數]</code><br>
+所以以下列子與loc得到的結果會是一模一樣的</p>
+<pre><code>df.loc[5:10, 2:8]  
+</code></pre><ul>
+<li>特別提醒
+<ol>
+<li>df的loc與iloc的使用方式很像list slice，但是有包含終止index</li>
+<li>loc , iloc 是property,而非method，因此不須加( )</li>
+</ol>
+</li>
+</ul>
+<h1 id="2">二 依條件選取資料 </h1>
+<p>這一小節會介紹pandas類似資料庫的select功能，是為了接下來的前處理做準備，因為前處理可能針對不同條件的資料做個別處理(比如: 數值與屬性資料、極端值資料、空值資料 &hellip;)</p>
+<p>注意以下method大部分都會回傳DataFrame，因此和pyquery或字串處理一樣可以用chain的方式連用</p>
+<h3 id="依位置選取">依位置選取</h3>
+<p>已在<a href="#loc">上一節</a>介紹過loc與iloc可供使用</p>
+<h3 id="依型態選取">依型態選取</h3>
+<p>pandas提供<code>df.select_dtypes()</code>，並有exclude, include參數方便選取或反向選取，以分開不同類型的資料</p>
+<p>而Pandas的資料型態是參照numpy的，<a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/basics.html#basics-dtypes">資料型態參考這裡</a></p>
+<p>要<b style="color:red;"> 選取 </b> 特定類型資料，可以用<code>df.select_dtypes(include=[&lt;your_type_list&gt;])</code><br>
+比如:<br>
+<code>df.select_dtypes(include=[&quot;int64&quot;,&quot;float64&quot;])</code><br>
+會選取表格內是int或float的資料</p>
+<p>要<b style="color:red;"> 去除 </b> 特定類型資料，可以用<code>df.select_dtypes(exclude=[&lt;your_type_list&gt;])</code>
+比如:<br>
+<code>df.select_dtypes(exclude=[&quot;int64&quot;,&quot;float64&quot;])</code> <br>
+就不會選取表格內是int或float的資料</p>
+<p><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.select_dtypes.html">官方文檔</a></p>
+<h3 id="依判斷式選取">依判斷式選取</h3>
+<p><code>df[判斷邏輯式]</code>即可輕鬆選取符合判斷式的資料，這是非常實用的技巧</p>
+<p>判斷邏輯式 由以下規則組成</p>
+<pre><code>判斷式 := (判斷式) [&amp;,|] (判斷式)
+判斷式 := [df.標籤名] [判斷符] [值]
+</code></pre><p><b style="color:red; " >重要1: 多個判斷式要用括號包住</b> <br>
+<b style="color:red; " >重要2: 判斷式之間要用&amp;,| 而非and , or !</b></p>
+<p>比如</p>
+<pre><code>boy = df.age &lt; 18 &amp; df.sex = &quot;male&quot;
+pass = df.grade == &quot;A&quot; | df.grade == &quot;B&quot; | df.grade == &quot;C&quot;  
+</code></pre><ul>
+<li>Note</li>
+</ul>
+<ol>
+<li>此技巧也被稱為mask</li>
+<li>df的query函式可以得到相同的結果</li>
+<li>上述例子也可以看到這些邏輯判斷式是可以紀錄成變數的<br>
+使用時可以這樣使用 <code>df[boy]</code></li>
+</ol>
+<p>以範例資料集為例，我們可以使用<code>df[(df.LotArea&gt;8000) | (df.Street == &quot;Pave&quot;)]</code>來取得土地面積大於8000平方英吋、街道有鋪路的資料</p>
+<h3 id="丟棄資料">丟棄資料</h3>
+<p>pandas提供<code>df.drop()</code>來指定丟棄指定欄位，回傳drop指定欄位後的dataframe</p>
+<p>參數可以依row number list、標籤list指定，並由axis參數決定行或列(但不能使用list slice)<br>
+<b style="color:red; " >axis=0 表示由上而下的操作，所以會刪除橫向的列</b><br><b style="color:red; " >axis=1表示由左而右的操作，所以會刪除直向的行</b></p>
+<p>舉例說明<br>
+現在有一個dataframe如下</p>
+<pre><code>   A  B   C   D
+0  0  1   2   3
+1  4  5   6   7
+2  8  9  10  11
+</code></pre><p><code>df.drop(['B', 'C'], axis=1)</code> 會刪掉 B C 兩行，留下</p>
+<pre><code>   A   D
+0  0   3
+1  4   7
+2  8  11
+</code></pre><p><code>df.drop([1,2],axis=0)</code> 會刪掉第1筆與第2筆的資料，留下</p>
+<pre><code>   A  B   C   D
+0  0  1   2   3
+</code></pre><h3 id="little_apply">其他技巧 與 整合應用 </h3>
+<p>以下會記錄一些比較細部的概念或技巧</p>
+<h4 style="text-align:center; font-weight:bold" > 1. 統計數值</h4> 
+<p>統計數值幾乎都有被pandas實作<br>
+比如平均數、標準差、眾樹、中位數、極值</p>
+<p>這裡提供一個例子，拿到所有數值資料的中位數，並取出LotArea的中位數，這個例子也同時示範chaining的技巧<br>
+Example:</p>
+<pre><code>df.select_dtypes(include=[&quot;int64&quot;,&quot;float64&quot;]).median()[&quot;LotArea&quot;]
+</code></pre><h4 style="text-align:center; font-weight:bold" > 2. 排序資料 </h4>
+<p>pandas提供 <code>df.sort_values</code> 讓我們針對列值進行排序<br>
+Example:</p>
+<pre><code>df.sort_values(&quot;LotArea&quot;) #針對土地大小排序，由小到大  
+</code></pre><h4 style="text-align:center; font-weight:bold" > 3. any與isnull -- 挑出空值  </h4>
+<p>以下會告知該行是否有null值，也可以做為mask的判斷式
+isnull()會讓整個表格轉換成True or False , 而真假與否取決於使否有null值<br>
+any()則會針對一列或一行做or運算    (當然也有all()可使用)</p>
+<pre><code>df.isnull().any(axis=1)
+</code></pre><h4 style="text-align:center; font-weight:bold" > 4. isin -- 挑出有特定值的資料 </h4>
+<p>理論上也可以用 <code>df.index == &quot;a1&quot; | df.index == &quot;a2&quot; | ... df.index == &quot;an&quot;</code>
+來辦到，但此方法明顯省時省力</p>
+<p><code>df.index.isin([&lt;value_list&gt;])</code>會將某行(標籤名指定那行)所有值有存在value list裡的列為True(看例子就很好理解)，搭配mask就能取出那些列的資料</p>
+<pre><code>shape = [&quot;Reg&quot;,&quot;IR1&quot;]
+df[df.LotShape.isin(shape)]  #選取土地形狀是 Reg 或是 IR1 的資料  
+</code></pre><h1 id="3">三. pandas繪圖</h1>
+<p>這一小節介紹如何用圖表呈現資料，這除了能幫助我們分析資料，更好的完成前處理步驟
+(如:極端值、imbalance &hellip;)，也能讓數據更直觀的呈現</p>
+<p>pandas基本上內建以matplotlib為底層的基本繪圖功能，也可以與Plotly, Seaborn,  Chartify 等較為高階的python資料視覺化工具搭配<br>
+<a href="http://jimmyhogan.com/learn/python/picking-the-best-python-graphs-for-beginners-plotly-seaborn-matplotlib-chartify/">參考:其他人對這四種繪圖工具的簡介</a></p>
+<h3 id="好用的seaborn">好用的Seaborn</h3>
+<p>這裡以Seaborn為範例
+首先用 <code>pip install Seaborn</code> 安裝，然後用<code>pip install -U seaborn</code>更新</p>
+<p>以下是一個例子</p>
+<pre><code>import seaborn as sns
+
+num_data = df.select_dtypes(&quot;number&quot;) #選取數值資料
+for i in num_data:
+    sns.relplot(x=i, y=&quot;SalePrice&quot;, data=num_data)
+</code></pre><p>可以看到能簡單使用relplot(關係圖)函式，畫出數值型特徵與預測目標SalePrice的關係圖<br>
+並且這個範例也告訴我們基本的參數使用</p>
+<p>預設為散佈圖，將參數kind=&quot;line&quot;加入可以變成折線圖</p>
+<p>此外也有displot(分布圖)與catplot(質性資料圖)等好用工具</p>
+<p><a href="https://seaborn.pydata.org/tutorial/relational.html#relational-tutorial">relplot教學</a><br>
+<a href="https://seaborn.pydata.org/tutorial/function_overview.html">基本教學</a></p>
+<h3 id="資料視覺化101">資料視覺化101</h3>
+<h4 style="text-align:center; font-weight:bold" > 1.定義 </h4>
+資料視覺化的定義可以參考這位大神的[文章](https://leemeng.tw/data-visualization-from-matplotlib-to-ggplot2.html)  
+<blockquote>
+<p>資料視覺化是將資料中的變數映射到視覺變數上，進而有效且有意義地呈現資料的樣貌
+同時目的是分析資料 與 呈現資料</p>
+</blockquote>
+<h4 style="text-align:center; font-weight:bold" >2. 各圖使用時機 </h4>
+基本上可以參考Seaborn官方基本教學提供的圖  
+<div style="text-align:center "><img style="width:500px; height:300px" src="/machine_learning/pandas_3.PNG"  ></div>
+<p>relplot 是數值與數值資料之間使用的，可以看出趨勢、相關性<br>
+displot 是數值 或 質性資料 使用的， 可以看出出現次數分布 (所以不用y參數)<br>
+catplot 是數值與質性資料之間使用的，可以看出質資料與數值之間關係</p>
+<h1 id="4">四. 前處理 與 資料清洗</h1>
+<p>在資料工程中，前處理與資料清洗有助於後續更好的應用，而Pandas自然也提供了許多此方面的功能</p>
+<h3 id="處理缺失資料">處理缺失資料</h3>
+<p>原始的數值資料中，常常可能會有缺失或空值(通常以NA(not applicable)或NAN(Not a number)表示)</p>
+<p>可以使用前幾節提過的基本技巧抓出缺失資料的比例，並繪製成圖</p>
+<pre><code>missing_rate = df.isnull().mean().to_frame(&quot;rate&quot;)
+missing_rate = missing_rate[missing_rate.rate!=0].sort_values(&quot;rate&quot;,ascending=False).transpose()
+sns.catplot(kind=&quot;bar&quot;,data=missing_rate,aspect=2,height=10)
+</code></pre><p>值得一提:</p>
+<ol>
+<li>這裡使用到mean()對True False視為1,0去平均的特性</li>
+<li>mean()會回傳serial，要用to_frame(&ldquo;一個標籤名&rdquo;) 恢復成df</li>
+<li>missing_rate的mask不能寫成一行，否則無法知道rate是誰的標籤</li>
+<li>transpose成 mean對各標籤的表格</li>
+<li>圖可以藉由height , aspect 操作圖大小</li>
+</ol>
+<p>而依照不同缺失比例，可以先取前幾名高比例的index，再利用前面的drop函式進行捨去<br>
+也可以替代這些值，
+pandas提供了<code>df.fillna()</code>函式來取代這些值</p>
+<p>可以做最基本的全部取代成0， 只需要指定0為其參數即可，當然也可以指定其他值
+(比如中位數、平均數、或特定字串)</p>
+<pre><code>df.fillna(0)
+</code></pre><p>也可以依不同column進行替換，需要以字典參數指定</p>
+<pre><code>values = {'index1': 0, 'index2': 1, 'index3': 2, 'index4': 3}
+df.fillna(value=values)
+</code></pre><p>還能使用backwordfill , forwardfill 等方式參照前後筆資料決定空值，詳情參考<a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html">官方文檔</a></p>
+<h3 id="分開數值資料-與-非數值資料">分開數值資料 與 非數值資料</h3>
+<p>數值資料與非數值資料通常會用不同方式處理</p>
+<p>使用第二節提到的<code>df.select_dtypes()</code>來完成<br>
+要選取數值資料，可以用<code>df.select_dtypes(include=[&quot;number&quot;])</code><br>
+要選取非數值資料，可以用<code>df.select_dtypes(exclude=[&quot;number&quot;])</code></p>
+<p>以下使用範例資料集為例，除了提供另一種選取方式，可以更熟悉select_dytpes用法以外，也示範與df.info結合運用</p>
+<p>使用<code>df.info()</code>觀察資料型態，可以知道有38個數值資料、43個非數值資料</p>
+<pre><code>dtypes: float64(3), int64(35), object(43)
+</code></pre><p>然後使用<code>df.select_dtypes(include=[&quot;int64&quot;,&quot;float64&quot;])</code>來選取所有數值資料</p>
+<h3 id="極端值處理">極端值處理</h3>
+<p>也是一樣先用前面的繪圖方式，印出並觀察SalePrice與數值資料的關係圖<br>
+比如下圖</p>
+<div style="text-align:center "><img style="width:500px; height:300px" src="/machine_learning/pandas_4.PNG"  ></div>
+<p>可以快速的了解從訓練資料來看，極端值應該是200<br>
+然後就可以用masking技巧刪去極端值，以下是一個例子:</p>
+<pre><code>outlier={'LotFrontage':300,'MasVnrArea':1400,'BsmtFinSF1':5000,'TotalBsmtSF':6000,'1stFlrSF':4000, 'GrLivArea':4500,'BedroomAbvGr':8,'TotRmsAbvGrd':14, 'MiscVal':8000]
+
+for index in outlier:
+    num_data=num_data[ num_data[index] &lt; outlier[index]]
+</code></pre><h1 id="summary">重點統整</h1>
+<ul>
+<li>
+<p>載入檔案使用 <code>read_csv(&lt;filename&gt;)</code><br>
+輸出檔案使用 <code>df.to_csv(&lt;filename&gt;)</code> (json,html也支援對應函式)</p>
+</li>
+<li>
+<p>以下能幫助我們快速了解表格</p>
+<ul>
+<li><code>df.info()</code> 知道表格意義</li>
+<li><code>df.describe()</code> 初步了解數值分布</li>
+<li><code>df.head(n)</code>,<code>df.tail(n)</code>選取前後幾列查看例子</li>
+<li>這些函數也是回傳DataFrame，因此能用原表格一樣的方式選取column查看</li>
+</ul>
+</li>
+<li>
+<p>以下兩個方法可以取用特定位置的資料</p>
+<ol>
+<li>DataFrame是key對應到numpy array的dictionary，取用時照該型態邏輯使用即可<br>
+特別的是可以用一個list參數指定多column 如 df[[&ldquo;MSZoning&rdquo;,&ldquo;LotFrontage&rdquo;]]</li>
+<li>也可以使用<code>loc</code>與<code>iloc</code>屬性<br>
+df.loc[起始列數:終止列數 , 起始標籤名:終止標籤名]<br>
+df.iloc[起始列數:終止列數 , 起始行數:終止行數]</li>
+</ol>
+</li>
+<li>
+<p>以下方法能選取特定資料</p>
+<ul>
+<li>
+<p>要選取某類型資料，可以用<code>df.select_dtypes(include=[&lt;your type list&gt;])</code><br>
+要去除某類型資料，可以用<code>df.select_dtypes(exclude=[&lt;your type list&gt;])</code>
+<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.select_dtypes.html">官方文檔</a></p>
+</li>
+<li>
+<p><code>df[判斷邏輯式]</code>即可選取符合判斷式的資料<br>
+如<code>df[(df.MSZoning==&quot;RL&quot;) | (df.Street == &quot;Pave&quot;)]</code></p>
+</li>
+<li>
+<p><code>df.drop()</code>可以丟掉特定位置資料，給定index list 與 axis 參數即可<br>
+axis=0 表示由上而下的操作，所以會刪除橫向的列，axis=1表示由左而右的操作，所以會刪除直向的行</p>
+</li>
+<li>
+<p>整合技巧可以參考<a href="#little_apply" >其他技巧與整合應用 </a>
+<br>選出空值資料、選出某行符合某值的所有資料、統計值、排序</p>
+</li>
+</ul>
+</li>
+<li>
+<ol>
+<li>使用Seaborn可以很快的搭配pandas進行繪圖<br>
+基本格式為<code>sns.relplot(x=&quot;特徵名&quot;, y=&quot;目標名&quot;,data=df)</code>
+此外也有displot(分布圖)與catplot(質性資料圖)等可供使用</li>
+<li>基本準則如下:<br>
+relplot 是數值與數值資料之間使用的，可以看出趨勢、相關性<br>
+displot 是數值 或 質性資料 使用的， 可以看出出現次數分布 (所以不用y參數)<br>
+catplot 是數值與質性資料之間使用的，可以看出質資料與數值之間關係</li>
+</ol>
+</li>
+<li>
+<p>以下能進行資料前處理</p>
+<ul>
+<li><code>df.fillna()</code> 可以用來填補空值，<a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.fillna.html">官方文檔</a></li>
+<li>繪圖搭配mask技巧可以刪去極端資料</li>
+<li>資料型態選取可以分開數值與屬性資料</li>
+</ul>
+</li>
+</ul>
 
         </div>
 
