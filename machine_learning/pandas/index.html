@@ -348,7 +348,7 @@ df.fillna(value=values)
 <div style="text-align:center "><img style="width:500px; height:300px" src="/machine_learning/pandas_4.PNG"  ></div>
 <p>可以快速的了解從訓練資料來看，極端值應該是200<br>
 然後就可以用masking技巧刪去極端值，以下是一個例子:</p>
-<pre><code>outlier={'LotFrontage':300,'MasVnrArea':1400,'BsmtFinSF1':5000,'TotalBsmtSF':6000,'1stFlrSF':4000, 'GrLivArea':4500,'BedroomAbvGr':8,'TotRmsAbvGrd':14, 'MiscVal':8000]
+<pre><code>outlier={'LotFrontage':200,'MasVnrArea':1400,'BsmtFinSF1':5000,'TotalBsmtSF':6000,'1stFlrSF':4000, 'GrLivArea':4500,'BedroomAbvGr':8,'TotRmsAbvGrd':14, 'MiscVal':8000]
 
 for index in outlier:
     num_data=num_data[ num_data[index] &lt; outlier[index]]
