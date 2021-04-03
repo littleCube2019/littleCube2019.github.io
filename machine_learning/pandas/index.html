@@ -124,6 +124,11 @@
 <p>python的pandas是專門為矩陣型的表格式資料設計的套件 
 可以由pip install 安裝</p>
 <p>此文希望紀錄我實作時比較常用到的功能</p>
+<p>因為pandas的每一行數值都是Serial物件，而serial物件是以numpy實作的，因此套用numpy,sklearn等常用機器學習套件十分方便，並且sklearn格式基本上就是fit(DataFrame,Serial)</p>
+<p>會使用到的套件<br>
+pandas<br>
+seaborn</p>
+<p>此外也可以參考pandas_profiling套件來完成很多自動化工作</p>
 <div style="background-color:#DCDCDC; width:30%; border-style: solid;">
 目錄 
 <br>
@@ -158,6 +163,17 @@ df = pd.read_csv(&quot;train.csv&quot;)  #下載並放在同個資料夾的測�
 以kaggle資料集為例，想看看土地面積的統計量，可以使用
 <code>df.describe()[&quot;LotArea&quot;]</code></p>
 <p>了解基本資訊後，也提供<code>df.head()</code> 與 <code>df.tail()</code> 取出前後幾列看看幾個例子，括號內可以放整數參數決定取幾列</p>
+<p><code>df.skew()</code> 可以看出資料的偏度<br>
+算法為 三階中心動差</p>
+<p>若資料分布對稱，則skew 接近0<br>
+若大於0，則極端值偏向正數側<br>
+若小於0，則極端值偏向負數側</p>
+<p><code>df.kurt()</code> 可以看出資料的峰度<br>
+算法為 四階動動差 除以 標準差的四次方 - 3</p>
+<p>若資料為常態分佈 則kurt趨近0<br>
+若大於0，則資料集中，稱為尖峰 <br>
+若小於0，則資料分散，稱為平峰</p>
+<div style="text-align:center "><img style="width:500px; height:300px" src="/machine_learning/pandas_5.PNG"  ></div>
 <h3 id="取用data的部分">取用Data的部分</h3>
 <h4 style="text-align:center; font-weight:bold" > 1. 直觀方法 </h4> 
 <p>接下來可能需要分析特定幾筆數據、幾個特徵，因此需要了解怎麼選取行列</p>
@@ -296,7 +312,7 @@ for i in num_data:
 <a href="https://seaborn.pydata.org/tutorial/function_overview.html">基本教學</a></p>
 <h3 id="資料視覺化101">資料視覺化101</h3>
 <h4 style="text-align:center; font-weight:bold" > 1.定義 </h4>
-資料視覺化的定義可以參考這位大神的[文章](https://leemeng.tw/data-visualization-from-matplotlib-to-ggplot2.html)  
+<p>資料視覺化的定義可以參考這位大神的<a href="https://leemeng.tw/data-visualization-from-matplotlib-to-ggplot2.html">文章</a></p>
 <blockquote>
 <p>資料視覺化是將資料中的變數映射到視覺變數上，進而有效且有意義地呈現資料的樣貌
 同時目的是分析資料 與 呈現資料</p>
@@ -363,6 +379,7 @@ for index in outlier:
 <ul>
 <li><code>df.info()</code> 知道表格意義</li>
 <li><code>df.describe()</code> 初步了解數值分布</li>
+<li><code>df.skew()</code>、<code>df.kurt()</code> 可以了解資料imbalance程度、極端值分散程度</li>
 <li><code>df.head(n)</code>,<code>df.tail(n)</code>選取前後幾列查看例子</li>
 <li>這些函數也是回傳DataFrame，因此能用原表格一樣的方式選取column查看</li>
 </ul>
@@ -461,7 +478,7 @@ catplot 是數值與質性資料之間使用的，可以看出質資料與數值
                 height:100%"
                 >
                     存放文章數:
-                    51 </p>
+                    52 </p>
      </div>
 
     
