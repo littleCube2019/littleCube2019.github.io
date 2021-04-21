@@ -121,23 +121,31 @@
 
         <div class="post-content">
             <h1 id="定義">定義</h1>
-<p><img src="machine_learning/kl1.PNG" alt=""></p>
+<div style="text-align:center">
+<img src= "/machine_learning/kl1.PNG" style="width:600px;height:350px">
+</div>   
 <h3 id="直覺">直覺</h3>
 <p>直覺上也是衡量兩個分佈的差距<br>
-由下圖可看出 <br>
-<img src="machine_learning/kl2.PNG" alt=""><br>
-KL divergence就是 <strong>當下Cross entropy與目標Cross entropy的差距</strong>，也就是算當下的編碼方法最多還可以下降多少。</p>
+由下圖可看出</p>
+<div style="text-align:center">
+<img src= "/machine_learning/kl2.PNG" style="width:600px;height:350px">
+</div>   
+<p>KL divergence就是 <strong>當下Cross entropy與目標Cross entropy的差距</strong>，也就是算當下的編碼方法最多還可以下降多少。</p>
 <p>(Review,<a href="/machine_learning/cross_entropy">Cross Entropy</a>是以假分佈編碼，並以真分佈算期待值)</p>
 <p>值得注意的是，KL divergence<strong>不能是嚴格定義的距離</strong>，因為不符合交換率<br>
 即D(P||Q) != D(Q||P)</p>
 <h1 id="一個例子">一個例子</h1>
 <h3 id="開場">開場</h3>
-<p><img src="machine_learning/kl3.PNG" alt=""> 
-以上是外星蠕蟲牙齒數目的分佈，我們需要將這個數據以最小成本的方式傳回地球 <br>
+<div style="text-align:center">
+<img src= "/machine_learning/kl3.PNG" style="width:600px;height:350px">
+</div>   
+<p>以上是外星蠕蟲牙齒數目的分佈，我們需要將這個數據以最小成本的方式傳回地球 <br>
 但是這個分佈由於亂度較高，需要較多的&quot;成本&quot;傳輸<br>
 因此我們想用Uniform 與 binomial 來近似</p>
-<p><img src="machine_learning/kl4.PNG" alt=""><br>
-複習: 如何算Uniform?<br>
+<div style="text-align:center">
+<img src= "/machine_learning/kl4.PNG" style="width:600px;height:350px">
+</div> 
+<p>複習: 如何算Uniform?<br>
 n*p = 1 ，已知n=11，可得知 p=1/11</p>
 <p>複習: 如何算binomial?<br>
 首先複習機率分佈:<br>
@@ -146,9 +154,11 @@ P(x=k) = C(n,k)*P^k*(1-p)^(n-k)<br>
 <p>利用&quot;期待值 = np &quot; ，先用期待值定義式算出蟲蟲牙齒分佈期待值<br>
 然後除以11就是binomial的p，各項再套機率分佈式即可知道</p>
 <h3 id="如何測量哪一個分佈更好">如何測量哪一個分佈更好?</h3>
-<p>當然是代入KL divergence 算兩個分佈的差距囉<br>
-<img src="machine_learning/kl5.PNG" alt=""><br>
-上圖是二項分佈的例子，Uniform也可以算，把分母全部換成1/11即可</p>
+<p>當然是代入KL divergence 算兩個分佈的差距囉</p>
+<div style="text-align:center">
+<img src= "/machine_learning/kl5.PNG" style="width:600px;height:350px">
+</div> 
+<p>上圖是二項分佈的例子，Uniform也可以算，把分母全部換成1/11即可</p>
 <h1 id="結論">結論</h1>
 <ol>
 <li>
@@ -158,10 +168,12 @@ Binomial 與真實分佈的 KL divergence 是 0.427<br>
 </li>
 <li>
 <p>變動Binomial的P，也可以計算KL divergence<br>
-但是<strong>用期待值去估計的方法是最佳的</strong> (紅點)<br>
-<img src="machine_learning/kl6.PNG" alt=""></p>
+但是<strong>用期待值去估計的方法是最佳的</strong> (紅點)</p>
 </li>
 </ol>
+<div style="text-align:center">
+<img src= "/machine_learning/kl6.PNG" style="width:600px;height:350px">
+</div>    
 <h1 id="參考資料">參考資料</h1>
 <p><a href="https://www.ycc.idv.tw/deep-dl_2.html">別人整理版本</a><br>
 <a href="https://towardsdatascience.com/light-on-math-machine-learning-intuitive-guide-to-understanding-kl-divergence-2b382ca2b2a8">例子來源</a></p>
