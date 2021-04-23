@@ -6,7 +6,7 @@
     <description>Recent content in Discretemaths on Little Cube`s box</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
-    <lastBuildDate>Sun, 23 Aug 2020 19:51:15 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 21 Apr 2021 18:51:15 +0800</lastBuildDate>
     
 	<atom:link href="https://littlecube2019.github.io/discretemath/index.xml" rel="self" type="application/rss+xml" />
     
@@ -36,6 +36,15 @@
       
       <guid>https://littlecube2019.github.io/discretemath/probability_2/</guid>
       <description>隨機變數、pmf與CDF、期待值、變異數、常見離散機率分布</description>
+    </item>
+    
+    <item>
+      <title>線性代數(一)</title>
+      <link>https://littlecube2019.github.io/discretemath/linear_algebra_1/</link>
+      <pubDate>Wed, 21 Apr 2021 18:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/discretemath/linear_algebra_1/</guid>
+      <description>向量空間、基本列運算</description>
     </item>
     
   </channel>

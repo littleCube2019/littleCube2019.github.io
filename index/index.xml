@@ -73,7 +73,9 @@ Note 2 Conditional GAN
 Note 3 Basic Theory
 Note 4 GAN framework
 Note 5 GAN 改進
-數學、名詞   Cross entropy
+數學、名詞   數理統計學 - 估計法相關
+介紹好的估計法的基本性質，了解常用的三種估計方法，包括很常用的MLE
+  Cross entropy
   KL divergence
   sigmoid -&amp;gt; relu -&amp;gt; maxout
 比較Overfitting vs Underfitting VS Vanishing Gradient 再帶到為甚麼需要relu

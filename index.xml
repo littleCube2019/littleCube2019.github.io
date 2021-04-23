@@ -6,7 +6,7 @@
     <description>Recent content on Little Cube`s box</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
-    <lastBuildDate>Thu, 01 Apr 2021 04:00:15 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 21 Apr 2021 18:51:15 +0800</lastBuildDate>
     
 	<atom:link href="https://littlecube2019.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -516,6 +516,15 @@
     </item>
     
     <item>
+      <title>線性代數(一)</title>
+      <link>https://littlecube2019.github.io/discretemath/linear_algebra_1/</link>
+      <pubDate>Wed, 21 Apr 2021 18:51:15 +0800</pubDate>
+      
+      <guid>https://littlecube2019.github.io/discretemath/linear_algebra_1/</guid>
+      <description>向量空間、基本列運算</description>
+    </item>
+    
+    <item>
       <title>Unix/Vim/bash區</title>
       <link>https://littlecube2019.github.io/index/unix/</link>
       <pubDate>Sun, 23 Aug 2020 19:51:15 +0800</pubDate>
@@ -577,7 +586,9 @@ Note 2 Conditional GAN
 Note 3 Basic Theory
 Note 4 GAN framework
 Note 5 GAN 改進
-數學、名詞   Cross entropy
+數學、名詞   數理統計學 - 估計法相關
+介紹好的估計法的基本性質，了解常用的三種估計方法，包括很常用的MLE
+  Cross entropy
   KL divergence
   sigmoid -&amp;gt; relu -&amp;gt; maxout
 比較Overfitting vs Underfitting VS Vanishing Gradient 再帶到為甚麼需要relu
@@ -619,15 +630,6 @@ Note 5 GAN 改進
       
       <guid>https://littlecube2019.github.io/index/course/</guid>
       <description>關於修課有電子版的紀錄備份</description>
-    </item>
-    
-    <item>
-      <title>Main</title>
-      <link>https://littlecube2019.github.io/special_topic/main/</link>
-      <pubDate>Mon, 24 Aug 2020 16:48:24 +0800</pubDate>
-      
-      <guid>https://littlecube2019.github.io/special_topic/main/</guid>
-      <description>專題的過程與成果紀錄區</description>
     </item>
     
     <item>
