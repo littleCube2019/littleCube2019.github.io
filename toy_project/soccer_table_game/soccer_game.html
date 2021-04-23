@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>test for text </title>
+        <title>足球大賽</title>
 
 
     </head>
@@ -26,14 +26,20 @@
         var turn = 1 ; //1 or -1 
         var ball_1_pos = 24; //6
         var ball_2_pos = 54; //-6
-        var player_1_pos = [30,60,13,14,15]; //1~5
+        var player_1_pos = [2,6,13,14,15]; //1~5
         var player_2_pos = [72,76,63,64,65]; //-1~-5
         var choose_ball = false;
         var board =[] ;
         var passing_ball = false;
         var passing_pos = -0.5;
         var passing_mode = false;
-        var deciding_ball = false;
+        var inballPassing = false;
+        var pre_player = -0.5;
+        var can_pass_player = [];
+        var passed_player_pos=[];
+        for(var i=-5 ; i<6 ; i++){
+                    can_pass_player[i]= 1;
+        }
         //simplfy code
 
         function isBounded(pos){
@@ -113,6 +119,8 @@
             return -0.5;
             
         }
+
+    
         
         function showPlayerMovement_direct(playerPos){
             
@@ -126,12 +134,12 @@
                     
                     if (getBoard(checkPos)== 0 && Goal[turn].indexOf(checkPos) == -1 ){
                         if(Goal[turn*-1].includes(checkPos)==false){ //目標不是對方球門，可以移動
-                            $("#"+checkPos).append("<img passing=0  class=\"dot\" src=\"dot.png\">");
+                            $("#"+checkPos).append("<img isball=0  class=\"dot\" src=\"dot.png\">");
                         }
 
                         else{
                             if(OnePlayerInGoal[turn]==false || Goal[turn*-1].includes(playerPos) == true){ // 目標是對方球門，但自己在門內，或門內沒人，可以移動
-                                $("#"+checkPos).append("<img  passing=0 class=\"dot\" src=\"dot.png\">");
+                                $("#"+checkPos).append("<img  isball=0 class=\"dot\" src=\"dot.png\">");
                             }
                            
                         }
@@ -156,13 +164,22 @@
                     if (getBoard(checkPos) == 0 && Goal[turn].indexOf(checkPos) == -1　){
                        
                         
-                       
                         
-                         if(!$("#"+checkPos).children().length){
-                            $("#"+checkPos).append("<img  passing=0 class=\"dot\" src=\"dot.png\">");
+                        
+                        if(getBoard(playerPos)!=turn*6){
+                             if(!$("#"+checkPos).children().length){
+                                $("#"+checkPos).append("<img  isball=0 class=\"dot\" src=\"dot.png\">");
+                            }
+                        }
+                        else{
+                           
+                            if(!$("#"+checkPos).children().length){
+
+                                $("#"+checkPos).append("<img  isball=1  class=\"dot\" src=\"dot2.png\">");
+                            }
                         }
                             
-                        }
+                    }
                     else{
                         break;
                     }
@@ -188,12 +205,23 @@
                 if (isBounded(checkPos)){
 
                     if (getBoard(checkPos) == 0 && Goal[turn].indexOf(checkPos) == -1　){
-                                           
-                         if(!$("#"+checkPos).children().length){
-                            $("#"+checkPos).append("<img  passing=0 class=\"dot\" src=\"dot.png\">");
+                         console.log(getBoard(playerPos));
+                         if(getBoard(playerPos)!=turn*6){
+
+                             if(!$("#"+checkPos).children().length){
+                                $("#"+checkPos).append("<img  isball=0 class=\"dot\" src=\"dot.png\">");
+                            }
                         }
+                        else{
+
+                             if(!$("#"+checkPos).children().length){
+
+                                $("#"+checkPos).append("<img  isball=1 class=\"dot\" src=\"dot2.png\">");
+                            }
+                        }
+                        
                             
-                        }
+                    }
                     else{
                         break;
                     }
@@ -208,40 +236,44 @@
                 
                 }
             }
+        
 
-        function showBallMovement_passing(pos){
-            var stack = [pos];
-            var now_stack = 0
-            while(stack.length > now_stack ){
-                main = stack[now_stack];
-                console.log(main);
-                for (var i=0;i<playerMovementTrack.length;i++){
-                    direct = playerMovementTrack[i];
-                    checkPos = main+direct;
-                    while( isBounded(checkPos) && getBoard(checkPos) == 0 ){
-                        
-                        if(PlayerIsAround(checkPos) != -0.5 && Goal[turn].indexOf(checkPos) ==-1){
-                            if(!$("#"+checkPos).children().length){
-                                $("#"+checkPos).append("<img passing=1 class=\"dot\" src=\"dot2.png\">");
-                            }
-                            /* 連傳系統 
-                            if(!stack.includes(checkPos)){
-                                stack.push(checkPos);
-                                console.log(stack);
-                            }
-                            */
-                        }
-                   
-                        checkPos = checkPos+playerMovementTrack[i];
-                    }                    
-                    
+        function showBallMovement_passing(pos,playerNum){
+          
+            
+            for (var i=0;i<playerMovementTrack.length;i++){
+
+                direct = playerMovementTrack[i];
+                checkPos = pos+direct;
+                while( isBounded(checkPos) && getBoard(checkPos) == 0 ){
+                    var legal = false;
+                  
+                for(var j=0; j<playerMovementTrack.length;j++){
+                    if( isBounded(checkPos+playerMovementTrack[j]) && playerNum!= getBoard(checkPos+playerMovementTrack[j]) && getBoard(checkPos+playerMovementTrack[j])*turn>0 && getBoard(checkPos+playerMovementTrack[j])*turn!=6 && passed_player_pos.includes(checkPos+playerMovementTrack[j]) == false){
+                            legal = true;
+                            break;
+                    }
+                               
                 }
 
+                if(Goal[turn].indexOf(checkPos) && legal == true){
 
-
-
-                now_stack+=1; //pop first
+                    if(!$("#"+checkPos).children().length){
+                            $("#"+checkPos).append("<img isball=1 class=\"dot\" src=\"dot2.png\">");
+                            }
+                        
+                }
+                   
+                    checkPos = checkPos+playerMovementTrack[i];
+                }                    
+                    
             }
+
+
+
+
+  
+            
         }
 
         
@@ -251,7 +283,7 @@
 
 
         for (var i =0; i<player_1_pos.length;i++){
-            
+
              $("#"+player_1_pos[i]).append("<img team=1 class=\"piece_player\" src=\"player_1.png\">")
          
         }
@@ -260,78 +292,67 @@
              $("#"+player_2_pos[i]).append("<img team=-1 class=\"piece_player\"  src=\"player_2.png\">")
         }
 
-
+        var player_passed_ball = false;
+        var pass_toggle = 1;
         //piece move 
         $(document).on('click', '.piece_player', function(){ // ******  dynamic element *****
                // alert(choosing_number);
-               
-               var team = $( event.target).attr("team")
-               var piece = $( event.target).parent();
+                
+              var team = $( event.target).attr("team")
+              var piece = $( event.target).parent();
               var pos = parseInt(piece.attr("id"));
+              choosing_pos = pos;
+              choosing_number = getBoard(pos);
+                
+              $(".dot").remove();
+            
+              if(can_pass_player[choosing_number]==0){
+                console.log(can_pass_player);
+                console.log(choosing_number);
+                addMessage("不可重複傳球");
+                return ;
+              }
+
+              ball_pos = BallIsAround(pos);
                if (parseInt(team) == turn ){
 
-               if(!passing_mode){ //不是傳球時選到，要先remove點
-                        if (choosing_number != -0.5){
-                            choosing_number = -0.5;
-                            choosing_pos=-0.5;
-                             $(".dot").remove();
-                    }
-
-
-
-                    choose_ball=false;
-                    
-                    choosing_pos = pos;
-                    choosing_number = getBoard(pos);
-
-                    
-
-
+                if(inballPassing == false){ 
+                    if(pass_toggle==-1||pre_player != pos  ){
+                        pass_toggle=1;
                         showPlayerMovement_direct(pos);
-                        ball_pos = BallIsAround(pos);
-                        
+                               
                         if(ball_pos!=-0.5){
-                         
-                            showPlayerMovement_rotate(pos,ball_pos);
-                        }
-                }
-               
-                /*
-                else if(deciding_ball){ //正在passing ball，且正在決定傳球員
-                    deciding_ball = false;
-                    $("#"+passing_pos).empty();
-                    $("#"+choosing_pos).empty();
-
-                    if(turn == 1){
-                            $("#"+passing_pos).append("<img team=1 class=\"piece_ball\" src=\"ball_1.png\">");
+                                player_passed_ball = true;
+                           
+                                showPlayerMovement_rotate(pos,ball_pos);
+                                //
+                      }
+                                           
                     }
-                    if(turn == -1){
-                            $("#"+passing_pos).append("<img team=-1 class=\"piece_ball\" src=\"ball_2.png\">");
-                    }
-
-                    choose_ball=false;
-                    board[Math.floor(pos/10)][pos%10] = choosing_number;
-                    board[Math.floor(choosing_pos/10)][choosing_pos%10] = 0; 
-                    passing_pos = -0.5;
-
-                    
-                    
-                    
-                    if(getBoard(pos)*turn > 0 ){
-                        $("#"+pos).empty();
-
-                        if(turn ==1 ){
-                            $("#"+pos).append("<img team=1 class=\"piece_player\"  src=\"disable_1.png\">")
+            
+                    else if( pre_player == pos  ){
+                        pass_toggle=-1;
+                        player_passed_ball =false;
+                        if(ball_pos == -0.5){
+                            addMessage("周圍沒球");
                         }
                         else{
-                            $("#"+pos).append("<img team=-1 class=\"piece_player\"  src=\"disable_2.png\">")
+                            showBallMovement_passing(ball_pos,getBoard(pos));
                         }
-                        //我方棋子
                     }
-                    //選中的選手要改圖
-                    //board中改負號
                 }
-                */
+
+                else{
+                    if(ball_pos!=-0.5){
+                        showBallMovement_passing(ball_pos,getBoard(pos));
+                    }
+                    else{
+                        addMessage("周圍沒球");
+                    }
+                }
+
+                pre_player = pos;
+                
                 }
                 else{
                    addMessage("Not your turn")       
@@ -340,81 +361,101 @@
         
 
         $(document).on('click', '.piece_ball', function(){
+            player_passed_ball=false;
              choose_ball=true;
-                var piece = $( event.target).parent();
-                var pos = parseInt(piece.attr("id"));
-                
+             var piece = $( event.target).parent();
+             var pos = parseInt(piece.attr("id"));
+            passing_mode = false; //沒有在傳球
 
-                if (choosing_number != -0.5){
-                    choosing_number = -0.5;
-                    choosing_pos=-0.5;
-                     $(".dot").remove();
-                }
-                choosing_pos = pos;
-                choosing_number = getBoard(pos);
+            if (choosing_number != -0.5){
+                choosing_number = -0.5;
+                choosing_pos=-0.5;
+                    $(".dot").remove();
+            }
+            choosing_pos = pos;
+            choosing_number = getBoard(pos);
 
-                var team = $( event.target).attr("team")
-
+            var team = $( event.target).attr("team")
+      
             if(parseInt(team) == turn){
 
-                
-                
-               
-                    
-               
-                        //alert(pos);
-                        
-                        
-                if(!passing_mode){
-                        //for all neiborhood player rotation
-                        for (var i=0;i<playerMovementTrack.length;i++){
-                            var checkPos = pos+playerMovementTrack[i];
-                             if (isBounded(checkPos)){
+              if(inballPassing == false){          
+                    for (var i=0;i<playerMovementTrack.length;i++){
+                                    var checkPos = pos+playerMovementTrack[i];
+                                     if (isBounded(checkPos)){
 
-                                if ( getBoard(checkPos)*turn >0 &&  getBoard(checkPos)*turn!=6 ){
-                                    showPlayerMovement_rotate(pos,checkPos);
+                                        if ( getBoard(checkPos)*turn >0 &&  getBoard(checkPos)*turn!=6 ){
+                                            showPlayerMovement_rotate(pos,checkPos);
+                                        }
+                                    }
                                 }
-                            }
-                        }
                 }
-                        //for pass ball : using DFS
-                /*
-                if(PlayerIsAround(pos)!=-0.5){
-                            showBallMovement_passing(pos);
-                        }
-                        else{
-                            addMessage("No player around")
-                        }
-                */
-
+                
+                else{
+                    addMessage("未完成傳球");
+                }
             }
             else{
 
-                addMessage("Not your turn")
+                addMessage("Not your turn");
                         
             }
+              
                 
         })
         
         $(document).on('click', '.dot', function(){ // ******  dynamic element *****
              // for piece movement
-                
+             player_passed_ball=false;
              var piece = $( event.target).parent();
              var pos = parseInt(piece.attr("id"));
-             
+             var is_ball = parseInt($( event.target).attr("isball"));
              $(".dot").remove();
 
-             
+           
+         if(inballPassing){
+            //處理圖像
+            if(choosing_number > 0){ //team 1
+                can_pass_player[choosing_number]= 0;
+                $("#"+choosing_pos+">img").attr("src","disable_1.png");
+            }
+            else{ //team -1
+                $("#"+choosing_pos+">img").attr("src","disable_2.png")
+                can_pass_player[choosing_number]= 0;
+            }
+            passed_player_pos.push(choosing_pos);
+            //處理邏輯球版
+
+            //處理球 
+            if(turn == 1){
+
+                    $("#"+pos).append("<img team=1 class=\"piece_ball\" src=\"ball_1.png\">");
+                    $("#"+ball_1_pos).empty();
+                    board[Math.floor(ball_1_pos/10)][ball_1_pos%10] = 0; 
+                    ball_1_pos = pos;
+                    board[Math.floor(pos/10)][pos%10] = 6;
+                   
+            }
+                if(turn == -1){
+                    $("#"+pos).append("<img team=-1 class=\"piece_ball\" src=\"ball_2.png\">");
+                    $("#"+ball_2_pos).empty();
+                    board[Math.floor(ball_2_pos/10)][ball_2_pos%10] = 0; 
+                    ball_2_pos = pos;
+                    board[Math.floor(pos/10)][pos%10] = -6;
                     
-            if(!passing_mode){ // 球員 普通移動、繞球移動、 球 繞球員移動
+            }
+         }        
+           
+
 
                         
-                        board[Math.floor(pos/10)][pos%10] = choosing_number;
-                        board[Math.floor(choosing_pos/10)][choosing_pos%10] = 0; 
-                        $("#"+choosing_pos).empty();
-                        if(choose_ball==false){ //選中球員
-
-                            if(Goal[turn*-1].includes(choosing_pos) == true &&Goal[turn*-1].includes(pos) == false ){  //原本在門內，現在出來了 (pos是移動目的地)
+            
+        else if(!inballPassing){
+            if(is_ball==0){ //選中球員
+                board[Math.floor(pos/10)][pos%10] = choosing_number;
+                board[Math.floor(choosing_pos/10)][choosing_pos%10] = 0; 
+                $("#"+choosing_pos).empty();
+                if(Goal[turn*-1].includes(choosing_pos) == true &&Goal[turn*-1].includes(pos) == false ){  //原本在門內，現在出來了 (pos是移動目的地)
                                 OnePlayerInGoal[turn] = false;
                             }
                             if(Goal[turn*-1].includes(pos) == true){ //跑進門內
@@ -431,28 +472,63 @@
                         }
 
             else{ //選中球
-                            if(turn == 1){
-                                $("#"+pos).append("<img team=1 class=\"piece_ball\" src=\"ball_1.png\">");
-                              }
-                            if(turn == -1){
-                                $("#"+pos).append("<img team=-1 class=\"piece_ball\" src=\"ball_2.png\">");
-                              }
-                              choose_ball=false;
+                if(choosing_number != 6*turn){
+                     inballPassing = true; //球被移動，但不是轉球 (就是傳球)
+                     if(choosing_number > 0){ //team 1
+                            can_pass_player[choosing_number]= 0;
+                            $("#"+choosing_pos+">img").attr("src","disable_1.png");
+                        }
+                        else{ //team -1
+                            $("#"+choosing_pos+">img").attr("src","disable_2.png")
+                            can_pass_player[choosing_number]= 0;
+                    }
+                     passed_player_pos.push(choosing_pos);
+                     can_pass_player[choosing_number]= 0;
+                }
+                if(turn == 1){
+                    $("#"+pos).append("<img team=1 class=\"piece_ball\" src=\"ball_1.png\">");
+                    $("#"+ball_1_pos).empty();
+                     board[Math.floor(ball_1_pos/10)][ball_1_pos%10] = 0; 
+                    ball_1_pos = pos;
+                    board[Math.floor(pos/10)][pos%10] = 6;
+                   
+                }
+                if(turn == -1){
+                    $("#"+pos).append("<img team=-1 class=\"piece_ball\" src=\"ball_2.png\">");
+                    $("#"+ball_2_pos).empty();
+                    board[Math.floor(ball_2_pos/10)][ball_2_pos%10] = 0; 
+                    ball_2_pos = pos;
+                    board[Math.floor(pos/10)][pos%10] = -6;
+                    
+                }
+            }
+                 choose_ball=false;
 
                     //chcek wheather win or not
-                              if(Goal[turn*-1].includes(pos)==true && OnePlayerInGoal[turn] == true ){
+                    if(Goal[-1].includes(ball_1_pos)==true && OnePlayerInGoal[1] == true ){
                                     $("#main_sector").hide();
-                                    if(turn == 1){
-                                        alert("team green win");
-                                    }
-                                    else{
-                                        alert("team red win");
-                                    }
-                                }
+                                    
+                                    alert("team green win");
+                    }
+                    if(Goal[1].includes(ball_2_pos)==true && OnePlayerInGoal[-1] == true ){
+                              $("#main_sector").hide();
+                              alert("team red win");
+                    }
+                                  
+                                      
+                                    
+                                
 
             }
-            turn = turn*-1 ;
+            if(!inballPassing){
+                turn = turn*-1 ;
+                passing_mode = false;
             }
+            else if(inballPassing){
+                $("#passing_OK").show();
+            }
+        
+            //}
             /* 
             else if(passing_mode ==true){   
             if(parseInt($( event.target).attr("passing"))!=0 && deciding_ball ){//傳球移動
@@ -478,14 +554,21 @@
        
         //rule window
         $("#rule_pop").hide();
+        $("#imp_pop").hide();
+
+        $("#imp_book").click(()=>{
+                $("#imp_pop").show();
+        })
 
         $("#rule_book").click(()=>{
                 $("#rule_pop").show();
         })
 
-        $("#ok_button").click(()=>{
-            $("#rule_pop").hide();
+        $(".ok_button").click(()=>{
+            $(".pop_window").hide();
+
         })
+
         var mes_show = true;
         $("#mes_btn").click(()=>{ 
               
@@ -503,13 +586,32 @@
         $("#passing_OK").hide();
 
         $("#passing_OK").click(()=>{ 
-              
+            
                 $("#passing_OK").hide();
-              
+                 inballPassing = false;
                 passing_mode = false;
                 passing_ball = false;
-                turn=turn*-1;
+               
+                passing_mode = false;
                 $(".dot").remove();
+
+
+                for(var i=-5 ; i<6 ; i++){
+                    can_pass_player[i]= 1;
+                }
+
+                for(var i=0 ; i<passed_player_pos.length; i++){
+                    if(turn == 1){
+                    $("#"+passed_player_pos[i]+">img").attr("src","player_1.png");
+                     }
+          
+                     else{ //team -1
+                     $("#"+passed_player_pos[i]+">img").attr("src","player_2.png")
+                    }
+                }
+
+                turn=turn*-1;
+                passed_player_pos=[];
             }
         )
 
@@ -658,7 +760,7 @@ tr:nth-child(odd) td:nth-child(odd)  {background:       #7cfc00}
 
 
                 <div style="text-align:center;">
-                    <button id="ok_button">OK!</button>
+                    <button class="ok_button">OK!</button>
                 </div>
     
           
@@ -667,13 +769,49 @@ tr:nth-child(odd) td:nth-child(odd)  {background:       #7cfc00}
 </div>
 
 
+<div class='pop_window' id="imp_pop">
+        <div class='pop_center'>
+         
+         
+            <div style="height:90%;">
+                    <ul> 大綱說明
+                    <li> 下方為紅隊,拿著綠球XD,上方為紅隊，拿著白球</li>
+                    <li> 由綠隊先攻</li>
+                    </ul>
+                    <ul> 點球員圖片
+                    <li> 第一下 會呈現可移動的位置(繞球 與 走位)，以黑點顯示 ，點下黑點後會移動並結束一回合 </li>
+                    <li>      第二下 會呈現<b style="color:red">以該球員為傳球員</b> 的傳球位置，以紅點顯示 <br> 
+                    傳球一次後會進入<b style="color:red">傳球模式</b>，在不違反規則的情況下可以連續傳球直到滿意，滿意後按下<b style="color:red">結束傳球</b>會結束這一回合
+                    </li>
 
+
+                   
+                    </ul>
+
+                    <ul> 點球圖片
+                    <li> 會呈現可移動的位置(繞人)，以黑點顯示 ，點下黑點後會移動並結束一回合</li>
+                    </ul>
+                    
+
+
+                <div style="text-align:center;">
+                    <button class="ok_button">OK!</button>
+                </div>
+    
+          
+            </div>
+        </div>
+</div>
 
 
 <div id="main_sector" style="width:100%;height:100%" >
 <div style="width:10%; float:left;"id="text_sector">
-<button id="rule_book"> 規則</button>
+<button id="rule_book"> 規則說明</button>
+<br>
+<button id="imp_book"> 操作說明</button>
+<br>
 <button id="mes_btn"> 顯示/關閉訊息</button>
+
 </div>
 
 <!-- board -->
